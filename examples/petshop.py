@@ -1,10 +1,15 @@
+from os import name
+
 from opyapi import api
 from opyapi.schema import Schema
-from opyapi.schema import Property
+from opyapi.schema import Type
 
 
-@api.Server(url="asa", description="Dupa")
+@api.Server(url="asa", description="Server description that replaces doc")
 class DevelopmentServer:
+    """
+    This doc will be ignored as description is set in decorator
+    """
     pass
 
 
@@ -13,13 +18,23 @@ class PetShopApplication:
     pass
 
 
-@api.Resource(title="Pet schema", schema=Schema({
-    "name": Property(int)
-}))
+@api.Resource(title="Pet schema", schema=Schema(Type.OBJECT, required=["name", "age"]))
 class Pet:
-    name: Property(int)
+    """
+    Description for the Pet resource
+    """
+    name: Schema(Type.STRING)
+    age: Schema(Type.INTEGER) = None
 
 
-app = PetShopApplication()
+@api.Operation(route="/pets/{id}", method="GET", responses={})
+def get_pet(id: int):
+    """
+    Description for the pet operation
+    """
+    return Pet(name="Tom")
 
-print(app)
+
+pet = Pet(name="Tom")
+
+print(pet)

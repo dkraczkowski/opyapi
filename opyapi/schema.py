@@ -3,6 +3,11 @@ from enum import Enum
 
 
 class Type(Enum):
+    """
+    Reflects available types in the open api specification
+
+    :: _Open Api types: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
+    """
     INTEGER = "integer"
     NUMBER = "number"
     STRING = "string"
@@ -11,6 +16,12 @@ class Type(Enum):
 
 
 class Format(Enum):
+    """
+    Reflects base available formats in open api specification with additional flavoured formats to
+    help with validation process.
+
+    :: _Open Api Formats: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#dataTypeFormat
+    """
     INT32 = "int32"
     INT64 = "int64"
     FLOAT = "float"
@@ -35,7 +46,7 @@ class Format(Enum):
 class Schema:
     def __init__(
         self,
-        schema_type: Type = None,
+        schema_type: Type,
         properties: dict = None,
         type_format: Format = None,
         deprecated: bool = False,
@@ -48,7 +59,8 @@ class Schema:
         min_items: int = None,
         max_items: int = None,
         unique_items: bool = None,
-        items: Schema = None
+        items: Schema = None,
+        required: list = None
     ):
         """
         :param schema_type:
@@ -65,7 +77,9 @@ class Schema:
         :param max_items:
         :param unique_items:
         :param items:
+        :param required:
         """
+        self.required = required
         self.items = items
         self.unique_items = unique_items
         self.max_items = max_items
@@ -81,8 +95,3 @@ class Schema:
         self.properties = properties
         self.format = format
         self.deprecated = deprecated
-
-
-class Property:
-    def __init__(self, property_type):
-        pass

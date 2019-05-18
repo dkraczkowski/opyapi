@@ -21,13 +21,13 @@ classifiers = [
 
 # Requirements
 [tool.poetry.dependencies]
-python = "^3.5"
-cleo = "^0.6.7"
-requests = "^2.18"
-jsonschema = "^3.0a3"
+python = "^3.6"
+cleo = "^0.7"
+requests = "^2.2"
+bjoern = "^3.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^4.1"
+pytest = "^4.1.0"
 pytest-cov = "^2.5"
 pytest-mock = "^1.9"
 pre-commit = "^1.10"
