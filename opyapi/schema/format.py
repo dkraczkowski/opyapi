@@ -9,6 +9,7 @@ class Format(Enum):
 
     :: _Open Api Formats: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#dataTypeFormat
     """
+
     INT32 = "int32"
     INT64 = "int64"
     FLOAT = "float"

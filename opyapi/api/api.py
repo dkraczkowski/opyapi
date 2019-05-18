@@ -8,6 +8,7 @@ class Api(Annotation):
 
     .. _Open API Documentation: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md
     """
+
     def __init__(self, title: str, servers: list, version: str = "1.0.0"):
         """
         :param title: Your api title

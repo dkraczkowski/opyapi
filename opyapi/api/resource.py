@@ -9,10 +9,12 @@ class Resource(Annotation):
 
     .. _Open Api Schema: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#schemaObject
     """
+
     def __init__(self, title: str, description: str = "", schema: Schema = None):
-        print("init")
+        self.schema = schema
+        self.description = description
+        self.title = title
 
     def __call__(self, target):
-        print(target.__dict__["__annotations__"])
-        print(target.__dict__["age"])
-        return target
+        properties = target.__dict__["__annotations__"]
+        pass

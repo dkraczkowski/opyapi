@@ -1,5 +1,3 @@
-from os import name
-
 from opyapi import api
 from opyapi.schema import Schema
 from opyapi.schema import Type
@@ -10,6 +8,7 @@ class DevelopmentServer:
     """
     This doc will be ignored as description is set in decorator
     """
+
     pass
 
 
@@ -23,11 +22,28 @@ class Pet:
     """
     Description for the Pet resource
     """
+
+    id: Schema(Type.STRING, read_only=True)
     name: Schema(Type.STRING)
     age: Schema(Type.INTEGER) = None
 
 
-@api.Operation(route="/pets/{id}", method="GET", responses={})
+@api.Operation(
+    method=api.Method.POST,
+    route="/pets",
+    request=api.Request(Pet),
+    responses=[api.Response(Pet)],
+)
+def create_pet():
+    return Pet(name="Tom")
+
+
+@api.Operation(
+    route="/pets/{id}",
+    method=api.Method.GET,
+    request=api.Request(Schema(Type.OBJECT, properties={})),
+    responses={},
+)
 def get_pet(id: int):
     """
     Description for the pet operation

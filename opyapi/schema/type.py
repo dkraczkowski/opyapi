@@ -8,8 +8,10 @@ class Type(Enum):
 
     :: _Open Api types: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
     """
+
     INTEGER = "integer"
     NUMBER = "number"
     STRING = "string"
     BOOLEAN = "boolean"
     OBJECT = "object"
+    ARRAY = "array"

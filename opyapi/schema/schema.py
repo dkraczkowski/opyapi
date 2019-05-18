@@ -20,7 +20,7 @@ class Schema:
         max_items: int = None,
         unique_items: bool = None,
         items: Schema = None,
-        required: list = None
+        required: list = None,
     ):
         """
         :param schema_type:
