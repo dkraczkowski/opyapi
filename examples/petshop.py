@@ -1,30 +1,23 @@
 from opyapi import api
-from opyapi.api import Property
-from dataclasses import dataclass
+from opyapi.schema import Schema
+from opyapi.schema import Property
 
 
-@api.Server(
-    url="asa",
-    description="Dupa"
-)
+@api.Server(url="asa", description="Dupa")
 class DevelopmentServer:
     pass
 
 
-@api.Application(
-    version="1.0.0",
-    title="Pet Shop application",
-    servers=[
-        DevelopmentServer,
-    ]
-)
+@api.Api(version="1.0.0", title="Pet Shop application", servers=[DevelopmentServer])
 class PetShopApplication:
     pass
 
 
-@api.Schema(title="Pet schema")
+@api.Resource(title="Pet schema", schema=Schema({
+    "name": Property(int)
+}))
 class Pet:
-    name: Property()
+    name: Property(int)
 
 
 app = PetShopApplication()
