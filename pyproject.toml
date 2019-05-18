@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "opyapi"
+version = "0.1.0"
+description = "Open Api based microframework for rest apis."
+authors = [
+    "Dawid Kraczkowski <dawid.kraczkowski@gmail.com>"
+]
+license = "MIT"
+readme = "README.md"
+
+homepage = "https://github.com/dkraczkowski/opyapi"
+repository = "https://github.com/dkraczkowski/opyapi"
+documentation = "https://github.com/dkraczkowski/opyapi"
+
+keywords = ["open api", "swagger", "rest", "micro framework", "opyapi"]
+
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+# Requirements
+[tool.poetry.dependencies]
+python = "^3.5"
+cleo = "^0.6.7"
+requests = "^2.18"
+jsonschema = "^3.0a3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.1"
+pytest-cov = "^2.5"
+pytest-mock = "^1.9"
+pre-commit = "^1.10"
+black = { version = "^19.3b0", python = "^3.6" }
+
+
+[tool.poetry.scripts]
+opyapi = "opyapi.console:main"
