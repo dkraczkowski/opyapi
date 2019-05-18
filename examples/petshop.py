@@ -33,8 +33,3 @@ def get_pet(id: int):
     Description for the pet operation
     """
     return Pet(name="Tom")
-
-
-pet = Pet(name="Tom")
-
-print(pet)
