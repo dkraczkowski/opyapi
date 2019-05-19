@@ -18,13 +18,16 @@ class PetShopApplication:
     pass
 
 
-@api.Resource(title="Pet schema", schema=Schema(Type.OBJECT, required=["name", "age"]))
+@api.Resource(title="Pet schema", schema=Schema(
+    Type.OBJECT,
+    required=["name", "age"]
+))
 class Pet:
     """
     Description for the Pet resource
     """
 
-    id: Schema(Type.STRING, read_only=True, description="")
+    id: Schema(Type.STRING, read_only=True)
     name: Schema(Type.STRING)
     age: Schema(Type.INTEGER) = None
 
@@ -35,14 +38,13 @@ class Pet:
     request=api.Request(Pet),
     responses=[api.Response(Pet)],
 )
-def create_pet():
-    return Pet(name="Tom")
+def create_pet(pet: Pet):
+    return pet
 
 
 @api.Operation(
     route="/pets/{id}",
     method=api.OperationMethod.GET,
-    request=api.Request(Schema(Type.OBJECT, properties={})),
     responses={},
 )
 def get_pet(id: int):

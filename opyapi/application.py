@@ -1,6 +1,24 @@
 from __future__ import annotations
 from typing import Callable
 import bjoern
+import re
+
+_VARIABLE_REGEX = "/\
+    \\s* ([a-zA-Z_][a-zA-Z0-9_-]*) \\s*\
+    (?:\
+        : \\s* ([^\\{\\}]*(?:{(?-1)}[^\\{\\}]*)*)\
+    )?\
+/"
+
+_DISPATCH_REGEX = "'[^/]+'"
+
+
+def parse_route(pattern: str):
+    pattern.rsplit()
+
+
+class Router:
+    pass
 
 
 class Application:
@@ -12,7 +30,6 @@ class Application:
         self._start = start
 
     def __iter__(self):
-        print(self._env)
         self._start('200 OK', [('Content-Type', 'text/plain')])
         yield str.encode("Entry point!\n")
 
