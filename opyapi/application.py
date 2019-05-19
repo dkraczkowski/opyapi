@@ -3,18 +3,20 @@ from typing import Callable
 import bjoern
 import re
 
-_VARIABLE_REGEX = "/\
-    \\s* ([a-zA-Z_][a-zA-Z0-9_-]*) \\s*\
-    (?:\
-        : \\s* ([^\\{\\}]*(?:{(?-1)}[^\\{\\}]*)*)\
-    )?\
-/"
+_ROUTE_REGEX = r"\{\s*(?P<var>[a-z_][a-z0-9_-]*)\s*\}"
 
-_DISPATCH_REGEX = "'[^/]+'"
+_PARAMETER_REGEX = "'[^/]+'"
 
 
-def parse_route(pattern: str):
-    pattern.rsplit()
+def parse_route(route: str, parameters: dict = None):
+    def replace(match):
+        print('replacing')
+        print(match)
+        pass
+
+    parsed_pattern = re.findall(_ROUTE_REGEX, route, flags=re.MULTILINE|re.IGNORECASE)
+
+    print(parsed_pattern)
 
 
 class Router:
