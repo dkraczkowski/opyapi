@@ -23,13 +23,13 @@ class Pet:
     Description for the Pet resource
     """
 
-    id: Schema(Type.STRING, read_only=True)
+    id: Schema(Type.STRING, read_only=True, description="")
     name: Schema(Type.STRING)
     age: Schema(Type.INTEGER) = None
 
 
 @api.Operation(
-    method=api.Method.POST,
+    method=api.OperationMethod.POST,
     route="/pets",
     request=api.Request(Pet),
     responses=[api.Response(Pet)],
@@ -40,7 +40,7 @@ def create_pet():
 
 @api.Operation(
     route="/pets/{id}",
-    method=api.Method.GET,
+    method=api.OperationMethod.GET,
     request=api.Request(Schema(Type.OBJECT, properties={})),
     responses={},
 )
@@ -49,3 +49,4 @@ def get_pet(id: int):
     Description for the pet operation
     """
     return Pet(name="Tom")
+

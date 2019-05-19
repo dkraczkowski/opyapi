@@ -29,3 +29,4 @@ class Format(Enum):
     IP = "ip"
     IPV4 = "ipv4"
     IPV6 = "ipv6"
+    IBAN = "iban"

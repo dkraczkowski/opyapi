@@ -7,6 +7,7 @@ class Schema:
     def __init__(
         self,
         schema_type: Type,
+        description: str = "",
         properties: dict = None,
         type_format: Format = None,
         deprecated: bool = False,
@@ -24,6 +25,7 @@ class Schema:
     ):
         """
         :param schema_type:
+        :param description:
         :param properties:
         :param type_format:
         :param deprecated:
@@ -39,6 +41,7 @@ class Schema:
         :param items:
         :param required:
         """
+        self.description = description
         self.required = required
         self.items = items
         self.unique_items = unique_items
@@ -55,3 +58,4 @@ class Schema:
         self.properties = properties
         self.format = format
         self.deprecated = deprecated
+

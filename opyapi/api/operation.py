@@ -3,7 +3,7 @@ from . import Annotation
 from enum import Enum
 
 
-class Method(Enum):
+class OperationMethod(Enum):
     GET = "get"
     POST = "post"
     PUT = "put"
