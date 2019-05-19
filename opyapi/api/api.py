@@ -28,5 +28,4 @@ class Api(Annotation):
         if not hasattr(target, _ANNOTATIONS):
             setattr(target, _ANNOTATIONS, [])
         target.__dict__[_ANNOTATIONS].append(self)
-        setattr(Api, "__opyapi_application__", target)
         return target

@@ -1,6 +1,7 @@
 from opyapi import api
 from opyapi.schema import Schema
 from opyapi.schema import Type
+from opyapi import Application
 
 
 @api.Server(url="asa", description="Server description that replaces doc")
@@ -50,3 +51,5 @@ def get_pet(id: int):
     """
     return Pet(name="Tom")
 
+
+Application.start()
