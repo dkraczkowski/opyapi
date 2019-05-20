@@ -12,6 +12,9 @@ class OperationMethod(Enum):
     OPTIONS = "options"
     HEAD = "head"
 
+    def __str__(self):
+        return self.value
+
 
 class Operation(Annotation):
     def __init__(

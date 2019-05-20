@@ -58,4 +58,3 @@ class Schema:
         self.properties = properties
         self.format = format
         self.deprecated = deprecated
-

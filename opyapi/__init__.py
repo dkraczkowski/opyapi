@@ -1,2 +1,2 @@
 from .application import Application
-from .application import parse_route
+from . import routing
