@@ -1,7 +1,9 @@
-from . import ValidationError
+from __future__ import annotations
+from typing import Callable
+from .exceptions import ValidationError
 
 
-def validator(target, *args, **kwargs):
+def validator(target):
     """
     Decorator that makes given function a validator.
 
@@ -13,10 +15,10 @@ def validator(target, *args, **kwargs):
     :return function:
     """
 
-    def wrapper(func: function, *args, **kwargs):
+    def wrapper(func: Callable, *args, **kwargs):
         passed = func(*args, **kwargs)
         if not passed:
             return ValidationError(func, *args, **kwargs)
         return True
 
-    return wrapper(target, *args, **kwargs)
+    return wrapper
