@@ -1,60 +1,73 @@
 from __future__ import annotations
-from . import Type
-from . import Format
+from .types import Type
+import typing
 
 
 class Schema:
+    type: typing.Type[Type] = None
+    format = None
+    nullable: bool = False
+    read_only: bool = False
+    write_only: bool = False
+    maximum: int = None
+    minimum: int = None
+    items: Schema = None
+    min_items: int = None
+    max_items: int = None
+    unique_items: bool = False
+    all_of: Schema = None
+    one_of: tuple = ()
+    pattern: str = None
+    properties: dict = None
+    enum: tuple = None
+    required: tuple = ()
+    default = None
+    deprecated: bool = False
+    title: str = ""
+    description: str = ""
+
     def __init__(
         self,
-        schema_type: Type,
-        description: str = "",
-        properties: dict = None,
-        type_format: Format = None,
-        deprecated: bool = False,
-        nullable: bool = None,
-        pattern: str = None,
+        type: typing.Type[Type] = None,
+        format=None,
+        nullable: bool = False,
         read_only: bool = False,
         write_only: bool = False,
         maximum: int = None,
         minimum: int = None,
+        items: Schema = None,
         min_items: int = None,
         max_items: int = None,
-        unique_items: bool = None,
-        items: Schema = None,
-        required: list = None,
+        unique_items: bool = False,
+        all_of: Schema = None,
+        one_of: tuple = None,
+        pattern: str = None,
+        properties: dict = None,
+        enum: tuple = None,
+        required: tuple = None,
+        default=None,
+        deprecated: bool = False,
+        title: str = "",
+        description: str = ""
     ):
-        """
-        :param schema_type:
-        :param description:
-        :param properties:
-        :param type_format:
-        :param deprecated:
-        :param nullable:
-        :param pattern:
-        :param read_only:
-        :param write_only:
-        :param maximum:
-        :param minimum:
-        :param min_items:
-        :param max_items:
-        :param unique_items:
-        :param items:
-        :param required:
-        """
-        self.description = description
-        self.required = required
-        self.items = items
-        self.unique_items = unique_items
-        self.max_items = max_items
-        self.min_items = min_items
-        self.minimum = minimum
-        self.maximum = maximum
-        self.write_only = write_only
-        self.read_only = read_only
-        self.pattern = pattern
-        self.nullable = nullable
-        self.type_format = type_format
-        self.type = schema_type
-        self.properties = properties
+        self.type = type
         self.format = format
+        self.nullable = nullable
+        self.read_only = read_only
+        self.write_only = write_only
+        self.maximum = maximum
+        self.minimum = minimum
+        self.items = items
+        self.min_items = min_items
+        self.max_items = max_items
+        self.unique_items = unique_items
+        self.all_of = all_of
+        self.one_of = one_of
+        self.pattern = pattern
+        self.properties = properties
+        self.enum = enum
+        self.required = required
+        self.default = default
         self.deprecated = deprecated
+        self.title = title
+        self.description = description

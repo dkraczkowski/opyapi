@@ -1,7 +1,7 @@
 from opyapi import api
 from opyapi.schema import Schema
-from opyapi.schema import Type
 from opyapi import Application
+from opyapi.schema import types
 
 
 @api.Server(url="asa", description="Server description that replaces doc")
@@ -18,15 +18,21 @@ class PetShopApplication:
     pass
 
 
-@api.Resource(title="Pet schema", schema=Schema(Type.OBJECT, required=["name", "age"]))
+@api.Resource(title="Pets favourite")
+class Favourite:
+    name: Schema(types.String)
+
+
+@api.Resource(title="Pet schema", required=["name", "age"])
 class Pet:
     """
     Description for the Pet resource
     """
 
-    id: Schema(Type.STRING, read_only=True)
-    name: Schema(Type.STRING)
-    age: Schema(Type.INTEGER) = None
+    id: Schema(types.String, read_only=True)
+    name: Schema(types.String)
+    age: Schema(types.Integer) = None
+    favourites: Schema(types.Object, all_of=)
 
 
 @api.Operation(

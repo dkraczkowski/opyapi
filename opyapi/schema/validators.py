@@ -2,16 +2,9 @@ from __future__ import annotations
 from .exceptions import ValidationError
 
 
-class _ValidatorMetaClass(type):
-    def __new__(cls, name, bases, attrs):
-        instance = type.__new__(cls, name, bases, attrs)
+class Validator:
 
-        return instance
-
-
-class Validator(metaclass=_ValidatorMetaClass):
-
-    name = None
+    name: str = None
 
     def validate(self, value):
         raise NotImplementedError
@@ -23,27 +16,70 @@ class Validator(metaclass=_ValidatorMetaClass):
         except ValidationError:
             return False
 
+    def error(self, value):
+        return ValidationError(
+            f"Could not validate passed value `{value}` as a valid {self.name}."
+        )
 
-class Type(Validator):
 
-    accept_types = ()
-    reject_types = ()
+class Range(Validator):
 
-    def __init__(self, accept_types: tuple = None, reject_types: tuple = None):
-        if accept_types:
-            self.accept_types = accept_types
-        if reject_types:
-            self.reject_types = reject_types
+    minimum = None
+    maximum = None
+    name: str = "range"
+
+    def __init__(self, minimum=None, maximum=None):
+        if minimum:
+            self.minimum = minimum
+
+        if maximum:
+            self.maximum = maximum
 
     def validate(self, value):
-        if not isinstance(value, self.accept_types) or isinstance(value, self.reject_types):
-            raise ValidationError()
-        return value
+        if self.minimum and value < self.minimum:
+            raise ValidationError(
+                f"Passed value `{value}` is lower than set minimum value `{self.minimum}`."
+            )
+
+        if self.maximum and value > self.maximum:
+            raise ValidationError(
+                f"Passed value `{value}` is greater than set maximum value `{self.maximum}`."
+            )
+
+        return True
 
 
-class Integer(Type):
+class Capacity(Validator):
 
-    accept_types = int
-    reject_types = bool
-    name = "integer"
+    minimum_items: int = None
+    maximum_items: int = None
+    name: str = "capacity"
 
+    def __init__(self, minimum=None, maximum=None):
+        if minimum:
+            self.minimum_items = minimum
+
+        if maximum:
+            self.maximum_items = maximum
+
+    def validate(self, value):
+        length = len(value)
+
+        if self.minimum_items and length < self.minimum_items:
+            raise ValidationError(
+                f"Passed collection cannot be empty and must contain at least `{self.minimum_items}` items."
+            )
+
+        if self.maximum_items and length < self.maximum_items:
+            raise ValidationError(
+                f"Passed collection cannot contain more than `{self.maximum_items}` items."
+            )
+
+
+class OneOf(Validator):
+
+    def __init__(self, *schemas):
+        pass
+
+    def validate(self, value):
+        pass

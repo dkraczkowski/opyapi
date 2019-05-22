@@ -30,12 +30,10 @@ class Route:
                 return f"({self._part_patterns[attribute]})"
             return f"({_VAR_REGEX})"
 
-        self._pattern = re.compile("^" + re.sub(
-            _ROUTE_REGEX,
-            _parse_var,
-            self.route,
-            re.I | re.M
-        ) + "$", re.I | re.M)
+        self._pattern = re.compile(
+            "^" + re.sub(_ROUTE_REGEX, _parse_var, self.route, re.I | re.M) + "$",
+            re.I | re.M,
+        )
 
     def match(self, uri: str) -> Union[bool, Route]:
         matches = self.pattern.findall(uri)

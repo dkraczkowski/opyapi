@@ -30,4 +30,4 @@ def test_router():
     route = router.match("GET", "/pets/12")
 
     assert route["pet_id"] == "12"
-    assert router.match('get', '/pets')
+    assert router.match("get", "/pets")
