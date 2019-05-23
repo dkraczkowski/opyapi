@@ -1,9 +1,10 @@
 from __future__ import annotations
 from .types import Type
+from .validators import Validator
 import typing
 
 
-class Schema:
+class Schema(Validator):
     type: typing.Type[Type] = None
     format = None
     nullable: bool = False
@@ -71,3 +72,6 @@ class Schema:
         self.deprecated = deprecated
         self.title = title
         self.description = description
+
+    def validate(self, value):
+        pass

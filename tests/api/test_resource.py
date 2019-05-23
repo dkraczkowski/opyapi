@@ -11,5 +11,7 @@ class UserFixture:
 
 
 def test_resource_properties():
-    a = UserFixture
-    b = 1
+    a = UserFixture(name="Test User")
+    b = a.name
+
+    c = 1
