@@ -48,6 +48,9 @@ class Integer(Type, Schema):
         return doc
 
     def validate(self, value):
+        if value is None and self.nullable:
+            return True
+
         super().validate(value)
         if self.multiple_of and value % self.multiple_of != 0:
             raise ValidationError(f"Passed value `{value}` must be multiplication of {self.multiple_of}")

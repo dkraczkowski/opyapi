@@ -47,7 +47,18 @@ def hello_user(name: str):
 
 #### Boolean
 #### String
-#### Integer
+#### Integer `opyapi.schema.types.Integer`
+Validates input as integer value.
+
+**Arguments:**
+ - `minimum` sets minimum accepted value 
+ - `maximum` sets maximum accepted value
+ - `multiple_of` accepts value if it is multiplication of a given number 
+ - `default` assigns default value if none is passed in the request
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+
 #### Number
 #### Array
 #### Object

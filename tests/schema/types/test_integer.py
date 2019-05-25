@@ -71,3 +71,7 @@ def test_pass_range(min, max, value):
 def test_fail_range(min, max, value):
     with pytest.raises(ValidationError):
         Integer(minimum=min, maximum=max).validate(value)
+
+
+def test_nullable():
+    assert Integer(nullable=True).validate(None)
