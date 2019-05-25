@@ -1,11 +1,11 @@
 from __future__ import annotations
 from typing import Union
-from .annotations import OperationMethod
 from copy import copy
 import re
 
 _ROUTE_REGEX = r"\{\s*(?P<var>[a-z_][a-z0-9_-]*)\s*\}"
 _VAR_REGEX = "[^/]+"
+_SUPPORTED_METHODS = ("get", "post", "put", "delete", "patch", "options", "head")
 
 
 class Route:
@@ -64,14 +64,14 @@ class Route:
 class Router:
     def __init__(self):
         self._routes = {}
-        for method in OperationMethod:
-            self._routes[str(method)] = []
+        for method in _SUPPORTED_METHODS:
+            self._routes[method] = []
 
-    def add_route(self, method: Union[str, OperationMethod], route: Route):
+    def add_route(self, method: str, route: Route):
         self._routes[str(method).lower()].append(route)
 
-    def match(self, method: Union[str, OperationMethod], uri: str):
-        for route in self._routes[str(method).lower()]:
+    def match(self, method: str, uri: str):
+        for route in self._routes[method.lower()]:
             if route.match(uri):
                 return route
 

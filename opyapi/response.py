@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .schema import Schema
 
 
 class Response:
@@ -7,11 +8,10 @@ class Response:
     """
 
     def __init__(
-        self, content, code: int = 200, description: str = "", headers: list = None
+        self, code: int = 200, description: str = "", headers: list = None
     ):
         self.headers = headers
         self.description = description
-        self.content = content
         self.code = code
 
 
@@ -22,3 +22,8 @@ class TextResponse(Response):
         self.headers = headers
         self.description = description
         self.code = code
+
+
+class JsonResponse(Response):
+    def __init__(self, schema: Schema, code: int = 200, description: str = "", headers: list = None):
+        pass

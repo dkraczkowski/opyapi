@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from .type import Type
 from ..schema import Schema
+from ..exceptions import ValidationError
+from ..validators import Range
 
 
 class Integer(Type, Schema):
@@ -46,7 +48,11 @@ class Integer(Type, Schema):
         return doc
 
     def validate(self, value):
-        if self.minimum is not None or self.maximum is not None:
-
         super().validate(value)
+        if self.multiple_of and value % self.multiple_of != 0:
+            raise ValidationError(f"Passed value `{value}` must be multiplication of {self.multiple_of}")
 
+        if self.minimum is not None or self.maximum is not None:
+            Range(minimum=self.minimum, maximum=self.maximum).validate(value)
+
+        return True

@@ -17,12 +17,12 @@ class Range(Validator):
             self.maximum = maximum
 
     def validate(self, value):
-        if self.minimum and value < self.minimum:
+        if self.minimum is not None and value < self.minimum:
             raise NotInRangeError(
                 f"Passed value `{value}` is lower than set minimum value `{self.minimum}`."
             )
 
-        if self.maximum and value > self.maximum:
+        if self.maximum is not None and value > self.maximum:
             raise NotInRangeError(
                 f"Passed value `{value}` is greater than set maximum value `{self.maximum}`."
             )
