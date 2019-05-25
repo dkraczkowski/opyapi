@@ -11,6 +11,8 @@ No bloat. Just code.
 
 ```python
 from opyapi import annotations
+from opyapi import TextResponse
+
 
 @annotations.Api(
     title="Example rest application",
@@ -19,9 +21,12 @@ from opyapi import annotations
 class Application:
     pass
 
+
 @annotations.Operation(
     "/users/{name}",
-    method="get"
+    method="get",
+    responses=TextResponse(200),
+    summary="Says hello with username provided in the route"
 )
 def hello_user(name: str):
     return f"Hello {name}"
