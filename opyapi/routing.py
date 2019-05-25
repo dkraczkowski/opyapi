@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Union
-from .api import OperationMethod
+from .annotations import OperationMethod
 from copy import copy
 import re
 

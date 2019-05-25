@@ -1,10 +1,10 @@
-from opyapi import api
+from opyapi import annotations
 from opyapi.schema import Schema
 from opyapi import Application
 from opyapi.schema import types
 
 
-@api.Server(url="asa", description="Server description that replaces doc")
+@annotations.Server(url="asa", description="Server description that replaces doc")
 class DevelopmentServer:
     """
     This doc will be ignored as description is set in decorator
@@ -13,17 +13,17 @@ class DevelopmentServer:
     pass
 
 
-@api.Api(version="1.0.0", title="Pet Shop application", servers=[DevelopmentServer])
+@annotations.Api(version="1.0.0", title="Pet Shop application", servers=[DevelopmentServer])
 class PetShopApplication:
     pass
 
 
-@api.Resource(title="Pets favourite")
+@annotations.Resource(title="Pets favourite")
 class Favourite:
     name: Schema(types.String)
 
 
-@api.Resource(title="Pet schema", required=["name", "age"])
+@annotations.Resource(title="Pet schema", required=["name", "age"])
 class Pet:
     """
     Description for the Pet resource
@@ -35,17 +35,17 @@ class Pet:
     favourites: Schema(types.Object, all_of=)
 
 
-@api.Operation(
-    method=api.OperationMethod.POST,
+@annotations.Operation(
+    method=annotations.OperationMethod.POST,
     route="/pets",
-    request=api.Request(Pet),
-    responses=[api.Response(Pet)],
+    request=annotations.Request(Pet),
+    responses=[annotations.Response(Pet)],
 )
 def create_pet(pet: Pet):
     return pet
 
 
-@api.Operation(route="/pets/{id}", method=api.OperationMethod.GET, responses={})
+@annotations.Operation(route="/pets/{id}", method=annotations.OperationMethod.GET, responses={})
 def get_pet(id: int):
     """
     Description for the pet operation

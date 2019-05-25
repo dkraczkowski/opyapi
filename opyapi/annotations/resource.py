@@ -49,7 +49,7 @@ class Resource(Annotation):
 
         return type(
             target.__name__ + "Resource",
-            (target, Resource),
+            (target, Resource, Type),
             {
                 "schema": schema,
                 "_data": {},
