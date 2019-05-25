@@ -43,11 +43,9 @@ def hello_user(name: str):
 
 ## Schema
 
-### Supported types
-
-#### Boolean
-#### String
-#### Integer `opyapi.schema.types.Integer`
+### Boolean
+### String
+### Integer `opyapi.schema.types.Integer`
 Validates input as integer value.
 
 **Arguments:**
@@ -59,9 +57,9 @@ Validates input as integer value.
  - `description` sets open api description for the field
  - `deprecated` deprecates field in the schema
 
-#### Number
-#### Array
-#### Object
+### Number
+### Array
+### Object
 
 
 ## Input handling
