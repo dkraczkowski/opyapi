@@ -28,6 +28,6 @@ class Type(Validator, Schema, ABC):
                 f"Could not validate passed value `{value}` as a valid {self.type}."
             )
         for validator in self.extra_validators:
-            validator.validate(value)
+            value = validator.validate(value)
 
         return value
