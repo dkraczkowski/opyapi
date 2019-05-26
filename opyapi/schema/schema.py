@@ -16,9 +16,7 @@ class Schema(ABC):
         pass
 
     def _get_base_doc(self):
-        doc = {
-            "type": self.type,
-        }
+        doc = {"type": self.type}
 
         if self.nullable is not None:
             doc["nullable"] = self.nullable

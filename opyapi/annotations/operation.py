@@ -6,6 +6,7 @@ class Operation(Annotation):
     """
     .. _Open Api Operation: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operationObject
     """
+
     def __init__(
         self,
         route: str,

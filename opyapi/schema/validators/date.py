@@ -1,14 +1,11 @@
 from __future__ import annotations
-import datetime
+from datetime import date
 import re
 
 from .validator import Validator
 from ..exceptions import ValidationError
 
-_ISO_8601_DATE_REGEX = re.compile(
-    r"^(\d{4})-?([0-1]\d)-?([0-3]\d)$",
-    re.I
-)
+_ISO_8601_DATE_REGEX = re.compile(r"^(\d{4})-?([0-1]\d)-?([0-3]\d)$", re.I)
 
 
 class Date(Validator):
@@ -18,11 +15,7 @@ class Date(Validator):
 
     def validate(self, value):
         if not _ISO_8601_DATE_REGEX.match(value):
-            raise ValidationError(f"Passed value {value} is not valid ISO 8601 compatible date.")
+            raise ValidationError(f"Passed value {value} is not valid ISO 8601 date.")
         parts = _ISO_8601_DATE_REGEX.findall(value)[0]
 
-        return datetime.datetime(
-            year=int(parts[0]),
-            month=int(parts[1]),
-            day=int(parts[2])
-        )
+        return date(year=int(parts[0]), month=int(parts[1]), day=int(parts[2]))

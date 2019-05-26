@@ -19,7 +19,7 @@ class Integer(Type):
         description: str = "",
         nullable: bool = False,
         default=None,
-        deprecated: bool = False
+        deprecated: bool = False,
     ):
         super().__init__()
         self.minimum = minimum
@@ -31,7 +31,9 @@ class Integer(Type):
         self.deprecated = deprecated
 
         if self.minimum is not None or self.maximum is not None:
-            self.extra_validators.append(Range(minimum=self.minimum, maximum=self.maximum))
+            self.extra_validators.append(
+                Range(minimum=self.minimum, maximum=self.maximum)
+            )
 
         if self.multiple_of is not None:
             self.extra_validators.append(MultipleOf(self.multiple_of))
@@ -49,4 +51,3 @@ class Integer(Type):
             doc["multipleOf"] = self.multiple_of
 
         return doc
-

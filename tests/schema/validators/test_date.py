@@ -8,10 +8,7 @@ def test_can_instantiate():
     assert validator.validate("2016-09-18")
 
 
-@pytest.mark.parametrize("value", (
-    "2016-09-18",
-    "20160918",
-))
+@pytest.mark.parametrize("value", ("2016-09-18", "20160918"))
 def test_valid_values(value: str):
     validator = Date()
     date = validator.validate(value)

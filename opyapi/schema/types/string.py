@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 from .type import Type
-from ..validators import DateTime
-from ..validators import Date
-from ..validators import Length
+from ..validators import DateTime, Date, Time, Length, Uri
 
 
 class String(Type):
@@ -17,7 +15,7 @@ class String(Type):
         format: str = None,
         min_length: int = None,
         max_length: int = None,
-        pattern: str = None
+        pattern: str = None,
     ):
         super().__init__()
 
@@ -38,6 +36,10 @@ class String(Type):
             self.extra_validators.append(DateTime())
         if self.format == "date":
             self.extra_validators.append(Date())
+        if self.format == "time":
+            self.extra_validators.append(Time())
+        if self.format == "uri":
+            self.extra_validators.append(Uri())
 
     def to_doc(self):
         doc = self._get_base_doc()
@@ -51,7 +53,7 @@ class String(Type):
         if self.pattern is not None:
             doc["pattern"] = self.pattern
 
-        if self["format"] is not None:
+        if self.format is not None:
             doc["format"] = self.format
 
         return doc

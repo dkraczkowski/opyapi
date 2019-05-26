@@ -23,7 +23,9 @@ class Type(Validator, Schema, ABC):
         if value is None and self.nullable:
             return self.default
 
-        if not isinstance(value, self.accept_types) or isinstance(value, self.reject_types):
+        if not isinstance(value, self.accept_types) or isinstance(
+            value, self.reject_types
+        ):
             raise ValidationError(
                 f"Could not validate passed value `{value}` as a valid {self.type}."
             )

@@ -4,7 +4,6 @@ from ..exceptions import ValidationError
 
 
 class Validator(ABC):
-
     @abstractmethod
     def validate(self, value):
         raise NotImplementedError

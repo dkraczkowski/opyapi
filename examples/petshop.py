@@ -4,7 +4,9 @@ from opyapi import Application
 from opyapi.schema import types
 
 
-@annotations.Server(url="localhost:8080", description="Server description that replaces doc")
+@annotations.Server(
+    url="localhost:8080", description="Server description that replaces doc"
+)
 class DevelopmentServer:
     """
     This doc will be ignored as description is set in decorator
@@ -13,7 +15,9 @@ class DevelopmentServer:
     pass
 
 
-@annotations.Api(version="1.0.0", title="Pet Shop application", servers=[DevelopmentServer])
+@annotations.Api(
+    version="1.0.0", title="Pet Shop application", servers=[DevelopmentServer]
+)
 class PetShopApplication:
     pass
 
@@ -32,7 +36,7 @@ class Pet:
     id: Schema(types.String, read_only=True)
     name: Schema(types.String)
     age: Schema(types.Integer) = None
-    favourites: Schema(types.Object, all_of=)
+    favourites: Schema(types.Object)
 
 
 @annotations.Operation(
@@ -45,7 +49,9 @@ def create_pet(pet: Pet):
     return pet
 
 
-@annotations.Operation(route="/pets/{id}", method=annotations.OperationMethod.GET, responses={})
+@annotations.Operation(
+    route="/pets/{id}", method=annotations.OperationMethod.GET, responses={}
+)
 def get_pet(id: int):
     """
     Description for the pet operation

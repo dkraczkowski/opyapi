@@ -5,7 +5,6 @@ from ..exceptions import InvalidLengthError
 
 
 class Length(Validator):
-
     def __init__(self, minimum=None, maximum=None):
         self.minimum = minimum
         self.maximum = maximum
