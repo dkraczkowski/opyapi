@@ -21,7 +21,7 @@ class DateTime(Validator):
         if ":" in time:
             time = time.split(":")
         else:
-            time = map(''.join, zip(*[iter(time)] * 2))
+            time = list(map(''.join, zip(*[iter(time)] * 2)))
         return datetime.datetime(
             year=int(parts[0]),
             month=int(parts[1]),
