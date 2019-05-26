@@ -10,7 +10,7 @@ class MultipleOf(Validator):
         self.multiple_of = multiple_of
 
     def validate(self, value):
-        if value % self.multiple_of != 0:
+        if not value % self.multiple_of == 0:
             raise ValidationError(f"Passed value `{value}` must be multiplication of {self.multiple_of}.")
 
         return value

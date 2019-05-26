@@ -6,5 +6,7 @@ from .type import Type
 class Boolean(Type):
 
     accept_types = bool
-    name = "boolean"
     type = "boolean"
+
+    def to_doc(self):
+        return self._get_base_doc()

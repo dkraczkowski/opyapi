@@ -6,5 +6,9 @@ class ValidationError(ValueError):
         return False
 
 
-class NotInRangeError(ValidationError):
+class InvalidRangeError(ValidationError):
+    pass
+
+
+class InvalidLengthError(ValidationError):
     pass
