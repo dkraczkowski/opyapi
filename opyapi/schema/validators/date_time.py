@@ -12,6 +12,9 @@ _ISO_8601_DATETIME_REGEX = re.compile(
 
 
 class DateTime(Validator):
+    """
+    :: _ISO Standard: http://tools.ietf.org/html/rfc3339#section-5.6
+    """
 
     def validate(self, value):
         if not _ISO_8601_DATETIME_REGEX.match(value):

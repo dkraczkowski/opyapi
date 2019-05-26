@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from .type import Type
 from ..validators import DateTime
+from ..validators import Date
+from ..validators import Length
 
 
 class String(Type):
@@ -18,23 +20,24 @@ class String(Type):
         pattern: str = None
     ):
         super().__init__()
+
         if format is not None:
             self.format = format
+            self._apply_format()
 
-        if min_length is not None:
+        if min_length is not None or max_length is not None:
             self.min_length = min_length
-
-        if max_length is not None:
             self.max_length = max_length
+            self.extra_validators.append(Length(minimum=min_length, maximum=max_length))
 
         if pattern is not None:
             self.pattern = pattern
 
-        self._apply_format()
-
     def _apply_format(self):
         if self.format == "datetime":
             self.extra_validators.append(DateTime())
+        if self.format == "date":
+            self.extra_validators.append(Date())
 
     def to_doc(self):
         doc = self._get_base_doc()
