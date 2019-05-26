@@ -7,3 +7,5 @@ from .date import Date
 from .time import Time
 from .uri import Uri
 from .url import Url
+from .email import Email
+from .uuid import Uuid

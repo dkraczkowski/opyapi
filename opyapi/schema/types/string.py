@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .type import Type
-from ..validators import DateTime, Date, Time, Length, Uri
+from ..validators import DateTime, Date, Time, Length, Uri, Url, Email, Uuid
 
 
 class String(Type):
@@ -40,6 +40,12 @@ class String(Type):
             self.extra_validators.append(Time())
         if self.format == "uri":
             self.extra_validators.append(Uri())
+        if self.format == "url":
+            self.extra_validators.append(Url())
+        if self.format == "email":
+            self.extra_validators.append(Email())
+        if self.format == "uuid":
+            self.extra_validators.append(Uuid())
 
     def to_doc(self):
         doc = self._get_base_doc()
