@@ -1,10 +1,11 @@
 from __future__ import annotations
-
+from abc import ABC
 from ..validators import Validator
 from ..exceptions import ValidationError
+from ..schema import Schema
 
 
-class Type(Validator):
+class Type(Validator, Schema, ABC):
     """
     Reflects available types in the open annotations specification
 
@@ -15,9 +16,18 @@ class Type(Validator):
     reject_types = ()
     type: str = None
 
+    def __init__(self):
+        self.extra_validators = []
+
     def validate(self, value):
+        if value is None and self.nullable:
+            return self.default
+
         if not isinstance(value, self.accept_types) or isinstance(value, self.reject_types):
             raise ValidationError(
                 f"Could not validate passed value `{value}` as a valid {self.type}."
             )
+        for validator in self.extra_validators:
+            validator.validate(value)
+
         return value

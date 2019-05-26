@@ -1,12 +1,11 @@
 from __future__ import annotations
 import numbers
 
-from .type import Type
+from .integer import Integer
 
 
-class Number(Type):
+class Number(Integer):
 
     accept_types = numbers.Number
     reject_types = bool
-    name = "number"
     type = "number"

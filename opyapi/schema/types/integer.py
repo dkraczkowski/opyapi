@@ -1,19 +1,15 @@
 from __future__ import annotations
 
 from .type import Type
-from ..schema import Schema
-from ..exceptions import ValidationError
 from ..validators import Range
+from ..validators import MultipleOf
 
 
-class Integer(Type, Schema):
+class Integer(Type):
 
     type = "integer"
     accept_types = int
     reject_types = bool
-    minimum: int = None
-    maximum: int = None
-    multiple_of: int = None
 
     def __init__(
         self,
@@ -25,6 +21,7 @@ class Integer(Type, Schema):
         default=None,
         deprecated: bool = False
     ):
+        super().__init__()
         self.minimum = minimum
         self.maximum = maximum
         self.multiple_of = multiple_of
@@ -32,6 +29,12 @@ class Integer(Type, Schema):
         self.nullable = nullable
         self.default = default
         self.deprecated = deprecated
+
+        if self.minimum is not None or self.maximum is not None:
+            self.extra_validators.append(Range(minimum=self.minimum, maximum=self.maximum))
+
+        if self.multiple_of is not None:
+            self.extra_validators.append(MultipleOf(self.multiple_of))
 
     def to_doc(self):
         doc = self._get_base_doc()
@@ -47,15 +50,3 @@ class Integer(Type, Schema):
 
         return doc
 
-    def validate(self, value):
-        if value is None and self.nullable:
-            return True
-
-        super().validate(value)
-        if self.multiple_of and value % self.multiple_of != 0:
-            raise ValidationError(f"Passed value `{value}` must be multiplication of {self.multiple_of}")
-
-        if self.minimum is not None or self.maximum is not None:
-            Range(minimum=self.minimum, maximum=self.maximum).validate(value)
-
-        return True

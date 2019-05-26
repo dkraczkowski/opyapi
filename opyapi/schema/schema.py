@@ -26,7 +26,7 @@ class Schema(ABC):
         if self.default is not None:
             doc["default"] = self.default
 
-        if self.deprecated is not None:
+        if self.deprecated:
             doc["deprecated"] = self.deprecated
 
         if self.description is not None:

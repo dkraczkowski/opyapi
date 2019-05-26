@@ -29,3 +29,5 @@ class Capacity(Validator):
             raise ValidationError(
                 f"Passed collection cannot contain more than `{self.maximum_items}` items."
             )
+
+        return value

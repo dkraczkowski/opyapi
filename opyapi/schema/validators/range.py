@@ -6,15 +6,9 @@ from ..exceptions import NotInRangeError
 
 class Range(Validator):
 
-    minimum = None
-    maximum = None
-
     def __init__(self, minimum=None, maximum=None):
-        if minimum:
-            self.minimum = minimum
-
-        if maximum:
-            self.maximum = maximum
+        self.minimum = minimum
+        self.maximum = maximum
 
     def validate(self, value):
         if self.minimum is not None and value < self.minimum:
@@ -27,4 +21,4 @@ class Range(Validator):
                 f"Passed value `{value}` is greater than set maximum value `{self.maximum}`."
             )
 
-        return True
+        return value

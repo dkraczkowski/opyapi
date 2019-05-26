@@ -46,7 +46,7 @@ def hello_user(name: str):
 ### Boolean
 ### String
 ### Integer `opyapi.schema.types.Integer`
-Validates input as integer value.
+Represent integer numbers.
 
 **Arguments:**
  - `minimum` sets minimum accepted value 
@@ -57,7 +57,22 @@ Validates input as integer value.
  - `description` sets open api description for the field
  - `deprecated` deprecates field in the schema
 
-### Number
+### Number `opyapi.schema.types.Number`
+Represents any valid number, like: 
+ - integer
+ - rational number
+ - float
+ - double
+
+**Arguments:**
+ - `minimum` sets minimum accepted value 
+ - `maximum` sets maximum accepted value
+ - `multiple_of` accepts value if it is multiplication of a given number 
+ - `default` assigns default value if none is passed in the request
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+ 
 ### Array
 ### Object
 

@@ -1,35 +1,35 @@
 import pytest
-from opyapi.schema.types import Integer
+from opyapi.schema.types import Number
 from opyapi.schema.exceptions import ValidationError
 
 
 def test_can_instantiate():
-    test_integer = Integer()
-    assert test_integer.validate(10)
+    schema = Number()
+    assert schema.validate(10.12)
 
 
 @pytest.mark.parametrize("value", (
     None,
     "",
     "10",
-    12.3,
     False,
-    True,
-    2j+10
+    True
 ))
 def test_validation_fail(value):
     with pytest.raises(ValidationError):
-        Integer().validate(value)
+        Number().validate(value)
 
 
 @pytest.mark.parametrize("value", (
     0,
     1,
     -1,
-    200000000000000
+    2.13,
+    200000,
+    2j+10
 ))
 def test_validation_pass(value):
-    assert Integer().validate(value) is value
+    assert Number().validate(value) is value
 
 
 @pytest.mark.parametrize("multiplication,value", (
@@ -39,7 +39,7 @@ def test_validation_pass(value):
     (-2, -8),
 ))
 def test_pass_multiple_of(multiplication, value):
-    assert Integer(multiple_of=multiplication).validate(value) is value
+    assert Number(multiple_of=multiplication).validate(value) is value
 
 
 @pytest.mark.parametrize("multiplication,value", (
@@ -49,17 +49,18 @@ def test_pass_multiple_of(multiplication, value):
 ))
 def test_fail_multiple_of(multiplication, value):
     with pytest.raises(ValidationError):
-        Integer(multiple_of=multiplication).validate(value)
+        Number(multiple_of=multiplication).validate(value)
 
 
 @pytest.mark.parametrize("min,max,value", (
-    (2, 10, 8),
+    (2, 8.1, 8.01),
     (3, None, 6),
-    (None, 21, 21),
+    (None, 21.1, 21),
     (-2, 0, -1),
+    (2, 4, 3),
 ))
 def test_pass_range(min, max, value):
-    assert Integer(minimum=min, maximum=max).validate(value) is value
+    assert Number(minimum=min, maximum=max).validate(value) is value
 
 
 @pytest.mark.parametrize("min,max,value", (
@@ -70,19 +71,19 @@ def test_pass_range(min, max, value):
 ))
 def test_fail_range(min, max, value):
     with pytest.raises(ValidationError):
-        Integer(minimum=min, maximum=max).validate(value)
+        Number(minimum=min, maximum=max).validate(value)
 
 
 def test_nullable():
-    assert Integer(nullable=True).validate(None) is None
+    assert Number(nullable=True).validate(None) is None
 
 
 def test_doc_generation():
-    schema = Integer(description="Test description", minimum=10)
+    schema = Number(description="Test description", minimum=10)
 
     assert schema.to_doc() == {
         "description": "Test description",
         "minimum": 10,
         "nullable": False,
-        "type": "integer",
+        "type": "number",
     }

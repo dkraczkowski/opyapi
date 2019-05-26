@@ -4,7 +4,7 @@ from opyapi import Application
 from opyapi.schema import types
 
 
-@annotations.Server(url="asa", description="Server description that replaces doc")
+@annotations.Server(url="localhost:8080", description="Server description that replaces doc")
 class DevelopmentServer:
     """
     This doc will be ignored as description is set in decorator
