@@ -52,7 +52,7 @@ class Object(Type):
             doc["required"] = self.required
 
         doc["properties"] = {}
-        for name, prop in self.properties:
-            doc["properties"][name] = prop.to_doc()
+        for key, prop in self.properties.items():
+            doc["properties"][key] = prop.to_doc()
 
         return doc

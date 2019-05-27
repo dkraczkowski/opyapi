@@ -7,7 +7,7 @@ from ..exceptions import ValidationError
 class Enum(Type):
 
     accept_types = (str, int, float)
-    type = "boolean"
+    type = "string"
 
     def __init__(
         self,
@@ -37,4 +37,7 @@ class Enum(Type):
         return value
 
     def to_doc(self):
-        return self._get_base_doc()
+        doc = self._get_base_doc()
+        doc["enum"] = self.allowed_values
+
+        return doc

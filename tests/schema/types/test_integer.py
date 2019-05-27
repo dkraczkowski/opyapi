@@ -55,6 +55,5 @@ def test_doc_generation():
     assert schema.to_doc() == {
         "description": "Test description",
         "minimum": 10,
-        "nullable": False,
         "type": "integer",
     }

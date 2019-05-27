@@ -16,7 +16,7 @@ class Schema:
     def _get_base_doc(self):
         doc = {"type": self.type}
 
-        if self.nullable is not None:
+        if self.nullable:
             doc["nullable"] = self.nullable
 
         if self.default is not None:
@@ -25,13 +25,13 @@ class Schema:
         if self.deprecated:
             doc["deprecated"] = self.deprecated
 
-        if self.description is not None:
+        if self.description:
             doc["description"] = self.description
 
-        if self.read_only is not None:
+        if self.read_only:
             doc["read_only"] = self.read_only
 
-        if self.write_only is not None:
+        if self.write_only:
             doc["write_only"] = self.write_only
 
         return doc

@@ -27,3 +27,16 @@ def test_valid_pet(pet: dict):
 def test_invalid_pet(pet: dict):
     with pytest.raises(ValidationError):
         Pet(**pet)
+
+
+def test_to_doc():
+    doc = Pet.schema.to_doc()
+    assert doc == {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+            "type": {"type": "string", "enum": ("dog", "cat", "parrot")},
+            "name": {"type": "string", "minLength": 2, "maxLength": 10},
+            "weight": {"type": "integer", "minimum": 1, "maximum": 100}
+        }
+    }

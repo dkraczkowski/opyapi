@@ -30,18 +30,16 @@ class String(Type):
         self.deprecated = deprecated
         self.read_only = read_only
         self.write_only = write_only
+        self.min_length = min_length
+        self.max_length = max_length
+        self.pattern = pattern
+        self.format = string_format
 
         if string_format is not None:
-            self.format = string_format
             self._apply_format()
 
         if min_length is not None or max_length is not None:
-            self.min_length = min_length
-            self.max_length = max_length
             self.extra_validators.append(Length(minimum=min_length, maximum=max_length))
-
-        if pattern is not None:
-            self.pattern = pattern
 
     def _apply_format(self):
         if self.format == "datetime":
