@@ -8,5 +8,19 @@ class Boolean(Type):
     accept_types = bool
     type = "boolean"
 
-    def to_doc(self):
-        return self._get_base_doc()
+    def __init__(
+        self,
+        description: str = "",
+        nullable: bool = False,
+        default=None,
+        deprecated: bool = False,
+        read_only: bool = None,
+        write_only: bool = None
+    ):
+        super().__init__()
+        self.write_only = write_only
+        self.read_only = read_only
+        self.deprecated = deprecated
+        self.default = default
+        self.nullable = nullable
+        self.description = description

@@ -43,8 +43,17 @@ def hello_user(name: str):
 
 ## Schema
 
-### Boolean
-### String
+### Boolean `opyapi.schema.types.Boolean`
+Represent boolean values.
+
+**Arguments:**
+ - `default` assigns default value if none is passed in the request
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
+ 
 ### Integer `opyapi.schema.types.Integer`
 Represent integer numbers.
 
@@ -56,6 +65,8 @@ Represent integer numbers.
  - `nullable` accepts nulls, nones as value
  - `description` sets open api description for the field
  - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
 
 ### Number `opyapi.schema.types.Number`
 Represents any valid number, like: 
@@ -72,7 +83,35 @@ Represents any valid number, like:
  - `nullable` accepts nulls, nones as value
  - `description` sets open api description for the field
  - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
  
+### String `opyapi.schema.types.String`
+Represent string values.
+
+**Arguments:**
+ - `string_format` sets format for the input, for more details check format list
+ - `min_length` sets minimum accepted length
+ - `max_length` sets maximum accepted length
+ - `pattern` sets regex pattern that value must match, when pattern set format should be omitted
+ - `default` assigns default value if none is passed in the request
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
+
+#### Available formats
+
+##### `datetime`
+Stands for valid ISO 8601 date time 
+
+##### `email`
+Stands for valid email address
+ 
+ | Please note that this format can
+
+### Enum 
 ### Array
 ### Object
 
