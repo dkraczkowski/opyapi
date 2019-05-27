@@ -1,7 +1,23 @@
 from __future__ import annotations
 
 from .type import Type
-from ..validators import DateTime, Date, Time, Length, Uri, Url, Email, Uuid, Hostname
+from ..validators import DateTime, Date, Time, Length, Uri, Url, Email, Uuid, Hostname, Ipv6, Ipv4, Truthy, Falsy
+from enum import Enum
+
+
+class Format(Enum):
+    DATETIME = DateTime()
+    DATE = Date()
+    TIME = Time()
+    URI = Uri()
+    URL = Url()
+    EMAIL = Email()
+    UUID = Uuid()
+    HOSTNAME = Hostname()
+    IPV4 = Ipv4()
+    IPV6 = Ipv6()
+    TRUTHY = Truthy()
+    FALSY = Falsy()
 
 
 class String(Type):
@@ -12,7 +28,7 @@ class String(Type):
 
     def __init__(
         self,
-        string_format: str = None,
+        string_format: Format = None,
         min_length: int = None,
         max_length: int = None,
         pattern: str = None,
@@ -35,29 +51,11 @@ class String(Type):
         self.pattern = pattern
         self.format = string_format
 
-        if string_format is not None:
-            self._apply_format()
-
         if min_length is not None or max_length is not None:
             self.extra_validators.append(Length(minimum=min_length, maximum=max_length))
 
-    def _apply_format(self):
-        if self.format == "datetime":
-            self.extra_validators.append(DateTime())
-        if self.format == "date":
-            self.extra_validators.append(Date())
-        if self.format == "time":
-            self.extra_validators.append(Time())
-        if self.format == "uri":
-            self.extra_validators.append(Uri())
-        if self.format == "url":
-            self.extra_validators.append(Url())
-        if self.format == "email":
-            self.extra_validators.append(Email())
-        if self.format == "uuid":
-            self.extra_validators.append(Uuid())
-        if self.format == "hostname":
-            self.extra_validators.append(Hostname())
+        if string_format is not None and string_format in Format:
+            self.extra_validators.append(string_format.value)
 
     def to_doc(self):
         doc = self._get_base_doc()

@@ -25,6 +25,7 @@ class Api(Annotation):
         self.title = title
         self.servers = servers
         self.version = version
+        self.description = description
 
     def __call__(self, target):
         """

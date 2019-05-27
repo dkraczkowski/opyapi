@@ -1,6 +1,5 @@
 from __future__ import annotations
 from . import Annotation
-from ..schema import Schema
 from ..schema.types import Type
 from ..schema import Object
 

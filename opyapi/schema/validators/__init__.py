@@ -11,3 +11,7 @@ from .email import Email
 from .uuid import Uuid
 from .hostname import Hostname
 from .capacity import Capacity
+from .ipv4 import Ipv4
+from .ipv6 import Ipv6
+from .truthy import Truthy
+from .falsy import Falsy
