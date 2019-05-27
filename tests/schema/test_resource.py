@@ -27,4 +27,3 @@ def test_valid_pet(pet: dict):
 def test_invalid_pet(pet: dict):
     with pytest.raises(ValidationError):
         Pet(**pet)
-
