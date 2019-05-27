@@ -7,7 +7,7 @@ def test_can_instantiate():
     test_instance = Object({
         "test_property": String(),
     })
-    assert isinstance(test_instance, Object)
+    assert test_instance.validate({}) == {}
 
 
 def test_validate_required_properties():
@@ -23,4 +23,3 @@ def test_validate_required_properties():
         test_instance.validate({
             "age": 10,
         })
-

@@ -10,3 +10,4 @@ from .url import Url
 from .email import Email
 from .uuid import Uuid
 from .hostname import Hostname
+from .capacity import Capacity

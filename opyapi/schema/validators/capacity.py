@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from ..exceptions import InvalidLengthError
 
 
 class Capacity(Validator):
@@ -20,13 +20,13 @@ class Capacity(Validator):
     def validate(self, value):
         length = len(value)
 
-        if self.minimum_items and length < self.minimum_items:
-            raise ValidationError(
+        if self.minimum_items is not None and length < self.minimum_items:
+            raise InvalidLengthError(
                 f"Passed collection cannot be empty and must contain at least `{self.minimum_items}` items."
             )
 
-        if self.maximum_items and length < self.maximum_items:
-            raise ValidationError(
+        if self.maximum_items is not None and length > self.maximum_items:
+            raise InvalidLengthError(
                 f"Passed collection cannot contain more than `{self.maximum_items}` items."
             )
 
