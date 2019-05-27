@@ -2,6 +2,7 @@ from __future__ import annotations
 from . import Annotation
 from ..schema import Schema
 from ..schema.types import Type
+from ..schema import Object
 
 
 class Resource(Annotation):
@@ -26,16 +27,17 @@ class Resource(Annotation):
         }
 
     def __call__(self, target):
-        schema = Schema(
+        schema = Object(
+            properties=target.__dict__["__annotations__"],
             title=self._attributes["title"],
             description=self._attributes["description"],
             required=self._attributes["required"],
             deprecated=self._attributes["deprecated"],
-            properties=target.__dict__["__annotations__"],
         )
         target._data = {}
 
         def _init(instance, **kwargs):
+            kwargs = schema.validate(kwargs)
             super(target, instance).__setattr__("_data", {})
             for key, value in kwargs.items():
                 instance.__setattr__(key, value)

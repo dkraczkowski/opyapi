@@ -12,15 +12,27 @@ class String(Type):
 
     def __init__(
         self,
-        format: str = None,
+        string_format: str = None,
         min_length: int = None,
         max_length: int = None,
         pattern: str = None,
+        description: str = "",
+        nullable: bool = False,
+        default=None,
+        deprecated: bool = False,
+        read_only: bool = None,
+        write_only: bool = None
     ):
         super().__init__()
+        self.description = description
+        self.nullable = nullable
+        self.default = default
+        self.deprecated = deprecated
+        self.read_only = read_only
+        self.write_only = write_only
 
-        if format is not None:
-            self.format = format
+        if string_format is not None:
+            self.format = string_format
             self._apply_format()
 
         if min_length is not None or max_length is not None:

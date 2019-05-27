@@ -1,8 +1,7 @@
 from __future__ import annotations
-from abc import ABC, abstractmethod
 
 
-class Schema(ABC):
+class Schema:
     type: str = None
     default = None
     read_only: bool = False
@@ -11,9 +10,8 @@ class Schema(ABC):
     deprecated: bool = False
     description: str = ""
 
-    @abstractmethod
     def to_doc(self):
-        pass
+        raise NotImplemented()
 
     def _get_base_doc(self):
         doc = {"type": self.type}
@@ -29,5 +27,11 @@ class Schema(ABC):
 
         if self.description is not None:
             doc["description"] = self.description
+
+        if self.read_only is not None:
+            doc["read_only"] = self.read_only
+
+        if self.write_only is not None:
+            doc["write_only"] = self.write_only
 
         return doc

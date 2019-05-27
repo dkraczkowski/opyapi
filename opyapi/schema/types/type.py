@@ -1,11 +1,10 @@
 from __future__ import annotations
-from abc import ABC
 from ..validators import Validator
 from ..exceptions import ValidationError
 from ..schema import Schema
 
 
-class Type(Validator, Schema, ABC):
+class Type(Validator, Schema):
     """
     Reflects available types in the open annotations specification
 

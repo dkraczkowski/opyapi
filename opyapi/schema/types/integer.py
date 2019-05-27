@@ -20,6 +20,8 @@ class Integer(Type):
         nullable: bool = False,
         default=None,
         deprecated: bool = False,
+        read_only: bool = None,
+        write_only: bool = None
     ):
         super().__init__()
         self.minimum = minimum
@@ -29,6 +31,8 @@ class Integer(Type):
         self.nullable = nullable
         self.default = default
         self.deprecated = deprecated
+        self.read_only = read_only
+        self.write_only = write_only
 
         if self.minimum is not None or self.maximum is not None:
             self.extra_validators.append(
