@@ -46,6 +46,12 @@ def hello_user(name: str):
 ### Boolean `opyapi.schema.types.Boolean`
 Represent boolean values.
 
+```python
+from opyapi.schema.types import Boolean
+
+is_hungry = Boolean()
+```
+
 **Arguments:**
  - `default` assigns default value if none is passed in the request
  - `nullable` accepts nulls, nones as value
@@ -56,6 +62,12 @@ Represent boolean values.
  
 ### Integer `opyapi.schema.types.Integer`
 Represent integer numbers.
+
+```python
+from opyapi.schema.types import Integer
+
+age = Integer()
+``` 
 
 **Arguments:**
  - `minimum` sets minimum accepted value 
@@ -74,6 +86,12 @@ Represents any valid number, like:
  - rational number
  - float
  - double
+ 
+```python
+from opyapi.schema.types import Number
+
+money = Number()
+``` 
 
 **Arguments:**
  - `minimum` sets minimum accepted value 
@@ -88,6 +106,12 @@ Represents any valid number, like:
  
 ### String `opyapi.schema.types.String`
 Represent string values.
+
+```python
+from opyapi.schema.types import String
+
+email = String(string_format="email")
+```
 
 **Arguments:**
  - `string_format` sets format for the input, for more details check format list
@@ -129,8 +153,43 @@ Makes string type to accept only valid url, must starts with valid scheme (http/
 ##### `uuid`
 Makes string type to accept only valid uuid.
 
-### Enum 
+### Enum `opyapi.schema.types.Boolean`
+Defines enumerated value.
+
+```python
+from opyapi.schema.types import Enum
+colors = Enum("red", "green", "blue", "yellow")
+```
+
+**Arguments:**
+ - `default` assigns default value if none is passed in the request
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
+
+
 ### Array
+Defines iterable/collection item in the schema.
+ 
+```python
+from opyapi.schema.types import Array, Enum
+
+colors = Array(items=Enum("red", "green", "blue", "yellow"))
+``` 
+
+**Arguments:**
+ - `items` sets valid schema for each item contained in the array
+ - `min_length` sets minimum valid length for the array
+ - `max_length` sets maximum valid length for the array
+ - `nullable` accepts nulls, nones as value
+ - `description` sets open api description for the field
+ - `deprecated` deprecates field in the schema
+ - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
+ - `write_only` sets property to write only mode (property is hidden from all GET requests)
+
+
 ### Object
 
 
