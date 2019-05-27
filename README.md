@@ -104,12 +104,30 @@ Represent string values.
 #### Available formats
 
 ##### `datetime`
-Stands for valid ISO 8601 date time 
+Makes string type to accept only ISO8601 valid date time format.
+
+##### `date`
+Makes string type to accept only ISO8601 valid date format.
+
+##### `time`
+Makes string type to accept only ISO8601 valid time format.
 
 ##### `email`
-Stands for valid email address
+Makes string type to accept only valid email address.
  
- | Please note that this format can
+ | Please note: that this format can be mean to some special cases of email addresses.
+
+##### `hostname`
+Makes string type to accept only valid email hostname.
+
+##### `uri`
+Makes string type to accept only valid uri.
+
+##### `url`
+Makes string type to accept only valid url, must starts with valid scheme (http/https/ftp).
+
+##### `uuid`
+Makes string type to accept only valid uuid.
 
 ### Enum 
 ### Array
