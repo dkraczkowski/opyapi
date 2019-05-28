@@ -1,5 +1,5 @@
-from opyapi.annotations import *
-from opyapi.schema.types import *
+from opyapi.annotations import Api, Resource, Operation
+from opyapi.schema.types import Enum, String, Integer, Number, Reference
 from opyapi.schema.types.string import Format
 
 
