@@ -6,3 +6,4 @@ from .boolean import Boolean
 from .object import Object
 from .array import Array
 from .enum import Enum
+from .reference import Reference
