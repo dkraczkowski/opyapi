@@ -1,5 +1,30 @@
 from .request_body import MultipartDataParser
 
+
+class QueryString:
+    pass
+
+
+class RequestBody:
+    pass
+
+
+class JsonBody(RequestBody):
+    pass
+
+
+class MultipartBody(RequestBody):
+    pass
+
+
+class PostBody(RequestBody):
+    pass
+
+
+class Headers:
+    pass
+
+
 class Request:
     def __init__(self, environ):
         self._environ = environ
@@ -48,7 +73,7 @@ class Request:
 
         body_size = int(self._environ.get('CONTENT_LENGTH', 0))
         raw_body = self._environ['wsgi.input'].read(body_size)
-        parser = MultipartDataParser(raw_body, "aaa")
+        parser = MultipartDataParser(raw_body, "__X_PAW_BOUNDARY__")
         parser.parse()
 
         self._parsed_body = raw_body
