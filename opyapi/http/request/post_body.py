@@ -5,7 +5,7 @@ class PostBody(RequestBody):
     pass
 
 
-class Field:
+class FormField:
     def __init__(self, name: str, content: str):
         self.name = name
         self.content = content

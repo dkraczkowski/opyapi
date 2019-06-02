@@ -3,7 +3,7 @@ from enum import Enum
 from io import BytesIO
 from tempfile import TemporaryFile
 
-from .post_body import PostBody, Field
+from .post_body import PostBody, FormField
 
 
 class ParserState(Enum):
@@ -30,14 +30,14 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
             tmp_file.write(_content_data)
             tmp_file.seek(0)
 
-            field = FileField(
+            field = FormFileField(
                 _content_disposition[1]["name"],
                 tmp_file,
                 _content_type[14:].lower(),
                 _content_disposition[1]["filename"]
             )
         else:
-            field = Field(_content_disposition[1]["name"], _content_data.decode(encoding))
+            field = FormField(_content_disposition[1]["name"], _content_data.decode(encoding))
 
         body.append(field)
 
@@ -95,7 +95,7 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
     return body
 
 
-class FileField(Field):
+class FormFileField(FormField):
     def __init__(self, name: str, content: TemporaryFile, mimetype: str, filename: str):
         self.name = name
         self.content = content
@@ -146,9 +146,9 @@ class MultipartBody(PostBody):
     def __init__(self):
         self._parts = {}
 
-    def append(self, field: Field):
-        if not isinstance(field, Field):
-            raise ValueError(f"{MultipartBody.__name__}.append accepts only instance of {Field.__name__}")
+    def append(self, field: FormField):
+        if not isinstance(field, FormField):
+            raise ValueError(f"{MultipartBody.__name__}.append accepts only instance of {FormField.__name__}")
         self._parts[field.name] = field
 
     def __getitem__(self, name):

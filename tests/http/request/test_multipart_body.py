@@ -1,6 +1,7 @@
 from io import BytesIO
 from opyapi.http import Request
 from opyapi.http.request import MultipartBody
+from opyapi.http.request import FormFileField
 
 test_wsgi_body = {
     "CONTENT_TYPE": "multipart/form-data; charset=utf-8; boundary=__TEST_BOUNDARY__",
@@ -36,3 +37,8 @@ def test_multipart_body():
     assert isinstance(body, MultipartBody)
     assert str(body["id"]) == "51b8a72aaaf909e303000034"
     assert str(body["test_1"]) == "only string value"
+    assert str(body["test_2"]) == "1232"
+    assert isinstance(body["file_a"], FormFileField)
+    assert isinstance(body["file_b"], FormFileField)
+    assert body["file_a"].filename == "orange.gif"
+    assert body["file_b"].filename == "yellow.gif"
