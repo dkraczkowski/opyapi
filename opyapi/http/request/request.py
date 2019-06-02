@@ -21,6 +21,7 @@ class Request:
 
     @property
     def body(self):
+        self._environ["wsgi.input"].seek(0)
         return self._environ["wsgi.input"]
 
     @property
@@ -54,7 +55,7 @@ class Request:
         body = ""
         if content_type[0] == "multipart/form-data":
 
-            body = MultipartBody.from_wsgi_input(
+            body = MultipartBody.from_wsgi(
                 self._environ["wsgi.input"],
                 content_type[1]["boundary"],
                 content_type[1]["charset"]

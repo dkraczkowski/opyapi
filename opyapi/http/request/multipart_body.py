@@ -1,6 +1,8 @@
-from enum import Enum
 from cgi import parse_header
+from enum import Enum
+from io import BytesIO
 from tempfile import TemporaryFile
+
 from .post_body import PostBody, Field
 
 
@@ -35,7 +37,7 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
                 _content_disposition[1]["filename"]
             )
         else:
-            field = Field(_content_disposition[1]["name"], _content_data)
+            field = Field(_content_disposition[1]["name"], _content_data.decode(encoding))
 
         body.append(field)
 
@@ -156,5 +158,5 @@ class MultipartBody(PostBody):
         return name in self._parts
 
     @staticmethod
-    def from_wsgi_input(input, boundary: str, encoding: str = None):
-        return _parse_multipart_data(input.read(), boundary, encoding)
+    def from_wsgi(wsgi_input: BytesIO, boundary: str, encoding: str = None):
+        return _parse_multipart_data(wsgi_input.read(), boundary, encoding)
