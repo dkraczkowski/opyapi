@@ -1,8 +1,6 @@
 from enum import Enum
-import re
 from cgi import parse_header
-
-_CONTENT_TYPE_REGEX = re.compile(r"([^\;]+)(\;([\w\s]+)\=([^\;]+))*", re.I)
+from tempfile import TemporaryFile
 
 
 class ParserState(Enum):
@@ -14,77 +12,84 @@ class ParserState(Enum):
     END = 5
 
 
-class MultipartDataParser:
-    def __init__(self, binary_string, boundary: str):
-        self._data = binary_string
-        self._boundary = boundary
+def parse_multipart_data(data, boundary: str, encoding: str = None):
+    state = ParserState.PART_BOUNDARY
+    prev_byte = None
+    cursor = 0
+    boundary_length = len(boundary)
+    string_buffer = ""
+    body = MultipartBody()
 
-    def parse(self):
-        state = ParserState.PART_BOUNDARY
-        prev_byte = None
-        string_buffer = ""
-        content_disposition = ""
-        content_type = None
-        content_cursor = 0
-        cursor = 0
-        parts = []
+    def _append_content_to_body(_content_disposition: str, _content_type: str, _content_data):
+        _content_disposition = parse_header(_content_disposition[20:])
+        if "filename" in _content_disposition[1]:
+            tmp_file = TemporaryFile()
+            tmp_file.write(_content_data)
+            tmp_file.seek(0)
 
-        for code in self._data:
-            line_break = code == 0x0a and prev_byte == 0x0d
-            new_line_char = code == 0x0a or code == 0x0d
+            field = FileField(
+                _content_disposition[1]["name"],
+                tmp_file,
+                _content_type[14:].lower(),
+                _content_disposition[1]["filename"]
+            )
+        else:
+            field = Field(_content_disposition[1]["name"], _content_data)
 
-            if not new_line_char:
-                string_buffer = string_buffer + chr(code)
+        body.append(field)
 
-            if state is ParserState.PART_BOUNDARY and line_break:
-                if string_buffer == "--" + self._boundary:
-                    string_buffer = ""
-                    state = ParserState.CONTENT_DISPOSITION
-                else:
-                    raise IOError("Could not parse request body, body is malformed or incorrect boundary was passed.")
+    content_disposition = ""
+    content_type = None
+    content_cursor = 0
 
-            elif state is ParserState.CONTENT_DISPOSITION and line_break:
-                content_disposition = string_buffer
+    for code in data:
+        line_break = code == 0x0a and prev_byte == 0x0d
+        new_line_char = code == 0x0a or code == 0x0d
+
+        if not new_line_char:
+            string_buffer = string_buffer + chr(code)
+
+        if state is ParserState.PART_BOUNDARY and line_break:
+            if string_buffer == "--" + boundary:
                 string_buffer = ""
-                state = ParserState.CONTENT_TYPE
-                if self._data[cursor + 1:cursor + 13].decode().lower() != "content-type":
-                    state = ParserState.CONTENT_HEADER
-            elif state is ParserState.CONTENT_TYPE and line_break:
-                content_type = string_buffer
+                state = ParserState.CONTENT_DISPOSITION
+            else:
+                raise IOError("Could not parse request body, body is malformed or incorrect boundary was passed.")
+
+        elif state is ParserState.CONTENT_DISPOSITION and line_break:
+            content_disposition = string_buffer
+            string_buffer = ""
+            state = ParserState.CONTENT_TYPE
+            if data[cursor + 1:cursor + 13].decode(encoding).lower() != "content-type":
                 state = ParserState.CONTENT_HEADER
+        elif state is ParserState.CONTENT_TYPE and line_break:
+            content_type = string_buffer
+            state = ParserState.CONTENT_HEADER
+            string_buffer = ""
+        elif state is ParserState.CONTENT_HEADER and line_break:
+            string_buffer = ""
+            state = ParserState.CONTENT_DATA
+            content_cursor = cursor
+        if state is ParserState.CONTENT_DATA:
+            if line_break and string_buffer == "--" + boundary:
+                content_data = data[content_cursor + 1: cursor - (boundary_length + 5)]
+                _append_content_to_body(content_disposition, content_type, content_data)
+                content_type = None
+                state = ParserState.CONTENT_DISPOSITION
+
+            if line_break and string_buffer == "--" + boundary + "--":
+                content_data = data[content_cursor + 1: cursor - (boundary_length + 7)]
+                _append_content_to_body(content_disposition, content_type, content_data)
+                content_type = None
+                state = ParserState.END
+
+            if line_break:
                 string_buffer = ""
-            elif state is ParserState.CONTENT_HEADER and line_break:
-                string_buffer = ""
-                state = ParserState.CONTENT_DATA
-                content_cursor = cursor
-            if state is ParserState.CONTENT_DATA:
-                if line_break and string_buffer == "--" + self._boundary:
-                    content_data = self._data[content_cursor + 1: cursor - (len(self._boundary) + 5)]
-                    parts.append({
-                        "content_disposition": ContentType(content_disposition),
-                        "content_type": content_type,
-                        "body": content_data,
-                    })
-                    content_type = None
-                    state = ParserState.CONTENT_DISPOSITION
 
-                if line_break and string_buffer == "--" + self._boundary + "--":
-                    content_data = self._data[content_cursor + 1: cursor - (len(self._boundary) + 7)]
-                    parts.append({
-                        "content_disposition": ContentType(content_disposition),
-                        "content_type": content_type,
-                        "body": content_data,
-                    })
-                    content_type = None
-                    state = ParserState.END
+        prev_byte = code
+        cursor += 1
 
-                if line_break:
-                    string_buffer = ""
-
-            prev_byte = code
-            cursor += 1
-
-        return parts
+    return body
 
 
 class QueryString:
@@ -99,8 +104,88 @@ class JsonBody(RequestBody):
     pass
 
 
+class Field:
+    def __init__(self, name: str, content: str):
+        self.name = name
+        self.content = content
+
+    def __int__(self):
+        return int(self.content)
+
+    def __str__(self):
+        return str(self.content)
+
+    def __float__(self):
+        return float(self.content)
+
+    def __bool__(self):
+        return bool(self.content)
+
+    def __len__(self):
+        return len(self.content)
+
+
+class FileField(Field):
+    def __init__(self, name: str, content: TemporaryFile, mimetype: str, filename: str):
+        self.name = name
+        self.content = content
+        self.mimetype = mimetype
+        self.filename = filename
+        self._str = None
+
+    def read(self):
+        return self.content.read()
+
+    def seek(self, offset: int):
+        return self.content.seek(offset)
+
+    def close(self):
+        return self.content.close()
+
+    def save(self, path: str):
+        if self.content.closed:
+            raise ValueError(f"Cannot save to file {path} of closed stream.")
+        file = open(path, "wb")
+        self.seek(0)
+        file.write(self.read())
+        file.close()
+
+        return file
+
+    def __float__(self):
+        raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to float")
+
+    def __int__(self):
+        raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
+
+    def __len__(self):
+        return len(self.content)
+
+    def __bool__(self):
+        return len(self) > 0
+
+    def __str__(self):
+
+        if not self._str:
+            self._str = self.read().decode()
+
+        return self._str
+
+
 class MultipartBody(RequestBody):
-    pass
+    def __init__(self):
+        self._parts = {}
+
+    def append(self, field: Field):
+        if not isinstance(field, Field):
+            raise ValueError(f"{MultipartBody.__name__}.append accepts only instance of {Field.__name__}")
+        self._parts[field.name] = field
+
+    def __getitem__(self, name):
+        return self._parts[name]
+
+    def __contains__(self, name):
+        return name in self._parts
 
 
 class PostBody(RequestBody):
@@ -109,27 +194,6 @@ class PostBody(RequestBody):
 
 class Headers:
     pass
-
-
-class MimeHeader:
-    def __init__(self, string: str):
-        self._raw = string
-        info = parse_header(string[20:])
-        self.content_type
-        if self._raw:
-            self._parse()
-
-    def _parse(self):
-        parse_header()
-        match = _CONTENT_TYPE_REGEX.fullmatch(self._raw)
-        a = 1
-
-    @property
-    def type(self):
-        pass
-
-    def __str__(self):
-        return self._raw
 
 
 class Request:
@@ -179,9 +243,15 @@ class Request:
     def _read_body(self):
 
         body_size = int(self._environ.get('CONTENT_LENGTH', 0))
-        raw_body = self._environ['wsgi.input'].read(body_size)
-        parser = MultipartDataParser(raw_body, "__X_PAW_BOUNDARY__")
-        parser.parse()
+        content_type = parse_header(self._environ.get('CONTENT_TYPE'))
 
-        self._parsed_body = raw_body
+        body = ""
+        if content_type[0] == "multipart/form-data":
+            body = parse_multipart_data(
+                self._environ["wsgi.input"].read(body_size),
+                content_type[1]["boundary"],
+                content_type[1]["charset"]
+            )
+
+        self._parsed_body = body
 
