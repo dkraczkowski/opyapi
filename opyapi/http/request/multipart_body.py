@@ -3,7 +3,7 @@ from enum import Enum
 from io import BytesIO
 from tempfile import TemporaryFile
 
-from .post_body import PostBody, FormField
+from .form_body import FormBody, FormField
 
 
 class ParserState(Enum):
@@ -96,24 +96,23 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
 
 
 class FormFileField(FormField):
-    def __init__(self, name: str, content: TemporaryFile, mimetype: str, filename: str):
-        self.name = name
-        self.content = content
+    def __init__(self, name: str, value: TemporaryFile, mimetype: str, filename: str):
+        super().__init__(name, value)
         self.mimetype = mimetype
         self.filename = filename
         self._str = None
 
     def read(self):
-        return self.content.read()
+        return self.value.read()
 
     def seek(self, offset: int):
-        return self.content.seek(offset)
+        return self.value.seek(offset)
 
     def close(self):
-        return self.content.close()
+        return self.value.close()
 
     def save(self, path: str):
-        if self.content.closed:
+        if self.value.closed:
             raise ValueError(f"Cannot save to file {path} of closed stream.")
         file = open(path, "wb")
         self.seek(0)
@@ -129,7 +128,7 @@ class FormFileField(FormField):
         raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
 
     def __len__(self):
-        return len(self.content)
+        return len(self.value)
 
     def __bool__(self):
         return len(self) > 0
@@ -142,21 +141,10 @@ class FormFileField(FormField):
         return self._str
 
 
-class MultipartBody(PostBody):
-    def __init__(self):
-        self._parts = {}
-
-    def append(self, field: FormField):
-        if not isinstance(field, FormField):
-            raise ValueError(f"{MultipartBody.__name__}.append accepts only instance of {FormField.__name__}")
-        self._parts[field.name] = field
-
-    def __getitem__(self, name):
-        return self._parts[name]
-
-    def __contains__(self, name):
-        return name in self._parts
+class MultipartBody(FormBody):
 
     @staticmethod
-    def from_wsgi(wsgi_input: BytesIO, boundary: str, encoding: str = None):
+    def from_wsgi(wsgi_input: BytesIO, encoding: str = None, boundary: str = None):
+        if not boundary:
+            raise ValueError(f"{MultipartBody.__name__}.from_wsgi requires boundary parameter.")
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)

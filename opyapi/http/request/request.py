@@ -1,5 +1,6 @@
 from cgi import parse_header
 from .multipart_body import MultipartBody
+from .form_body import FormBody
 
 
 class Request:
@@ -48,8 +49,6 @@ class Request:
             self._normalized_headers[key[5:].replace("_", "").lower()] = value
 
     def _read_body(self):
-
-        body_size = int(self._environ.get('CONTENT_LENGTH', 0))
         content_type = parse_header(self._environ.get('CONTENT_TYPE'))
 
         body = ""
@@ -57,8 +56,13 @@ class Request:
 
             body = MultipartBody.from_wsgi(
                 self._environ["wsgi.input"],
-                content_type[1]["boundary"],
-                content_type[1]["charset"]
+                content_type[1].get("charset"),
+                content_type[1].get("boundary")
+            )
+        if content_type[0] == "application/x-www-form-urlencoded":
+            body = FormBody.from_wsgi(
+                self._environ["wsgi.input"],
+                content_type[1].get("charset"),
             )
 
         self._parsed_body = body
