@@ -1,4 +1,6 @@
 from cgi import parse_header
+from io import BytesIO
+from .body import RequestBody
 from .multipart_body import MultipartBody
 from .form_body import FormBody
 
@@ -16,17 +18,17 @@ class Request:
     def headers(self):
         return self._headers
 
-    def get_header(self, name: str):
+    def get_header(self, name: str) -> str:
         name = name.replace("-", "").replace("_", "").lower()
         return self._normalized_headers[name] if name in self._normalized_headers else None
 
     @property
-    def body(self):
+    def body(self) -> BytesIO:
         self._environ["wsgi.input"].seek(0)
         return self._environ["wsgi.input"]
 
     @property
-    def method(self):
+    def method(self) -> str:
         return self._environ["REQUEST_METHOD"]
 
     @property
@@ -34,21 +36,21 @@ class Request:
         return self._environ.get("QUERY_STRING", "")
 
     @property
-    def path_info(self):
+    def path_info(self) -> str:
         return self._environ.get("PATH_INFO", "/")
 
     @property
-    def parsed_body(self):
+    def parsed_body(self) -> RequestBody:
         return self._parsed_body
 
-    def _build_headers(self):
+    def _build_headers(self) -> None:
         for key, value in self._environ.items():
             if not key.startswith("HTTP"):
                 continue
             self._headers[key[5:]] = value
             self._normalized_headers[key[5:].replace("_", "").lower()] = value
 
-    def _read_body(self):
+    def _read_body(self) -> None:
         content_type = parse_header(self._environ.get('CONTENT_TYPE'))
 
         body = ""

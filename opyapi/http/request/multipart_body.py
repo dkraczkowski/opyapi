@@ -1,3 +1,4 @@
+from __future__ import annotations
 from cgi import parse_header
 from enum import Enum
 from io import BytesIO
@@ -114,10 +115,9 @@ class FormFileField(FormField):
     def save(self, path: str):
         if self.value.closed:
             raise ValueError(f"Cannot save to file {path} of closed stream.")
-        file = open(path, "wb")
-        self.seek(0)
-        file.write(self.read())
-        file.close()
+        with open(path, "wb") as file:
+            self.seek(0)
+            file.write(self.read())
 
         return file
 
@@ -144,7 +144,6 @@ class FormFileField(FormField):
 class MultipartBody(FormBody):
 
     @staticmethod
-    def from_wsgi(wsgi_input: BytesIO, encoding: str = None, boundary: str = None):
-        if not boundary:
-            raise ValueError(f"{MultipartBody.__name__}.from_wsgi requires boundary parameter.")
+    def from_wsgi(wsgi_input: BytesIO, encoding: str = None, boundary: str = None) -> MultipartBody:
+        assert boundary, "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)

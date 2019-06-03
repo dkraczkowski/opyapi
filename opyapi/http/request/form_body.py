@@ -1,10 +1,7 @@
+from __future__ import annotations
 from io import BytesIO
 
 from .body import RequestBody
-
-
-def parse_qs(query: str) -> dict:
-    
 
 
 class FormField:
@@ -44,7 +41,7 @@ class FormBody(RequestBody):
         return name in self._parts
 
     @classmethod
-    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None):
+    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None) -> FormBody:
         decoded_input = wsgi_input.read().decode(encoding)
         fields = parse_qs(decoded_input)
         instance = cls()
