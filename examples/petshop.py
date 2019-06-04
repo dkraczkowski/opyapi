@@ -1,11 +1,23 @@
-from opyapi.annotations import *
+from opyapi.api import *
 from opyapi.schema.types import *
 from opyapi.schema.types.string import Format
 
 
+@Server(
+    id="development",
+    host="localhost",
+    port=8080
+)
+class DevelopmentServer:
+    pass
+
+
 @Api(
     version="1.0.0",
-    title="Pet shop API"
+    title="Pet shop API",
+    servers=[
+        DevelopmentServer,
+    ]
 )
 class Application:
     pass
@@ -37,4 +49,5 @@ class Pet:
 def get_pet():
     pass
 
-Application.run()
+
+Application.run("development")

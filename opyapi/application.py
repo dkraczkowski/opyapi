@@ -2,20 +2,24 @@ from __future__ import annotations
 from typing import Callable
 import bjoern
 from .http.request import Request
+from .api.annotation import _ANNOTATION_PROPERTY
 
 
 class Application:
     """
     WSGI Application
     """
-    components: list = []
+    servers: list = []
 
     @classmethod
-    def add_component(cls, component):
-        cls.components.append(component)
+    def add_server(cls, server):
+        cls.servers.append(server)
 
-    def __init__(self):
-        pass
+    @classmethod
+    def get_server(cls, id: str):
+        for component in cls.components:
+            annotation = getattr(component, _ANNOTATION_PROPERTY)
+            if isinstance()
 
     def __call__(self, env, start):
         request = Request.from_wsgi(env)
@@ -24,7 +28,7 @@ class Application:
 
     @classmethod
     def run(
-        cls, host: str = "0.0.0.0", port: int = 8080, runner: Callable = bjoern.run
+        cls, server_id: str, runner: Callable = bjoern.run
     ):
         app = cls()
-        runner(app, host, port)
+        # runner(app, host, port)

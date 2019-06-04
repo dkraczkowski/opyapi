@@ -1,6 +1,6 @@
 import pytest
 from opyapi.schema.types import *
-from opyapi.annotations import Resource
+from opyapi.api import Resource
 from opyapi.schema.exceptions import ValidationError
 
 

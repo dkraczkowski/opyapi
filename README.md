@@ -16,11 +16,11 @@ No bloat. Just code.
 ## Quick start
 
 ```python
-from opyapi import annotations
+from opyapi.api import *
 from opyapi import TextResponse
 
 
-@annotations.Api(
+@Api(
     title="Example rest application",
     description="This application greets users",
 )
@@ -28,7 +28,7 @@ class Application:
     pass
 
 
-@annotations.Operation(
+@Operation(
     "/users/{name}",
     method="get",
     responses=TextResponse(200),
