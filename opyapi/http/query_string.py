@@ -1,4 +1,5 @@
 from __future__ import annotations
+from urllib.parse import unquote_plus
 
 __all__ = [
     "QueryString",
@@ -52,6 +53,7 @@ def parse_qs(query: str, encoding: str = None) -> dict:
 
     for item in query.split("&"):
         (name, value) = item.split("=")
+        value = unquote_plus(value)
         if encoding:
             name = name.decode(encoding)
             value = value.decode(encoding)

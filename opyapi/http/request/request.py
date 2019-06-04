@@ -3,6 +3,7 @@ from io import BytesIO
 from .body import RequestBody
 from .multipart_body import MultipartBody
 from .form_body import FormBody
+from .json_body import JsonBody
 
 
 class Request:
@@ -12,7 +13,7 @@ class Request:
         self._normalized_headers = {}
         self._parsed_body = None
         self._build_headers()
-        self._read_body()
+        self._parse_body()
 
     @property
     def headers(self):
@@ -50,19 +51,24 @@ class Request:
             self._headers[key[5:]] = value
             self._normalized_headers[key[5:].replace("_", "").lower()] = value
 
-    def _read_body(self) -> None:
+    def _parse_body(self) -> None:
         content_type = parse_header(self._environ.get('CONTENT_TYPE'))
 
         body = ""
         if content_type[0] == "multipart/form-data":
-
             body = MultipartBody.from_wsgi(
                 self._environ["wsgi.input"],
                 content_type[1].get("charset"),
-                content_type[1].get("boundary")
+                content_type[1].get("boundary"),
             )
-        if content_type[0] == "application/x-www-form-urlencoded":
+        elif content_type[0] == "application/x-www-form-urlencoded":
             body = FormBody.from_wsgi(
+                self._environ["wsgi.input"],
+                content_type[1].get("charset"),
+            )
+
+        elif content_type[0] == "application/json":
+            body = JsonBody.from_wsgi(
                 self._environ["wsgi.input"],
                 content_type[1].get("charset"),
             )

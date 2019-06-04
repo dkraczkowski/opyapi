@@ -2,6 +2,7 @@ from __future__ import annotations
 from io import BytesIO
 
 from .body import RequestBody
+from ..query_string import parse_qs
 
 
 class FormField:
