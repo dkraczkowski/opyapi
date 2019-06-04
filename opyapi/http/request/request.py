@@ -4,73 +4,74 @@ from .body import RequestBody
 from .multipart_body import MultipartBody
 from .form_body import FormBody
 from .json_body import JsonBody
+from ..query_string import QueryString
+from ..headers import Headers
 
 
 class Request:
-    def __init__(self, environ):
-        self._environ = environ
-        self._headers = {}
-        self._normalized_headers = {}
+    def __init__(
+        self,
+        method: str,
+        path_info: str = "/",
+        body: BytesIO = None,
+        query_string: QueryString = None,
+        headers: Headers = None,
+    ):
+        self.headers = headers if headers else Headers()
+        self.body = body if body else BytesIO(b"")
+        self.method = method
+        self.path = path_info
+        self.query_string = query_string
         self._parsed_body = None
-        self._build_headers()
         self._parse_body()
-
-    @property
-    def headers(self):
-        return self._headers
-
-    def get_header(self, name: str) -> str:
-        name = name.replace("-", "").replace("_", "").lower()
-        return self._normalized_headers[name] if name in self._normalized_headers else None
-
-    @property
-    def body(self) -> BytesIO:
-        self._environ["wsgi.input"].seek(0)
-        return self._environ["wsgi.input"]
-
-    @property
-    def method(self) -> str:
-        return self._environ["REQUEST_METHOD"]
-
-    @property
-    def query_string(self):
-        return self._environ.get("QUERY_STRING", "")
-
-    @property
-    def path_info(self) -> str:
-        return self._environ.get("PATH_INFO", "/")
 
     @property
     def parsed_body(self) -> RequestBody:
         return self._parsed_body
 
-    def _build_headers(self) -> None:
-        for key, value in self._environ.items():
-            if not key.startswith("HTTP"):
-                continue
-            self._headers[key[5:]] = value
-            self._normalized_headers[key[5:].replace("_", "").lower()] = value
-
     def _parse_body(self) -> None:
-        content_type = parse_header(self._environ.get('CONTENT_TYPE'))
+        content_type = parse_header(self.headers.get('Content-Type', ""))
 
-        body = ""
         if content_type[0] == "multipart/form-data":
             body = MultipartBody.from_wsgi(
-                self._environ["wsgi.input"],
-                content_type[1].get("charset"),
+                self.body,
+                content_type[1].get("charset", ""),
                 content_type[1].get("boundary"),
             )
         elif content_type[0] == "application/x-www-form-urlencoded":
             body = FormBody.from_wsgi(
-                self._environ["wsgi.input"],
-                content_type[1].get("charset"),
+                self.body,
+                content_type[1].get("charset", ""),
             )
 
         elif content_type[0] == "application/json":
             body = JsonBody.from_wsgi(
-                self._environ["wsgi.input"],
-                content_type[1].get("charset"),
+                self.body,
+                content_type[1].get("charset", ""),
             )
+        else:
+            self.body.seek(0)
+            body = self.body.read().decode(content_type[1].get("charset", ""))
 
         self._parsed_body = body
+
+    @classmethod
+    def from_wsgi(cls, environ):
+        headers = Headers()
+        for key, value in environ.items():
+            if not key.startswith("HTTP"):
+                continue
+            headers.add_header(key, value)
+        headers.add_header("Content-Type", environ.get("CONTENT_TYPE", "text/plain"))
+        return cls(
+            method=environ.get("REQUEST_METHOD", "GET"),
+            path_info=environ.get("PATH_INFO", "/"),
+            body=environ.get("wsgi.input", BytesIO(b"")),
+            query_string=QueryString(environ.get("QUERY_STRING", "")),
+            headers=headers
+        )
+
+
+__all__ = [
+    Request,
+]

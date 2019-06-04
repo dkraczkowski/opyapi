@@ -1,11 +1,6 @@
 from __future__ import annotations
 from urllib.parse import unquote_plus
 
-__all__ = [
-    "QueryString",
-    "parse_qs"
-]
-
 
 def create_dict_for_key(path: str, value) -> dict:
     starting_bracket = path.find("[")
@@ -79,3 +74,9 @@ class QueryString:
 
     def __str__(self):
         return self._str
+
+
+__all__ = [
+    QueryString,
+    parse_qs,
+]

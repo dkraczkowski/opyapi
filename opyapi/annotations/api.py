@@ -1,6 +1,5 @@
 from __future__ import annotations
 from . import Annotation
-from .annotation import _ANNOTATIONS
 
 
 class Api(Annotation):

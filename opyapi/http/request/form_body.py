@@ -28,21 +28,22 @@ class FormField:
 
 class FormBody(RequestBody):
     def __init__(self):
-        self._parts = {}
+        self._body = {}
 
     def append(self, field: FormField):
         if not isinstance(field, FormField):
             raise ValueError(f"{FormBody.__name__}.append accepts only instance of {FormField.__name__}")
-        self._parts[field.name] = field
+        self._body[field.name] = field
 
-    def __getitem__(self, name):
-        return self._parts[name]
+    def get(self, name: str, default=None):
+        if name in self._body:
+            return self._body[name].value
 
-    def __contains__(self, name):
-        return name in self._parts
+        return default
 
     @classmethod
     def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None) -> FormBody:
+        wsgi_input.seek(0)
         decoded_input = wsgi_input.read().decode(encoding)
         fields = parse_qs(decoded_input)
         instance = cls()
@@ -51,3 +52,9 @@ class FormBody(RequestBody):
             instance.append(FormField(name, value))
 
         return instance
+
+
+__all__ = [
+    FormField,
+    FormBody,
+]

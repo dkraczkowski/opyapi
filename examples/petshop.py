@@ -36,3 +36,5 @@ class Pet:
 )
 def get_pet():
     pass
+
+Application.run()

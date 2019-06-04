@@ -11,8 +11,9 @@ test_wsgi_body = {
 
 
 def test_post_body():
-    request = Request(test_wsgi_body)
+    request = Request.from_wsgi(test_wsgi_body)
     body = request.parsed_body
     assert isinstance(body, FormBody)
     assert isinstance(body["test_1"], FormField)
     assert str(body["test_1"]) == "1"
+    assert body.get("test2", "default") == "default"

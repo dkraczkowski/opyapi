@@ -9,6 +9,11 @@ test_wsgi_body = {
 }
 
 
-def test_post_body():
-    request = Request(test_wsgi_body)
+def test_json_body():
+    request = Request.from_wsgi(test_wsgi_body)
     body = request.parsed_body
+
+    assert isinstance(body, JsonBody)
+    assert "test_1" in body
+    assert body["test_1"] == "1"
+    assert body.get("test2", "default") == "default"

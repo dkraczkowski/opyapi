@@ -1,6 +1,7 @@
 from __future__ import annotations
+from ..application import Application
 
-_ANNOTATIONS = "__opyapi_annotations__"
+_ANNOTATION = "__opyapi_annotation__"
 
 
 class Annotation:
@@ -14,7 +15,9 @@ class Annotation:
         :param target: annotated class or method
         :return: returns the target instance with applied annotations annotations
         """
-        if not hasattr(target, _ANNOTATIONS):
-            setattr(target, _ANNOTATIONS, [])
-        target.__dict__[_ANNOTATIONS].append(self)
+        if not hasattr(target, _ANNOTATION):
+            setattr(target, _ANNOTATION, None)
+        target.__dict__[_ANNOTATION] = self
+        Application.add_component(target)
+
         return target

@@ -146,4 +146,11 @@ class MultipartBody(FormBody):
     @staticmethod
     def from_wsgi(wsgi_input: BytesIO, encoding: str = None, boundary: str = None) -> MultipartBody:
         assert boundary, "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
+        wsgi_input.seek(0)
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)
+
+
+__all__ = [
+    MultipartBody,
+    FormFileField
+]

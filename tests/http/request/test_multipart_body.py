@@ -32,7 +32,7 @@ test_wsgi_body = {
 
 
 def test_multipart_body():
-    request = Request(test_wsgi_body)
+    request = Request.from_wsgi(test_wsgi_body)
     body = request.parsed_body
     assert isinstance(body, MultipartBody)
     assert str(body["id"]) == "51b8a72aaaf909e303000034"
@@ -42,3 +42,4 @@ def test_multipart_body():
     assert isinstance(body["file_b"], FormFileField)
     assert body["file_a"].filename == "orange.gif"
     assert body["file_b"].filename == "yellow.gif"
+    assert body.get("test2", "default") == "default"
