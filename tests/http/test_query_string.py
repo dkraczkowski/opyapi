@@ -15,91 +15,51 @@ def test_parse_qs_with_single_value():
 
 def test_parse_qs_with_multiple_values():
     result = parse_qs("test_1=1&test_2=2&test_3=3")
-    assert result == {
-        "test_1": "1",
-        "test_2": "2",
-        "test_3": "3"
-    }
+    assert result == {"test_1": "1", "test_2": "2", "test_3": "3"}
 
 
 def test_parse_qs_with_array_values():
     result = parse_qs("test_1[]=1&test_1[]=2&test_1[]=3")
-    assert result == {
-        "test_1": ["1", "2", "3"]
-    }
+    assert result == {"test_1": ["1", "2", "3"]}
 
 
 def test_parse_qs_with_dict_values():
     result = parse_qs("test_1[a]=1&test_1[b]=2&test_1[c]=3")
-    assert result == {
-        "test_1": {
-            "a": "1",
-            "b": "2",
-            "c": "3"
-        }
-    }
+    assert result == {"test_1": {"a": "1", "b": "2", "c": "3"}}
 
 
 def test_parse_qs_with_nested_arrays():
     result = parse_qs("test_1[][]=1&test_1[][]=2&test_1[][]=3")
-    assert result == {
-        "test_1": [
-            ["1"],
-            ["2"],
-            ["3"]
-        ]
-    }
+    assert result == {"test_1": [["1"], ["2"], ["3"]]}
 
 
 def test_parse_qs_with_indexed_arrays():
     result = parse_qs("test_1[0][]=1&test_1[0][]=2&test_1[0][]=3")
-    assert result == {
-        "test_1": {
-            "0": ["1", "2", "3"],
-        }
-    }
+    assert result == {"test_1": {"0": ["1", "2", "3"]}}
 
 
 def test_parse_qs_with_broken_key():
     result = parse_qs("test_1[[a][b]]=1&test_1[b]=2&test_1[c]=3")
-    assert result == {
-        "test_1[[a][b]]": "1",
-        "test_1": {
-            "b": "2",
-            "c": "3"
-        }
-    }
+    assert result == {"test_1[[a][b]]": "1", "test_1": {"b": "2", "c": "3"}}
 
 
 def test_query_string_instantiation():
     instance = QueryString("test_1[0][]=1&test_1[0][]=2&test_1[0][]=3")
 
     assert "test_1" in instance
-    assert instance["test_1"] == {
-        "0": ["1", "2", "3"]
-    }
+    assert instance["test_1"] == {"0": ["1", "2", "3"]}
 
 
 def test_query_string_with_repeated_key():
     result = parse_qs("test_1=1&test_1=2&test_1=3")
-    assert result == {
-        "test_1": ["1", "2", "3"]
-    }
+    assert result == {"test_1": ["1", "2", "3"]}
 
 
 def test_query_string_with_repeated_key_and_arrays():
     result = parse_qs("test_1=1&test_1[]=2&test_1[]=3")
-    assert result == {
-        "test_1": ["1", "2", "3"]
-    }
+    assert result == {"test_1": ["1", "2", "3"]}
 
 
 def test_query_string_with_repeated_key_and_dict():
     result = parse_qs("test_1=1&test_1[a]=2&test_1[b]=3")
-    assert result == {
-        "test_1": {
-            "": "1",
-            "a": "2",
-            "b": "3"
-        }
-    }
+    assert result == {"test_1": {"": "1", "a": "2", "b": "3"}}

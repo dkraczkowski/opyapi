@@ -22,7 +22,9 @@ def _normalize_headers(headers: dict) -> dict:
 
 class Headers:
     def __init__(self, headers: dict = {}):
-        assert isinstance(headers, dict), "Failed to assert that headers are instance of dict"
+        assert isinstance(
+            headers, dict
+        ), "Failed to assert that headers are instance of dict"
         self._headers = _normalize_headers(headers)
 
     def add_header(self, name: str, value: str) -> None:
@@ -40,6 +42,4 @@ class Headers:
         return _normalize_header_name(name) in self._headers
 
 
-__all__ = [
-    Headers,
-]
+__all__ = [Headers]

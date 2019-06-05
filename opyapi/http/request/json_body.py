@@ -5,7 +5,6 @@ from .body import RequestBody
 
 
 class JsonBody(RequestBody):
-
     def __init__(self, value: dict):
         self._body = value
 
@@ -19,6 +18,4 @@ class JsonBody(RequestBody):
         return instance
 
 
-__all__ = [
-    JsonBody,
-]
+__all__ = [JsonBody]

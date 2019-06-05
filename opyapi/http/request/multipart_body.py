@@ -24,7 +24,9 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
     string_buffer = ""
     body = MultipartBody()
 
-    def _append_content_to_body(_content_disposition: str, _content_type: str, _content_data):
+    def _append_content_to_body(
+        _content_disposition: str, _content_type: str, _content_data
+    ):
         _content_disposition = parse_header(_content_disposition[20:])
         if "filename" in _content_disposition[1]:
             tmp_file = TemporaryFile()
@@ -35,10 +37,12 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
                 _content_disposition[1]["name"],
                 tmp_file,
                 _content_type[14:].lower(),
-                _content_disposition[1]["filename"]
+                _content_disposition[1]["filename"],
             )
         else:
-            field = FormField(_content_disposition[1]["name"], _content_data.decode(encoding))
+            field = FormField(
+                _content_disposition[1]["name"], _content_data.decode(encoding)
+            )
 
         body.append(field)
 
@@ -47,8 +51,8 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
     content_cursor = 0
 
     for code in data:
-        line_break = code == 0x0a and prev_byte == 0x0d
-        new_line_char = code == 0x0a or code == 0x0d
+        line_break = code == 0x0A and prev_byte == 0x0D
+        new_line_char = code == 0x0A or code == 0x0D
 
         if not new_line_char:
             string_buffer = string_buffer + chr(code)
@@ -58,13 +62,18 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
                 string_buffer = ""
                 state = ParserState.CONTENT_DISPOSITION
             else:
-                raise IOError("Could not parse request body, body is malformed or incorrect boundary was passed.")
+                raise IOError(
+                    "Could not parse request body, body is malformed or incorrect boundary was passed."
+                )
 
         elif state is ParserState.CONTENT_DISPOSITION and line_break:
             content_disposition = string_buffer
             string_buffer = ""
             state = ParserState.CONTENT_TYPE
-            if data[cursor + 1:cursor + 13].decode(encoding).lower() != "content-type":
+            if (
+                data[cursor + 1 : cursor + 13].decode(encoding).lower()
+                != "content-type"
+            ):
                 state = ParserState.CONTENT_HEADER
         elif state is ParserState.CONTENT_TYPE and line_break:
             content_type = string_buffer
@@ -76,13 +85,13 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
             content_cursor = cursor
         if state is ParserState.CONTENT_DATA:
             if line_break and string_buffer == "--" + boundary:
-                content_data = data[content_cursor + 1: cursor - (boundary_length + 5)]
+                content_data = data[content_cursor + 1 : cursor - (boundary_length + 5)]
                 _append_content_to_body(content_disposition, content_type, content_data)
                 content_type = None
                 state = ParserState.CONTENT_DISPOSITION
 
             if line_break and string_buffer == "--" + boundary + "--":
-                content_data = data[content_cursor + 1: cursor - (boundary_length + 7)]
+                content_data = data[content_cursor + 1 : cursor - (boundary_length + 7)]
                 _append_content_to_body(content_disposition, content_type, content_data)
                 content_type = None
                 state = ParserState.END
@@ -122,7 +131,9 @@ class FormFileField(FormField):
         return file
 
     def __float__(self):
-        raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to float")
+        raise ValueError(
+            f"Cannot convert instance of {TemporaryFile.__name__} to float"
+        )
 
     def __int__(self):
         raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
@@ -142,15 +153,15 @@ class FormFileField(FormField):
 
 
 class MultipartBody(FormBody):
-
     @staticmethod
-    def from_wsgi(wsgi_input: BytesIO, encoding: str = None, boundary: str = None) -> MultipartBody:
-        assert boundary, "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
+    def from_wsgi(
+        wsgi_input: BytesIO, encoding: str = None, boundary: str = None
+    ) -> MultipartBody:
+        assert boundary, (
+            "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
+        )
         wsgi_input.seek(0)
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)
 
 
-__all__ = [
-    MultipartBody,
-    FormFileField
-]
+__all__ = [MultipartBody, FormFileField]

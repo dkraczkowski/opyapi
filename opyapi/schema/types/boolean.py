@@ -15,7 +15,7 @@ class Boolean(Type):
         default=None,
         deprecated: bool = False,
         read_only: bool = None,
-        write_only: bool = None
+        write_only: bool = None,
     ):
         super().__init__()
         self.write_only = write_only

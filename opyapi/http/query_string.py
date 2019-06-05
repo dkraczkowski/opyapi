@@ -7,7 +7,7 @@ def create_dict_for_key(path: str, value) -> dict:
     if path[-1:] != "]":
         return {path: value}
     parsed_path = [path[:starting_bracket]]
-    parsed_path = parsed_path + path[starting_bracket + 1:-1].split("][")
+    parsed_path = parsed_path + path[starting_bracket + 1 : -1].split("][")
 
     for part in parsed_path:
         if "[" in part or "]" in part:
@@ -102,7 +102,4 @@ class QueryString:
         return self._params.keys()
 
 
-__all__ = [
-    QueryString,
-    parse_qs,
-]
+__all__ = [QueryString, parse_qs]

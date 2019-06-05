@@ -25,6 +25,7 @@ def test_route_match():
 def test_router():
     def test_controller():
         pass
+
     router = Router()
     router.add_route("GET", Route("/pets/{pet_id}"), test_controller)
     router.add_route("get", Route("/pets"), test_controller)
@@ -32,4 +33,3 @@ def test_router():
 
     assert match[0]["pet_id"] == "12"
     assert router.match("get", "/pets")
-

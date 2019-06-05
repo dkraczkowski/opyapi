@@ -11,6 +11,7 @@ class Application:
     """
     WSGI Application
     """
+
     servers: list = []
     operations: list = []
     router: Router
@@ -47,13 +48,13 @@ class Application:
         return str.encode(str(result[1](request)))
 
     @classmethod
-    def run(
-        cls, server_id: str, runner: Callable = bjoern.run
-    ):
+    def run(cls, server_id: str, runner: Callable = bjoern.run):
         server = cls.get_server(server_id)
         if server is None:
-            raise ValueError(f"Server `{server_id}` was not recognized. "
-                             f"Are you sure you have decorated class with @Server(id='{server_id}' ...) decorator")
+            raise ValueError(
+                f"Server `{server_id}` was not recognized. "
+                f"Are you sure you have decorated class with @Server(id='{server_id}' ...) decorator"
+            )
         server_details = server.get_opyapi_annotation()
         app = cls()
         app._boot()

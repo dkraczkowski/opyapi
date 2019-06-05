@@ -6,7 +6,7 @@ from .validator import Validator
 # https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
 _EMAIL_REGEX = re.compile(
     r"^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*",
-    re.I
+    re.I,
 )
 
 
