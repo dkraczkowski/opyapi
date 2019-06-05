@@ -22,11 +22,12 @@ script: pytest -q tests/
 
 jobs:
   include:
+    - python: "3.6"
     - python: "3.7"
       dist: xenial
 
     - stage: linting
-      python: "3.7"
+      python: "3.6"
       install:
         - pip install pre-commit
         - pre-commit install-hooks
