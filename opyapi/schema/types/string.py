@@ -1,7 +1,21 @@
 from __future__ import annotations
 
 from .type import Type
-from ..validators import DateTime, Date, Time, Length, Uri, Url, Email, Uuid, Hostname, Ipv6, Ipv4, Truthy, Falsy
+from ..validators import (
+    DateTime,
+    Date,
+    Time,
+    Length,
+    Uri,
+    Url,
+    Email,
+    Uuid,
+    Hostname,
+    Ipv6,
+    Ipv4,
+    Truthy,
+    Falsy,
+)
 from enum import Enum
 
 
@@ -37,7 +51,7 @@ class String(Type):
         default=None,
         deprecated: bool = False,
         read_only: bool = None,
-        write_only: bool = None
+        write_only: bool = None,
     ):
         super().__init__()
         self.description = description

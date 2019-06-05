@@ -67,7 +67,9 @@ class Router:
         for method in _SUPPORTED_METHODS:
             self._routes[method] = []
 
-    def add_route(self, method: str, route: Union[str, Route], handler: Callable) -> None:
+    def add_route(
+        self, method: str, route: Union[str, Route], handler: Callable
+    ) -> None:
         if isinstance(route, str):
             route = Route(route)
         self._routes[str(method).lower()].append((route, handler))

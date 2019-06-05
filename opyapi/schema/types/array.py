@@ -21,7 +21,7 @@ class Array(Type):
         default=None,
         deprecated: bool = False,
         read_only: bool = None,
-        write_only: bool = None
+        write_only: bool = None,
     ):
         super().__init__()
         self.write_only = write_only
@@ -36,13 +36,17 @@ class Array(Type):
         self.items_type = items
 
         if self.min_length is not None or self.max_length is not None:
-            self.extra_validators.append(Capacity(minimum=self.min_length, maximum=self.max_length))
+            self.extra_validators.append(
+                Capacity(minimum=self.min_length, maximum=self.max_length)
+            )
 
     def validate(self, value):
         super().validate(value)
 
         if self.unique_items and not len(set(value)) == len(value):
-            raise ValidationError("Items in the array should be unique, passed array contains duplicates.")
+            raise ValidationError(
+                "Items in the array should be unique, passed array contains duplicates."
+            )
 
         if isinstance(self.items_type, Type):
             for item in value:

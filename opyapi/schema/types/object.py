@@ -19,7 +19,7 @@ class Object(Type):
         default=None,
         deprecated: bool = False,
         read_only: bool = None,
-        write_only: bool = None
+        write_only: bool = None,
     ):
         super().__init__()
         self.write_only = write_only
@@ -36,7 +36,9 @@ class Object(Type):
         value = super().validate(value)
         for prop in self.required:
             if prop not in value:
-                raise ValidationError(f"Missing required property `{prop}` in passed dataset `{value}`")
+                raise ValidationError(
+                    f"Missing required property `{prop}` in passed dataset `{value}`"
+                )
 
         for key, prop in self.properties.items():
             if key not in value:

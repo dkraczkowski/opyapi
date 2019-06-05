@@ -1,4 +1,4 @@
-# opyapi
+# opyapi [![Build Status](https://travis-ci.org/dkraczkowski/opyapi.svg?branch=master)](https://travis-ci.org/dkraczkowski/opyapi)
 Opyapi is a python framework build around [Open API](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#dataTypes) 
 specification to provide toolset for rapid REST api development.
 

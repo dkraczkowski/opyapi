@@ -11,19 +11,25 @@ class Pet:
     weight: Integer(minimum=1, maximum=100)
 
 
-@pytest.mark.parametrize("pet", (
-    {"type": "dog", "name": "Pimpek", "weight": 20},
-    {"type": "parrot", "name": "Heniek", "weight": 3},
-))
+@pytest.mark.parametrize(
+    "pet",
+    (
+        {"type": "dog", "name": "Pimpek", "weight": 20},
+        {"type": "parrot", "name": "Heniek", "weight": 3},
+    ),
+)
 def test_valid_pet(pet: dict):
     assert Pet(**pet)
 
 
-@pytest.mark.parametrize("pet", (
-    {"type": "dog", "name": "Pimpek", "weight": 3001},
-    {"type": "parrot", "name": "HeniekBylDobroPapugo", "weight": 3},
-    {"type": "catel", "name": "Fluffy", "weight": 3},
-))
+@pytest.mark.parametrize(
+    "pet",
+    (
+        {"type": "dog", "name": "Pimpek", "weight": 3001},
+        {"type": "parrot", "name": "HeniekBylDobroPapugo", "weight": 3},
+        {"type": "catel", "name": "Fluffy", "weight": 3},
+    ),
+)
 def test_invalid_pet(pet: dict):
     with pytest.raises(ValidationError):
         Pet(**pet)
@@ -37,6 +43,6 @@ def test_to_doc():
         "properties": {
             "type": {"type": "string", "enum": ("dog", "cat", "parrot")},
             "name": {"type": "string", "minLength": 2, "maxLength": 10},
-            "weight": {"type": "integer", "minimum": 1, "maximum": 100}
-        }
+            "weight": {"type": "integer", "minimum": 1, "maximum": 100},
+        },
     }

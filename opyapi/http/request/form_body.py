@@ -32,7 +32,9 @@ class FormBody(RequestBody):
 
     def append(self, field: FormField):
         if not isinstance(field, FormField):
-            raise ValueError(f"{FormBody.__name__}.append accepts only instance of {FormField.__name__}")
+            raise ValueError(
+                f"{FormBody.__name__}.append accepts only instance of {FormField.__name__}"
+            )
         self._body[field.name] = field
 
     def get(self, name: str, default=None):
@@ -54,7 +56,4 @@ class FormBody(RequestBody):
         return instance
 
 
-__all__ = [
-    FormField,
-    FormBody,
-]
+__all__ = [FormField, FormBody]

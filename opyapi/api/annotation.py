@@ -22,4 +22,3 @@ class Annotation:
         target.get_opyapi_annotation = get_annotation
 
         return target
-
