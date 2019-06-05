@@ -10,6 +10,9 @@ cache:
     - "$HOME/.cache/pypoetry"
     - "$HOME/.cache/pre-commit"
 
+before_install:
+  - sudo apt-get install -y libev-dev
+
 install:
   - pip install pip==18.1
   - pip install poetry
