@@ -11,7 +11,7 @@ class DevelopmentServer:
     pass
 
 
-@Api(
+@OpenApi(
     version="1.0.0",
     title="Pet shop API",
     servers=[

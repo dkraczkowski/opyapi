@@ -3,7 +3,7 @@ from . import Annotation
 from ..application import Application
 
 
-class Api(Annotation):
+class OpenApi(Annotation):
     """
     Defines entry point for the application also stands as a entry point in open api documentation.
 

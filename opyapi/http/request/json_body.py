@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+from json.decoder import JSONDecodeError
 from io import BytesIO
 from .body import RequestBody
 
@@ -14,7 +15,12 @@ class JsonBody(RequestBody):
         wsgi_input.seek(0)
         decoded_input = wsgi_input.read().decode(encoding)
 
-        instance = cls(json.loads(decoded_input))
+        try:
+            body = json.loads(decoded_input)
+        except JSONDecodeError:
+            body = {}
+
+        instance = cls(body)
 
         return instance
 
