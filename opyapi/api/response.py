@@ -18,4 +18,3 @@ class Response:
 class TextResponse(Response):
     def __init__(self, code: int = 200, description: str = "", headers: list = None):
         super().__init__(None, code, description, headers)
-

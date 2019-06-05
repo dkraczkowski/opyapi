@@ -5,7 +5,7 @@ from .validator import Validator
 
 _HOSTNAME_REGEX = re.compile(
     r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*$",
-    re.I
+    re.I,
 )
 
 

@@ -8,5 +8,7 @@ class Truthy(Validator):
         if isinstance(value, str):
             value = value.lower()
         if value not in (1, "1", True, "ok", "yes", "true"):
-            raise ValidationError(f"Passed value {value} is not valid truthy expression.")
+            raise ValidationError(
+                f"Passed value {value} is not valid truthy expression."
+            )
         return True

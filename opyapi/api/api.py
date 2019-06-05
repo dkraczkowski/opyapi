@@ -29,8 +29,4 @@ class Api(Annotation):
 
     def __call__(self, target):
         super().__call__(target)
-        return type(
-            "Api" + target.__name__,
-            (target, Application),
-            {},
-        )
+        return type("Api" + target.__name__, (target, Application), {})

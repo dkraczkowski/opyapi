@@ -4,7 +4,14 @@ from ..application import Application
 
 
 class Server(Annotation):
-    def __init__(self, id: str, host: str, port: int = 80, description: str = "", variables: list = None):
+    def __init__(
+        self,
+        id: str,
+        host: str,
+        port: int = 80,
+        description: str = "",
+        variables: list = None,
+    ):
         self.id = id
         self.variables = variables
         self.description = description

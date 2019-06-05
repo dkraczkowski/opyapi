@@ -6,7 +6,7 @@ from opyapi.http.request import FormField
 test_wsgi_body = {
     "CONTENT_TYPE": "application/x-www-form-urlencoded; charset=utf-8",
     "REQUEST_METHOD": "POST",
-    "wsgi.input": BytesIO(b'test_1=1&test_2=Test+2&test_3=%7Btest+3%7D'),
+    "wsgi.input": BytesIO(b"test_1=1&test_2=Test+2&test_3=%7Btest+3%7D"),
 }
 
 

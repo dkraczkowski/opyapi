@@ -31,7 +31,7 @@ class Request:
         return self._parsed_body
 
     def _parse_body(self) -> None:
-        content_type = parse_header(self.headers.get('Content-Type', ""))
+        content_type = parse_header(self.headers.get("Content-Type", ""))
 
         if content_type[0] == "multipart/form-data":
             body = MultipartBody.from_wsgi(
@@ -40,16 +40,10 @@ class Request:
                 content_type[1].get("boundary"),
             )
         elif content_type[0] == "application/x-www-form-urlencoded":
-            body = FormBody.from_wsgi(
-                self.body,
-                content_type[1].get("charset", ""),
-            )
+            body = FormBody.from_wsgi(self.body, content_type[1].get("charset", ""))
 
         elif content_type[0] == "application/json":
-            body = JsonBody.from_wsgi(
-                self.body,
-                content_type[1].get("charset", ""),
-            )
+            body = JsonBody.from_wsgi(self.body, content_type[1].get("charset", ""))
         else:
             self.body.seek(0)
             body = self.body.read().decode(content_type[1].get("charset", ""))
@@ -69,10 +63,8 @@ class Request:
             path_info=environ.get("PATH_INFO", "/"),
             body=environ.get("wsgi.input", BytesIO(b"")),
             query_string=QueryString(environ.get("QUERY_STRING", "")),
-            headers=headers
+            headers=headers,
         )
 
 
-__all__ = [
-    Request,
-]
+__all__ = [Request]

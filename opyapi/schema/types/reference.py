@@ -16,4 +16,3 @@ class Reference(Type):
             self.extra_validators.append(reference.schema)
         except AttributeError:
             raise ValueError("Passed reference is not valid reference object")
-

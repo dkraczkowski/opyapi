@@ -13,7 +13,12 @@ class Parameter:
         example=None,
         pattern: str = None,
     ):
-        assert location in ("query", "header", "path", "cookie"), f"Invalid location `{location}` passed for parameter"
+        assert location in (
+            "query",
+            "header",
+            "path",
+            "cookie",
+        ), f"Invalid location `{location}` passed for parameter"
         self.name = name
         self.location = location
         self.description = description

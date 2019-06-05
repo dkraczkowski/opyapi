@@ -17,7 +17,7 @@ class Enum(Type):
         default=None,
         deprecated: bool = False,
         read_only: bool = None,
-        write_only: bool = None
+        write_only: bool = None,
     ):
         super().__init__()
         self.allowed_values = args
@@ -32,7 +32,9 @@ class Enum(Type):
         super().validate(value)
 
         if value not in self.allowed_values:
-            raise ValidationError(f"Passed value `{value}` is not within allowed values `{self.allowed_values}`.")
+            raise ValidationError(
+                f"Passed value `{value}` is not within allowed values `{self.allowed_values}`."
+            )
 
         return value
 
