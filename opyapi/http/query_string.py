@@ -34,14 +34,25 @@ def deep_merge(a: dict, b: dict) -> dict:
                 a[key] = deep_merge(a[key], b[key])
             elif isinstance(a[key], list) and isinstance(b[key], list):
                 a[key] = a[key] + b[key]
+            elif isinstance(b[key], list):
+                a[key] = [a[key]] + b[key]
+            elif isinstance(b[key], dict):
+                a[key] = {"": a[key], **b[key]}
             else:
-                a[key] = b[key]
+                a[key] = [a[key], b[key]]
         else:
             a[key] = b[key]
     return a
 
 
 def parse_qs(query: str, encoding: str = None) -> dict:
+    """
+    Parse query string with json forms support, more available in the following link
+    https://www.w3.org/TR/html-json-forms/
+    :param query:
+    :param encoding:
+    :return:
+    """
     result = {}
     if query == "":
         return result
@@ -52,9 +63,15 @@ def parse_qs(query: str, encoding: str = None) -> dict:
         if encoding:
             name = name.decode(encoding)
             value = value.decode(encoding)
+
         if "[" in name:
             value = create_dict_for_key(name, value)
             result = deep_merge(result, value)
+        elif name in result:
+            if isinstance(result[name], list):
+                result[name].append(value)
+            else:
+                result[name] = [result[name], value]
         else:
             result[name] = value
 
@@ -74,6 +91,15 @@ class QueryString:
 
     def __str__(self):
         return self._str
+
+    def items(self):
+        return self._params.items()
+
+    def values(self):
+        return self._params.values()
+
+    def keys(self):
+        return self._params.keys()
 
 
 __all__ = [

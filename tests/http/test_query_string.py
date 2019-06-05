@@ -78,3 +78,28 @@ def test_query_string_instantiation():
     assert instance["test_1"] == {
         "0": ["1", "2", "3"]
     }
+
+
+def test_query_string_with_repeated_key():
+    result = parse_qs("test_1=1&test_1=2&test_1=3")
+    assert result == {
+        "test_1": ["1", "2", "3"]
+    }
+
+
+def test_query_string_with_repeated_key_and_arrays():
+    result = parse_qs("test_1=1&test_1[]=2&test_1[]=3")
+    assert result == {
+        "test_1": ["1", "2", "3"]
+    }
+
+
+def test_query_string_with_repeated_key_and_dict():
+    result = parse_qs("test_1=1&test_1[a]=2&test_1[b]=3")
+    assert result == {
+        "test_1": {
+            "": "1",
+            "a": "2",
+            "b": "3"
+        }
+    }

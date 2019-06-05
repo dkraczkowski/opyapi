@@ -19,6 +19,7 @@ class Request:
     ):
         self.headers = headers if headers else Headers()
         self.body = body if body else BytesIO(b"")
+        self.route = None
         self.method = method
         self.path = path_info
         self.query_string = query_string

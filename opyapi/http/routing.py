@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Union
+from typing import Union, Callable, Tuple
 from copy import copy
 import re
 
@@ -17,12 +17,12 @@ class Route:
         self._attributes = {}
 
     @property
-    def pattern(self):
+    def pattern(self) -> str:
         if not self._pattern:
             self._parse()
         return self._pattern
 
-    def _parse(self):
+    def _parse(self) -> None:
         def _parse_var(match):
             attribute = match.group(1)
             self._attribute_names.append(attribute)
@@ -35,7 +35,7 @@ class Route:
             re.I | re.M,
         )
 
-    def match(self, uri: str) -> Union[bool, Route]:
+    def match(self, uri: str) -> Union[False, Route]:
         matches = self.pattern.findall(uri)
         if not matches:
             return False
@@ -51,13 +51,13 @@ class Route:
 
         return route
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.route
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return True
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> str:
         return self._attributes[key]
 
 
@@ -67,12 +67,14 @@ class Router:
         for method in _SUPPORTED_METHODS:
             self._routes[method] = []
 
-    def add_route(self, method: str, route: Route):
-        self._routes[str(method).lower()].append(route)
+    def add_route(self, method: str, route: Union[str, Route], handler: Callable) -> None:
+        if isinstance(route, str):
+            route = Route(route)
+        self._routes[str(method).lower()].append((route, handler))
 
-    def match(self, method: str, uri: str):
+    def match(self, method: str, uri: str) -> Union[False, Tuple[Route, Callable]]:
         for route in self._routes[method.lower()]:
-            if route.match(uri):
+            if route[0].match(uri):
                 return route
 
         return False

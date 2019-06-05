@@ -1,6 +1,5 @@
-import pytest
-from opyapi.routing import Route
-from opyapi.routing import Router
+from opyapi.http.routing import Route
+from opyapi.http.routing import Router
 
 
 def test_route_parsing():
@@ -24,10 +23,13 @@ def test_route_match():
 
 
 def test_router():
+    def test_controller():
+        pass
     router = Router()
-    router.add_route("GET", Route("/pets/{pet_id}"))
-    router.add_route("get", Route("/pets"))
-    route = router.match("GET", "/pets/12")
+    router.add_route("GET", Route("/pets/{pet_id}"), test_controller)
+    router.add_route("get", Route("/pets"), test_controller)
+    match = router.match("GET", "/pets/12")
 
-    assert route["pet_id"] == "12"
+    assert match[0]["pet_id"] == "12"
     assert router.match("get", "/pets")
+

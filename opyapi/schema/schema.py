@@ -10,10 +10,10 @@ class Schema:
     deprecated: bool = False
     description: str = ""
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         raise NotImplemented()
 
-    def _get_base_doc(self):
+    def _get_base_doc(self) -> dict:
         doc = {"type": self.type}
 
         if self.nullable:

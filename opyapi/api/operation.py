@@ -1,5 +1,9 @@
 from __future__ import annotations
-from . import Annotation
+from typing import List
+from .annotation import Annotation
+from .response import Response
+from .parameter import Parameter
+from ..application import Application
 
 
 class Operation(Annotation):
@@ -10,11 +14,23 @@ class Operation(Annotation):
     def __init__(
         self,
         route: str,
-        method=None,
+        method: str = "get",
+        responses: List[Response] = [],
         summary: str = "",
         description: str = "",
-        responses=None,
+        parameters: List[Parameter] = None,
         request=None,
         tags: list = None,
     ):
-        print("init")
+        self.route = route
+        self.method = method
+        self.summary = summary
+        self.description = description
+        self.parameters = parameters
+        self.responses = responses
+        self.request = request
+        self.tags = tags
+
+    def __call__(self, target):
+        super().__call__(target)
+        Application.add_operation(target)

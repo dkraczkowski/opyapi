@@ -1,5 +1,4 @@
 from __future__ import annotations
-from ..application import Application
 
 _ANNOTATION_PROPERTY = "__opyapi_annotation__"
 
@@ -16,4 +15,11 @@ class Annotation:
         :return: returns the target instance with applied api api
         """
         setattr(target, _ANNOTATION_PROPERTY, self)
+
+        def get_annotation():
+            return getattr(target, _ANNOTATION_PROPERTY)
+
+        target.get_opyapi_annotation = get_annotation
+
         return target
+

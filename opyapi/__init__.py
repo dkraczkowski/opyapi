@@ -1,4 +1,4 @@
 from .application import Application
-from .routing import Route
-from .routing import Router
+from opyapi.http.routing import Route
+from opyapi.http.routing import Router
 from .response import *
