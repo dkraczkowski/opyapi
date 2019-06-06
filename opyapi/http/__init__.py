@@ -1,5 +1,5 @@
-from .response import Response
-from .request import Request
+from .http_response import HttpResponse
+from .http_request import HttpRequest
 from .headers import Headers
 from .routing import Route
 from .routing import Router

@@ -1,5 +1,5 @@
 from io import BytesIO
-from opyapi.http import Request
+from opyapi.http import HttpRequest
 from opyapi.http.request import MultipartBody
 from opyapi.http.request import FormFileField
 
@@ -32,7 +32,7 @@ test_wsgi_body = {
 
 
 def test_multipart_body():
-    request = Request.from_wsgi(test_wsgi_body)
+    request = HttpRequest.from_wsgi(test_wsgi_body)
     body = request.parsed_body
     assert isinstance(body, MultipartBody)
     assert str(body["id"]) == "51b8a72aaaf909e303000034"
