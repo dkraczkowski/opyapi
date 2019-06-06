@@ -1,4 +1,3 @@
-from __future__ import annotations
 import json
 from json.decoder import JSONDecodeError
 from io import BytesIO
@@ -10,7 +9,7 @@ class JsonBody(RequestBody):
         self._body = value
 
     @classmethod
-    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None) -> JsonBody:
+    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None) -> "JsonBody":
         wsgi_input.seek(0)
         decoded_input = wsgi_input.read().decode(encoding)
 

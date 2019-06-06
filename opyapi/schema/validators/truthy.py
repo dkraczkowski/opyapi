@@ -1,10 +1,9 @@
-from __future__ import annotations
 from ..exceptions import ValidationError
 from .validator import Validator
 
 
 class Truthy(Validator):
-    def validate(self, value):
+    def validate(self, value: str) -> bool:
         if isinstance(value, str):
             value = value.lower()
         if value not in (1, "1", True, "ok", "yes", "true"):

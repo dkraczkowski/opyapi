@@ -1,3 +1,6 @@
+from typing import ValuesView, KeysView, ItemsView
+
+
 def _normalize_header_name(name: str) -> str:
     """
     According to rfc https://www.ietf.org/rfc/rfc2616.txt header names are case insensitive,
@@ -40,6 +43,15 @@ class Headers:
 
     def __contains__(self, name: str) -> bool:
         return _normalize_header_name(name) in self._headers
+
+    def items(self) -> ItemsView:
+        return self._headers.items()
+
+    def values(self) -> ValuesView:
+        return self._headers.values()
+
+    def keys(self) -> KeysView:
+        return self._headers.keys()
 
 
 __all__ = [Headers]

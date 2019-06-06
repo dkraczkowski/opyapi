@@ -1,4 +1,3 @@
-from __future__ import annotations
 from cgi import parse_header
 from enum import Enum
 from io import BytesIO
@@ -130,21 +129,21 @@ class FormFileField(FormField):
 
         return file
 
-    def __float__(self):
+    def __float__(self) -> None:
         raise ValueError(
             f"Cannot convert instance of {TemporaryFile.__name__} to float"
         )
 
-    def __int__(self):
+    def __int__(self) -> None:
         raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.value)
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return len(self) > 0
 
-    def __str__(self):
+    def __str__(self) -> str:
 
         if not self._str:
             self._str = self.read().decode()
@@ -156,7 +155,7 @@ class MultipartBody(FormBody):
     @staticmethod
     def from_wsgi(
         wsgi_input: BytesIO, encoding: str = None, boundary: str = None
-    ) -> MultipartBody:
+    ) -> "MultipartBody":
         assert boundary, (
             "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
         )

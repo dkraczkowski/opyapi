@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .type import Type
 from ..validators import Range
 from ..validators import MultipleOf
@@ -42,7 +40,7 @@ class Integer(Type):
         if self.multiple_of is not None:
             self.extra_validators.append(MultipleOf(self.multiple_of))
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = self._get_base_doc()
 
         if self.minimum is not None:

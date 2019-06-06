@@ -1,5 +1,5 @@
-from __future__ import annotations
 import re
+
 from ..exceptions import ValidationError
 from .validator import Validator
 

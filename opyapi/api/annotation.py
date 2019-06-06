@@ -1,5 +1,6 @@
-from __future__ import annotations
+from typing import Type, TypeVar
 
+T = TypeVar("T")
 _ANNOTATION_PROPERTY = "__opyapi_annotation__"
 
 
@@ -9,7 +10,7 @@ class Annotation:
     responsible for binding open api api into user-land classes.
     """
 
-    def __call__(self, target):
+    def __call__(self, target: Type[T]) -> T:
         """
         :param target: annotated class or method
         :return: returns the target instance with applied api api

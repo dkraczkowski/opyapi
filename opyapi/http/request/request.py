@@ -51,7 +51,7 @@ class Request:
         self._parsed_body = body
 
     @classmethod
-    def from_wsgi(cls, environ):
+    def from_wsgi(cls, environ) -> "Request":
         headers = Headers()
         for key, value in environ.items():
             if not key.startswith("HTTP"):

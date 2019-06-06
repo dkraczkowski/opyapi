@@ -1,10 +1,8 @@
-from __future__ import annotations
 from typing import Callable
 import bjoern
-from .http.request import Request
-from .http.response import Response
+
 from .http import Router
-from .http import Route
+from .http.request import Request
 
 
 class Application:

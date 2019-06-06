@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-
 class Schema:
     type: str = None
     default = None

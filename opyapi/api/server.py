@@ -1,6 +1,8 @@
-from __future__ import annotations
+from typing import TypeVar, Type
 from . import Annotation
 from ..application import Application
+
+T = TypeVar("T")
 
 
 class Server(Annotation):
@@ -24,6 +26,8 @@ class Server(Annotation):
         responsible for binding open api api into user-land classes.
         """
 
-    def __call__(self, target):
+    def __call__(self, target: Type[T]) -> T:
         super().__call__(target)
         Application.add_server(target)
+
+        return target

@@ -1,9 +1,10 @@
-from __future__ import annotations
-from typing import List
+from typing import List, TypeVar, Type
 from .annotation import Annotation
 from .response import Response
 from .parameter import Parameter
 from ..application import Application
+
+T = TypeVar("T")
 
 
 class Operation(Annotation):
@@ -31,6 +32,8 @@ class Operation(Annotation):
         self.request = request
         self.tags = tags
 
-    def __call__(self, target):
+    def __call__(self, target: Type[T]) -> T:
         super().__call__(target)
         Application.add_operation(target)
+
+        return target

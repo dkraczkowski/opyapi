@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+from typing import Union
 from .type import Type
 from ..validators import Capacity
 from ..exceptions import ValidationError
@@ -40,7 +39,7 @@ class Array(Type):
                 Capacity(minimum=self.min_length, maximum=self.max_length)
             )
 
-    def validate(self, value):
+    def validate(self, value: Union[list, tuple]) -> Union[list, tuple]:
         super().validate(value)
 
         if self.unique_items and not len(set(value)) == len(value):
@@ -53,7 +52,7 @@ class Array(Type):
                 self.items_type.validate(item)
         return value
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = self._get_base_doc()
         if self.items_type:
             doc["items"] = self.items_type.to_doc()
@@ -63,3 +62,5 @@ class Array(Type):
             doc["maxItems"] = self.max_length
         if self.unique_items:
             doc["uniqueItems"] = self.unique_items
+
+        return doc
