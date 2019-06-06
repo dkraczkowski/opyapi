@@ -1,5 +1,5 @@
 from opyapi.api import *
-from opyapi.http import Request
+from opyapi.http import HttpRequest
 
 
 @Server(id="development", host="localhost", port=8080)
@@ -13,7 +13,7 @@ class Application:
 
 
 @Operation("/pets/{id}", method="get")
-def get_pet(request: Request):
+def get_pet(request: HttpRequest):
     return f"Get pet with id {request.route['id']}"
 
 

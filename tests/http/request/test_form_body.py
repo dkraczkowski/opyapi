@@ -1,5 +1,5 @@
 from io import BytesIO
-from opyapi.http import Request
+from opyapi.http import HttpRequest
 from opyapi.http.request import FormBody
 from opyapi.http.request import FormField
 
@@ -11,7 +11,7 @@ test_wsgi_body = {
 
 
 def test_post_body():
-    request = Request.from_wsgi(test_wsgi_body)
+    request = HttpRequest.from_wsgi(test_wsgi_body)
     body = request.parsed_body
     assert isinstance(body, FormBody)
     assert isinstance(body["test_1"], FormField)

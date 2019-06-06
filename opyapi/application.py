@@ -2,7 +2,7 @@ from typing import Callable
 import bjoern
 
 from .http import Router
-from .http.request import Request
+from .http import HttpRequest
 
 
 class Application:
@@ -36,7 +36,7 @@ class Application:
                 return server
 
     def __call__(self, env, start):
-        request = Request.from_wsgi(env)
+        request = HttpRequest.from_wsgi(env)
         result = self.router.match(request.method, request.path)
         if not result:
             start("404 Not Found", [("Content-Type", "text/plain")])

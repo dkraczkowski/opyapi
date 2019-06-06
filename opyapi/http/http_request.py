@@ -1,14 +1,14 @@
 from cgi import parse_header
 from io import BytesIO
-from .body import RequestBody
-from .multipart_body import MultipartBody
-from .form_body import FormBody
-from .json_body import JsonBody
-from ..query_string import QueryString
-from ..headers import Headers
+from .request.body import RequestBody
+from .request.multipart_body import MultipartBody
+from .request.form_body import FormBody
+from .request.json_body import JsonBody
+from .query_string import QueryString
+from .headers import Headers
 
 
-class Request:
+class HttpRequest:
     def __init__(
         self,
         method: str,
@@ -51,7 +51,7 @@ class Request:
         self._parsed_body = body
 
     @classmethod
-    def from_wsgi(cls, environ) -> "Request":
+    def from_wsgi(cls, environ) -> "HttpRequest":
         headers = Headers()
         for key, value in environ.items():
             if not key.startswith("HTTP"):
@@ -67,4 +67,4 @@ class Request:
         )
 
 
-__all__ = [Request]
+__all__ = [HttpRequest]
