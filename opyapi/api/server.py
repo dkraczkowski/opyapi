@@ -2,7 +2,7 @@ from typing import TypeVar, Type
 from . import Annotation
 from ..application import Application
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class Server(Annotation):

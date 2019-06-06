@@ -34,7 +34,7 @@ class Route:
             re.I | re.M,
         )
 
-    def match(self, uri: str) -> Union[bool, 'Route']:
+    def match(self, uri: str) -> Union[bool, "Route"]:
         matches = self.pattern.findall(uri)
         if not matches:
             return False

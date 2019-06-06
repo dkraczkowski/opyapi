@@ -5,7 +5,9 @@ from ..exceptions import InvalidRangeError
 
 
 class Range(Validator):
-    def __init__(self, minimum: Union[int, float] = None, maximum: Union[int, float] = None):
+    def __init__(
+        self, minimum: Union[int, float] = None, maximum: Union[int, float] = None
+    ):
         self.minimum = minimum
         self.maximum = maximum
 

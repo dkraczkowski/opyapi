@@ -1,5 +1,3 @@
-
-
 class Schema:
     type: str = None
     default = None
