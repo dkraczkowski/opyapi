@@ -1,7 +1,9 @@
-from __future__ import annotations
+from typing import Type, TypeVar
 from . import Annotation
-from ..schema.types import Type
+from ..schema.types import Type as SchemaType
 from ..schema import Object
+
+T = TypeVar("T")
 
 
 class Resource(Annotation):
@@ -25,7 +27,7 @@ class Resource(Annotation):
             "deprecated": deprecated,
         }
 
-    def __call__(self, target):
+    def __call__(self, target: Type[T]) -> T:
         schema = Object(
             properties=target.__dict__["__annotations__"],
             title=self._attributes["title"],
@@ -60,7 +62,7 @@ class Resource(Annotation):
 
         return type(
             target.__name__ + "Resource",
-            (target, Resource, Type),
+            (target, Resource, SchemaType),
             {
                 "schema": schema,
                 "_data": {},

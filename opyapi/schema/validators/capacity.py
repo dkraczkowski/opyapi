@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Union
 
 from .validator import Validator
 from ..exceptions import InvalidLengthError
@@ -17,7 +17,7 @@ class Capacity(Validator):
         if maximum:
             self.maximum_items = maximum
 
-    def validate(self, value):
+    def validate(self, value: Union[list, tuple]) -> Union[list, tuple]:
         length = len(value)
 
         if self.minimum_items is not None and length < self.minimum_items:

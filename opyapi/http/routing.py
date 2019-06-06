@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import Union, Callable, Tuple
 from copy import copy
 import re
@@ -35,7 +34,7 @@ class Route:
             re.I | re.M,
         )
 
-    def match(self, uri: str) -> Union[False, Route]:
+    def match(self, uri: str) -> Union[bool, 'Route']:
         matches = self.pattern.findall(uri)
         if not matches:
             return False
@@ -68,13 +67,13 @@ class Router:
             self._routes[method] = []
 
     def add_route(
-        self, method: str, route: Union[str, Route], handler: Callable
+        self, method: str, route: Union[str, "Route"], handler: Callable
     ) -> None:
         if isinstance(route, str):
             route = Route(route)
         self._routes[str(method).lower()].append((route, handler))
 
-    def match(self, method: str, uri: str) -> Union[False, Tuple[Route, Callable]]:
+    def match(self, method: str, uri: str) -> Union[bool, Tuple[Route, Callable]]:
         for route in self._routes[method.lower()]:
             if route[0].match(uri):
                 return route

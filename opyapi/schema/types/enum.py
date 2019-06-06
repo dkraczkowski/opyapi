@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .type import Type
 from ..exceptions import ValidationError
 
@@ -38,7 +36,7 @@ class Enum(Type):
 
         return value
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = self._get_base_doc()
         doc["enum"] = self.allowed_values
 

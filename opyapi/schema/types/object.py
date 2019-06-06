@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .type import Type
 from ..exceptions import ValidationError
 
@@ -32,7 +30,7 @@ class Object(Type):
         self.title = title
         self.description = description
 
-    def validate(self, value):
+    def validate(self, value: dict) -> dict:
         value = super().validate(value)
         for prop in self.required:
             if prop not in value:
@@ -47,7 +45,7 @@ class Object(Type):
 
         return value
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = self._get_base_doc()
 
         if self.required is not None:

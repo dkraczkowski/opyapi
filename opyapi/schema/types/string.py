@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .type import Type
 from ..validators import (
     DateTime,
@@ -71,7 +69,7 @@ class String(Type):
         if string_format is not None and string_format in Format:
             self.extra_validators.append(string_format.value)
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = self._get_base_doc()
 
         if self.min_length is not None:

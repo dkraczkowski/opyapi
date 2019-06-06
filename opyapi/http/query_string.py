@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import ItemsView, ValuesView, KeysView
 from urllib.parse import unquote_plus
 
 
@@ -83,22 +83,22 @@ class QueryString:
         self._str = string
         self._params = parse_qs(string, encoding)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> str:
         return self._params[key]
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         return key in self._params
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._str
 
-    def items(self):
+    def items(self) -> ItemsView:
         return self._params.items()
 
-    def values(self):
+    def values(self) -> ValuesView:
         return self._params.values()
 
-    def keys(self):
+    def keys(self) -> KeysView:
         return self._params.keys()
 
 

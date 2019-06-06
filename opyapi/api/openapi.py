@@ -1,6 +1,8 @@
-from __future__ import annotations
+from typing import Type, TypeVar
 from . import Annotation
 from ..application import Application
+
+T = TypeVar('T')
 
 
 class OpenApi(Annotation):
@@ -27,6 +29,6 @@ class OpenApi(Annotation):
         self.version = version
         self.description = description
 
-    def __call__(self, target):
+    def __call__(self, target: Type[T]) -> T:
         super().__call__(target)
         return type("Api" + target.__name__, (target, Application), {})

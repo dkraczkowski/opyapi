@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Any
 from ..validators import Validator
 from ..exceptions import ValidationError
 from ..schema import Schema
@@ -18,7 +18,7 @@ class Type(Validator, Schema):
     def __init__(self):
         self.extra_validators = []
 
-    def validate(self, value):
+    def validate(self, value: Any) -> Any:
         if value is None and self.nullable:
             return self.default
 

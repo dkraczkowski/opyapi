@@ -1,5 +1,5 @@
-from __future__ import annotations
 import re
+
 from ..exceptions import ValidationError
 from .validator import Validator
 
@@ -10,8 +10,9 @@ _IPV6_REGEX = re.compile(
 
 
 class Ipv6(Validator):
-    def validate(self, value):
+    def validate(self, value: str) -> str:
 
         if not _IPV6_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid ipv6 address.")
+
         return value

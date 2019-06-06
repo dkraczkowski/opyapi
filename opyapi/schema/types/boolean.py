@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .type import Type
 
 
@@ -24,3 +22,6 @@ class Boolean(Type):
         self.default = default
         self.nullable = nullable
         self.description = description
+
+    def to_doc(self) -> dict:
+        return self._get_base_doc()
