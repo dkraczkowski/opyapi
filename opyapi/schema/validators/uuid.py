@@ -1,5 +1,5 @@
-from __future__ import annotations
 import re
+
 from ..exceptions import ValidationError
 from .validator import Validator
 
@@ -9,7 +9,7 @@ _UUID_REGEX = re.compile(
 
 
 class Uuid(Validator):
-    def validate(self, value):
+    def validate(self, value: str) -> str:
 
         if not _UUID_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid uuid.")

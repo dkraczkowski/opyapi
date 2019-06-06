@@ -1,4 +1,3 @@
-from __future__ import annotations
 from datetime import time
 import re
 
@@ -16,7 +15,7 @@ class Time(Validator):
     :: _ISO Standard: http://tools.ietf.org/html/rfc3339#section-5.6
     """
 
-    def validate(self, value):
+    def validate(self, value: str) -> time:
         if not _ISO_8601_TIME_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid ISO 8601 time.")
         parts = _ISO_8601_TIME_REGEX.fullmatch(value)
