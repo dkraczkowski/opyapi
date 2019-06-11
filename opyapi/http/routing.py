@@ -1,6 +1,6 @@
-from typing import Union, Callable, Tuple
-from copy import copy
 import re
+from copy import copy
+from typing import Callable, Tuple, Union
 
 _ROUTE_REGEX = r"\{\s*(?P<var>[a-z_][a-z0-9_-]*)\s*\}"
 _VAR_REGEX = "[^/]+"
@@ -8,7 +8,7 @@ _SUPPORTED_METHODS = ("get", "post", "put", "delete", "patch", "options", "head"
 
 
 class Route:
-    def __init__(self, route: str, **kwargs):
+    def __init__(self, route: str, **kwargs) -> None:
         self.route = route
         self._part_patterns = kwargs
         self._attribute_names = []
@@ -61,7 +61,7 @@ class Route:
 
 
 class Router:
-    def __init__(self):
+    def __init__(self) -> None:
         self._routes = {}
         for method in _SUPPORTED_METHODS:
             self._routes[method] = []
@@ -71,6 +71,10 @@ class Router:
     ) -> None:
         if isinstance(route, str):
             route = Route(route)
+
+        assert isinstance(
+            route, Route
+        ), "Passed route must be either string or instance of Route"
         self._routes[str(method).lower()].append((route, handler))
 
     def match(self, method: str, uri: str) -> Union[bool, Tuple[Route, Callable]]:
@@ -79,3 +83,6 @@ class Router:
                 return route
 
         return False
+
+
+__all__ = [Route, Router]

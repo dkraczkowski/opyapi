@@ -1,8 +1,8 @@
 from typing import Callable
+
 import bjoern
 
-from .http import Router
-from .http import HttpRequest
+from .http import HttpRequest, Router
 
 
 class Application:

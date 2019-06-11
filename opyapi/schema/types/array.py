@@ -1,7 +1,8 @@
-from typing import Union
+from typing import Union, Optional
+
 from .type import Type
-from ..validators import Capacity
 from ..exceptions import ValidationError
+from ..validators import Capacity
 
 
 class Array(Type):
@@ -11,16 +12,16 @@ class Array(Type):
 
     def __init__(
         self,
-        items: Type = None,
-        min_length: int = None,
-        max_length: int = None,
-        unique_items: bool = None,
+        items: Optional[Type] = None,
+        min_length: Optional[int] = None,
+        max_length: Optional[int] = None,
+        unique_items: bool = False,
         description: str = "",
         nullable: bool = False,
         default=None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.write_only = write_only

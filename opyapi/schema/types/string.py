@@ -1,20 +1,22 @@
+from enum import Enum
+from typing import Optional
+
 from .type import Type
 from ..validators import (
-    DateTime,
     Date,
-    Time,
+    DateTime,
+    Email,
+    Falsy,
+    Hostname,
+    Ipv4,
+    Ipv6,
     Length,
+    Time,
+    Truthy,
     Uri,
     Url,
-    Email,
     Uuid,
-    Hostname,
-    Ipv6,
-    Ipv4,
-    Truthy,
-    Falsy,
 )
-from enum import Enum
 
 
 class Format(Enum):
@@ -40,16 +42,16 @@ class String(Type):
 
     def __init__(
         self,
-        string_format: Format = None,
-        min_length: int = None,
-        max_length: int = None,
-        pattern: str = None,
+        string_format: Optional[Format] = None,
+        min_length: Optional[int] = None,
+        max_length: Optional[int] = None,
+        pattern: Optional[str] = None,
         description: str = "",
         nullable: bool = False,
-        default=None,
+        default: Optional[str] = None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.description = description

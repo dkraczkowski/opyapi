@@ -1,3 +1,5 @@
+from typing import Union
+
 from .type import Type
 from ..exceptions import ValidationError
 
@@ -10,20 +12,18 @@ class Object(Type):
     def __init__(
         self,
         properties: dict,
-        title: str = None,
-        description: str = None,
-        required: list = None,
+        title: str = "",
+        description: str = "",
+        required: Union[list, tuple] = (),
         nullable: bool = False,
-        default=None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.write_only = write_only
         self.read_only = read_only
         self.deprecated = deprecated
-        self.default = default
         self.nullable = nullable
         self.properties = properties
         self.required = required if required is not None else ()

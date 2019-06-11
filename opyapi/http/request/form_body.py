@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any
+from typing import Any, Optional
 
 from .body import RequestBody
 from ..query_string import parse_qs
@@ -37,14 +37,16 @@ class FormBody(RequestBody):
             )
         self._body[field.name] = field
 
-    def get(self, name: str, default=None) -> Any:
+    def get(self, name: str, default: Optional[Any] = None) -> Any:
         if name in self._body:
             return self._body[name].value
 
         return default
 
     @classmethod
-    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = None) -> "FormBody":
+    def from_wsgi(
+        cls, wsgi_input: BytesIO, encoding: Optional[str] = None
+    ) -> "FormBody":
         wsgi_input.seek(0)
         decoded_input = wsgi_input.read().decode(encoding)
         fields = parse_qs(decoded_input)

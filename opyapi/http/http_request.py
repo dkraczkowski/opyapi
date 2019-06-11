@@ -1,11 +1,14 @@
 from cgi import parse_header
 from io import BytesIO
+from typing import Optional
+
+from .headers import Headers
+from .query_string import QueryString
 from .request.body import RequestBody
-from .request.multipart_body import MultipartBody
 from .request.form_body import FormBody
 from .request.json_body import JsonBody
-from .query_string import QueryString
-from .headers import Headers
+from .request.multipart_body import MultipartBody
+from .routing import Route
 
 
 class HttpRequest:
@@ -13,13 +16,13 @@ class HttpRequest:
         self,
         method: str,
         path_info: str = "/",
-        body: BytesIO = None,
-        query_string: QueryString = None,
-        headers: Headers = None,
+        body: Optional[BytesIO] = None,
+        query_string: Optional[QueryString] = None,
+        headers: Optional[Headers] = None,
     ):
         self.headers = headers if headers else Headers()
         self.body = body if body else BytesIO(b"")
-        self.route = None
+        self.route = None  # type: Route
         self.method = method
         self.path = path_info
         self.query_string = query_string

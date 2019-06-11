@@ -1,5 +1,5 @@
-from datetime import time
 import re
+from datetime import time
 
 from .validator import Validator
 from ..exceptions import ValidationError

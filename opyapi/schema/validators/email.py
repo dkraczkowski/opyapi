@@ -1,7 +1,7 @@
 import re
 
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 # https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
 _EMAIL_REGEX = re.compile(

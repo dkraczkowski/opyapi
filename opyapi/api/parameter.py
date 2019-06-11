@@ -1,3 +1,4 @@
+from typing import Optional
 from ..schema import Schema
 
 
@@ -8,10 +9,10 @@ class Parameter:
         location: str,
         description: str = "",
         required: bool = False,
-        schema: Schema = None,
-        example=None,
-        pattern: str = None,
-    ):
+        schema: Optional[Schema] = None,
+        example: str = "",
+        pattern: str = "",
+    ) -> None:
         assert location in (
             "query",
             "header",

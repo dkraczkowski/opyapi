@@ -1,4 +1,4 @@
-from typing import ItemsView, ValuesView, KeysView
+from typing import ItemsView, KeysView, ValuesView, Optional
 from urllib.parse import unquote_plus
 
 
@@ -45,7 +45,7 @@ def deep_merge(a: dict, b: dict) -> dict:
     return a
 
 
-def parse_qs(query: str, encoding: str = None) -> dict:
+def parse_qs(query: str, encoding: Optional[str] = None) -> dict:
     """
     Parse query string with json forms support, more available in the following link
     https://www.w3.org/TR/html-json-forms/
@@ -79,7 +79,7 @@ def parse_qs(query: str, encoding: str = None) -> dict:
 
 
 class QueryString:
-    def __init__(self, string: str, encoding: str = None):
+    def __init__(self, string: str, encoding: Optional[str] = None):
         self._str = string
         self._params = parse_qs(string, encoding)
 

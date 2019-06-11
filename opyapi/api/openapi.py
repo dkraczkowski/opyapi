@@ -1,4 +1,5 @@
 from typing import Type, TypeVar
+
 from . import Annotation
 from ..application import Application
 
@@ -13,12 +14,8 @@ class OpenApi(Annotation):
     """
 
     def __init__(
-        self,
-        title: str,
-        description: str = None,
-        servers: list = None,
-        version: str = "1.0.0",
-    ):
+        self, title: str, servers: list, version: str = "1.0.0", description: str = ""
+    ) -> None:
         """
         :param title: Your api title
         :param servers: List of servers available for your api

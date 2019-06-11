@@ -17,10 +17,9 @@ No bloat. Just code.
 
 ```python
 from opyapi.api import *
-from opyapi import TextResponse
+from opyapi.http import *
 
-
-@Api(
+@OpenApi(
     title="Example rest application",
     description="This application greets users",
 )
@@ -34,8 +33,8 @@ class Application:
     responses=TextResponse(200),
     summary="Says hello with username provided in the route"
 )
-def hello_user(name: str):
-    return f"Hello {name}"
+def hello_user(request: HttpRequest):
+    return f"Hello {request.route['name']}"
 
 ```
 

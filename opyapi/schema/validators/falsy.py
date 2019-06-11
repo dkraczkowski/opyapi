@@ -1,7 +1,7 @@
 from typing import Union
 
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 
 class Falsy(Validator):

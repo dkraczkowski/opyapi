@@ -1,7 +1,7 @@
 import re
 
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 _UUID_REGEX = re.compile(
     r"^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$", re.I

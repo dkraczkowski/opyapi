@@ -1,7 +1,8 @@
 from typing import Type, TypeVar
+
 from . import Annotation
-from ..schema.types import Type as SchemaType
 from ..schema import Object
+from ..schema.types import Type as SchemaType
 
 T = TypeVar("T")
 
@@ -17,9 +18,9 @@ class Resource(Annotation):
         self,
         title: str,
         description: str = "",
-        required: tuple = None,
+        required: tuple = (),
         deprecated: bool = False,
-    ):
+    ) -> None:
         self._attributes = {
             "title": title,
             "description": description,

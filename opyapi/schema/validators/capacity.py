@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from .validator import Validator
 from ..exceptions import InvalidLengthError
@@ -10,7 +10,7 @@ class Capacity(Validator):
     maximum_items: int = None
     name: str = "capacity"
 
-    def __init__(self, minimum=None, maximum=None):
+    def __init__(self, minimum: Optional[int] = None, maximum: Optional[int] = None):
         if minimum:
             self.minimum_items = minimum
 

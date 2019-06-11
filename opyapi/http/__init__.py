@@ -1,7 +1,5 @@
-from .http_response import HttpResponse
-from .http_request import HttpRequest
 from .headers import Headers
-from .routing import Route
-from .routing import Router
-from .query_string import QueryString
-from .query_string import parse_qs
+from .http_request import HttpRequest
+from .http_response import HttpResponse
+from .query_string import QueryString, parse_qs
+from .routing import Route, Router

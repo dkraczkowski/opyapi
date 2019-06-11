@@ -1,6 +1,7 @@
+from typing import Optional
+
 from .type import Type
-from ..validators import Range
-from ..validators import MultipleOf
+from ..validators import MultipleOf, Range
 
 
 class Integer(Type):
@@ -11,15 +12,15 @@ class Integer(Type):
 
     def __init__(
         self,
-        minimum: int = None,
-        maximum: int = None,
-        multiple_of: int = None,
+        minimum: Optional[int] = None,
+        maximum: Optional[int] = None,
+        multiple_of: Optional[int] = None,
         description: str = "",
         nullable: bool = False,
-        default=None,
+        default: Optional[int] = None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.minimum = minimum

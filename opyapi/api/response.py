@@ -4,8 +4,8 @@ class Response:
     """
 
     def __init__(
-        self, content, code: int = 200, description: str = "", headers: list = None
-    ):
+        self, content, code: int = 200, description: str = "", headers: list = ()
+    ) -> None:
         self.headers = headers
         self.description = description
         self.content = content
@@ -13,5 +13,7 @@ class Response:
 
 
 class TextResponse(Response):
-    def __init__(self, code: int = 200, description: str = "", headers: list = None):
+    def __init__(
+        self, code: int = 200, description: str = "", headers: list = None
+    ) -> None:
         super().__init__(None, code, description, headers)

@@ -1,7 +1,8 @@
 from cgi import parse_header
 from enum import Enum
-from io import BytesIO
+from io import BytesIO, TextIOWrapper
 from tempfile import TemporaryFile
+from typing import Optional
 
 from .form_body import FormBody, FormField
 
@@ -15,7 +16,7 @@ class ParserState(Enum):
     END = 5
 
 
-def _parse_multipart_data(data, boundary: str, encoding: str = None):
+def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
     state = ParserState.PART_BOUNDARY
     prev_byte = None
     cursor = 0
@@ -105,22 +106,24 @@ def _parse_multipart_data(data, boundary: str, encoding: str = None):
 
 
 class FormFileField(FormField):
-    def __init__(self, name: str, value: TemporaryFile, mimetype: str, filename: str):
+    def __init__(
+        self, name: str, value: TemporaryFile, mimetype: str, filename: str
+    ) -> None:
         super().__init__(name, value)
         self.mimetype = mimetype
         self.filename = filename
         self._str = None
 
-    def read(self):
+    def read(self) -> bytes:
         return self.value.read()
 
-    def seek(self, offset: int):
+    def seek(self, offset: int) -> int:
         return self.value.seek(offset)
 
-    def close(self):
-        return self.value.close()
+    def close(self) -> None:
+        self.value.close()
 
-    def save(self, path: str):
+    def save(self, path: str) -> TextIOWrapper:
         if self.value.closed:
             raise ValueError(f"Cannot save to file {path} of closed stream.")
         with open(path, "wb") as file:

@@ -1,7 +1,8 @@
 from typing import Any
-from ..validators import Validator
+
 from ..exceptions import ValidationError
 from ..schema import Schema
+from ..validators import Validator
 
 
 class Type(Validator, Schema):

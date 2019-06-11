@@ -1,7 +1,7 @@
 import re
 
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 _IPV4_REGEX = re.compile(
     r"^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$", re.I

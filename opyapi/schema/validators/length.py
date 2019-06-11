@@ -1,10 +1,11 @@
-from typing import Sized
+from typing import Optional, Sized
+
 from .validator import Validator
 from ..exceptions import InvalidLengthError
 
 
 class Length(Validator):
-    def __init__(self, minimum: int = None, maximum: int = None):
+    def __init__(self, minimum: Optional[int] = None, maximum: Optional[int] = None):
         self.minimum = minimum
         self.maximum = maximum
 

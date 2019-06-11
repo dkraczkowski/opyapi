@@ -1,7 +1,7 @@
 import re
 
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 _URI_REGEX = re.compile(r"^(?:[a-z][a-z0-9+-.]*:)(?:\\/?\\/)?[^\s]*$", re.I)
 

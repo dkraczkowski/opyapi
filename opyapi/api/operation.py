@@ -1,7 +1,8 @@
-from typing import List, TypeVar, Type
+from typing import List, Type, TypeVar
+
 from .annotation import Annotation
-from .response import Response
 from .parameter import Parameter
+from .response import Response
 from ..application import Application
 
 T = TypeVar("T")
@@ -16,13 +17,13 @@ class Operation(Annotation):
         self,
         route: str,
         method: str = "get",
-        responses: List[Response] = [],
+        responses: List[Response] = (),
         summary: str = "",
         description: str = "",
-        parameters: List[Parameter] = None,
+        parameters: List[Parameter] = (),
         request=None,
-        tags: list = None,
-    ):
+        tags: List[str] = (),
+    ) -> None:
         self.route = route
         self.method = method
         self.summary = summary

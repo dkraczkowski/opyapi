@@ -1,4 +1,4 @@
-from typing import ValuesView, KeysView, ItemsView
+from typing import ItemsView, KeysView, ValuesView, Optional
 
 
 def _normalize_header_name(name: str) -> str:
@@ -24,7 +24,8 @@ def _normalize_headers(headers: dict) -> dict:
 
 
 class Headers:
-    def __init__(self, headers: dict = {}):
+    def __init__(self, headers: Optional[dict] = None):
+        headers = {} if headers is None else headers
         assert isinstance(
             headers, dict
         ), "Failed to assert that headers are instance of dict"
@@ -33,7 +34,7 @@ class Headers:
     def add_header(self, name: str, value: str) -> None:
         self._headers[_normalize_header_name(name)] = value
 
-    def get(self, name: str, default: str = None) -> str:
+    def get(self, name: str, default: Optional[str] = None) -> str:
         if name in self:
             return self.__getitem__(name)
         return default

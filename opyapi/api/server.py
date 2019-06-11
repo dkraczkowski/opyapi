@@ -1,4 +1,5 @@
-from typing import TypeVar, Type
+from typing import Type, TypeVar, Union
+
 from . import Annotation
 from ..application import Application
 
@@ -12,8 +13,8 @@ class Server(Annotation):
         host: str,
         port: int = 80,
         description: str = "",
-        variables: list = None,
-    ):
+        variables: Union[list, tuple] = (),
+    ) -> None:
         self.id = id
         self.variables = variables
         self.description = description

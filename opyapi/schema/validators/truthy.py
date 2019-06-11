@@ -1,5 +1,5 @@
-from ..exceptions import ValidationError
 from .validator import Validator
+from ..exceptions import ValidationError
 
 
 class Truthy(Validator):

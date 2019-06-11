@@ -1,3 +1,4 @@
+from typing import Optional, Union
 from .type import Type
 from ..exceptions import ValidationError
 
@@ -12,10 +13,10 @@ class Enum(Type):
         *args,
         description: str = "",
         nullable: bool = False,
-        default=None,
+        default: Optional[Union[str, int, float]] = None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.allowed_values = args
