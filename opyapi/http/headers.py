@@ -1,4 +1,5 @@
 from typing import ItemsView, KeysView, ValuesView, Optional
+from copy import copy
 
 
 def _normalize_header_name(name: str) -> str:

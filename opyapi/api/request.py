@@ -1,5 +1,8 @@
+from typing import Union
+from ..schema import Schema
+
+
 class Request:
-    def __init__(self, schema, description: str = "", headers: list = ()) -> None:
-        self.headers = headers
+    def __init__(self, schema: object, description: str = "") -> None:
         self.description = description
         self.schema = schema

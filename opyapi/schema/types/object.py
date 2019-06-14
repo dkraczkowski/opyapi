@@ -30,6 +30,12 @@ class Object(Type):
         self.title = title
         self.description = description
 
+    def __getitem__(self, key: str) -> Type:
+        return self.properties[key]
+
+    def __setitem__(self, key: str, value: Type):
+        self.properties[key] = value
+
     def validate(self, value: dict) -> dict:
         value = super().validate(value)
         for prop in self.required:

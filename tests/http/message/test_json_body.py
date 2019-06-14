@@ -1,6 +1,6 @@
 from io import BytesIO
 from opyapi.http import HttpRequest
-from opyapi.http.request import JsonBody
+from opyapi.http.message import JsonBody
 
 test_wsgi_body = {
     "CONTENT_TYPE": "application/json; charset=utf-8",

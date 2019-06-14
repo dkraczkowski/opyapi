@@ -2,7 +2,14 @@ from typing import Callable
 
 import bjoern
 
-from .http import HttpRequest, Router
+from .http import HttpRequest, HttpResponse, Router
+from .controller import resolve_arguments
+
+
+def _handle_callback(callback: Callable, args: list) -> HttpResponse:
+    response = HttpResponse(200, {"Content-Type": "text/plain"})
+    response.write("OK")
+    return response
 
 
 class Application:
@@ -12,6 +19,7 @@ class Application:
 
     servers: list = []
     operations: list = []
+    resources: list = []
     router: Router
 
     def _boot(self):
@@ -21,12 +29,16 @@ class Application:
             self.router.add_route(operation.method, operation.route, handler)
 
     @classmethod
-    def add_server(cls, server):
+    def add_server(cls, server) -> None:
         cls.servers.append(server)
 
     @classmethod
-    def add_operation(cls, operation):
+    def add_operation(cls, operation) -> None:
         cls.operations.append(operation)
+
+    @classmethod
+    def add_resource(cls, resource) -> None:
+        cls.resources.append(resource)
 
     @classmethod
     def get_server(cls, server_id: str):
@@ -35,15 +47,23 @@ class Application:
             if annotation.id == server_id:
                 return server
 
-    def __call__(self, env, start):
+    def __call__(self, env: dict, start: Callable):
         request = HttpRequest.from_wsgi(env)
         result = self.router.match(request.method, request.path)
         if not result:
             start("404 Not Found", [("Content-Type", "text/plain")])
             return b""
-        start("200 OK", [("Content-Type", "text/plain")])
-        request.route = result[0]
-        return str.encode(str(result[1](request)))
+        callback = result[1]
+        response = _handle_callback(
+            callback, resolve_arguments(callback, result[0], request)
+        )
+
+        start(
+            str(response.status_code),
+            [(key, value) for key, value in response.headers.items()],
+        )
+        response.body.seek(0)
+        return response.body
 
     @classmethod
     def run(cls, server_id: str, runner: Callable = bjoern.run):

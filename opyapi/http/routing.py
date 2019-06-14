@@ -1,6 +1,6 @@
 import re
 from copy import copy
-from typing import Callable, Tuple, Union
+from typing import Callable, Tuple, Union, Any, Optional
 
 _ROUTE_REGEX = r"\{\s*(?P<var>[a-z_][a-z0-9_-]*)\s*\}"
 _VAR_REGEX = "[^/]+"
@@ -42,6 +42,9 @@ class Route:
         if not self._attribute_names:
             return copy(self)
 
+        if isinstance(matches[0], tuple):
+            matches = matches[0]
+
         route = copy(self)
         match_index = 0
         for value in matches:
@@ -56,8 +59,17 @@ class Route:
     def __bool__(self) -> bool:
         return True
 
-    def __getitem__(self, key) -> str:
+    def __getitem__(self, key: str) -> str:
         return self._attributes[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self._attributes
+
+    def get(self, key: str, default: Optional[Any] = None):
+        if key in self:
+            return self[key]
+
+        return default
 
 
 class Router:

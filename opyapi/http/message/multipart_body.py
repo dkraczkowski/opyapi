@@ -4,7 +4,7 @@ from io import BytesIO, TextIOWrapper
 from tempfile import TemporaryFile
 from typing import Optional
 
-from .form_body import FormBody, FormField
+from .form_body import FormBody
 
 
 class ParserState(Enum):
@@ -32,19 +32,13 @@ def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
             tmp_file = TemporaryFile()
             tmp_file.write(_content_data)
             tmp_file.seek(0)
-
-            field = FormFileField(
-                _content_disposition[1]["name"],
+            body[_content_disposition[1]["name"]] = UploadedFile(
                 tmp_file,
                 _content_type[14:].lower(),
                 _content_disposition[1]["filename"],
             )
         else:
-            field = FormField(
-                _content_disposition[1]["name"], _content_data.decode(encoding)
-            )
-
-        body.append(field)
+            body[_content_disposition[1]["name"]] = _content_data.decode(encoding)
 
     content_disposition = ""
     content_type = None
@@ -63,7 +57,7 @@ def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
                 state = ParserState.CONTENT_DISPOSITION
             else:
                 raise IOError(
-                    "Could not parse request body, body is malformed or incorrect boundary was passed."
+                    "Could not parse message body, body is malformed or incorrect boundary was passed."
                 )
 
         elif state is ParserState.CONTENT_DISPOSITION and line_break:
@@ -105,11 +99,13 @@ def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
     return body
 
 
-class FormFileField(FormField):
-    def __init__(
-        self, name: str, value: TemporaryFile, mimetype: str, filename: str
-    ) -> None:
-        super().__init__(name, value)
+class UploadedFile:
+    """
+    Proxy class for uploaded file
+    """
+
+    def __init__(self, file: TemporaryFile, mimetype: str, filename: str) -> None:
+        self.file = file
         self.mimetype = mimetype
         self.filename = filename
         self._str = None
@@ -118,13 +114,13 @@ class FormFileField(FormField):
         return self.value.read()
 
     def seek(self, offset: int) -> int:
-        return self.value.seek(offset)
+        return self.file.seek(offset)
 
     def close(self) -> None:
-        self.value.close()
+        self.file.close()
 
     def save(self, path: str) -> TextIOWrapper:
-        if self.value.closed:
+        if self.file.closed:
             raise ValueError(f"Cannot save to file {path} of closed stream.")
         with open(path, "wb") as file:
             self.seek(0)
@@ -141,7 +137,7 @@ class FormFileField(FormField):
         raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
 
     def __len__(self) -> int:
-        return len(self.value)
+        return len(self.file)
 
     def __bool__(self) -> bool:
         return len(self) > 0
@@ -152,6 +148,12 @@ class FormFileField(FormField):
             self._str = self.read().decode()
 
         return self._str
+
+    def __enter__(self):
+        return self.file
+
+    def __exit__(self, *args):
+        self.close()
 
 
 class MultipartBody(FormBody):
@@ -166,4 +168,4 @@ class MultipartBody(FormBody):
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)
 
 
-__all__ = [MultipartBody, FormFileField]
+__all__ = [MultipartBody]

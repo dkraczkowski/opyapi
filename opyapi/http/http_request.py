@@ -4,11 +4,10 @@ from typing import Optional
 
 from .headers import Headers
 from .query_string import QueryString
-from .request.body import RequestBody
-from .request.form_body import FormBody
-from .request.json_body import JsonBody
-from .request.multipart_body import MultipartBody
-from .routing import Route
+from .message.body import RequestBody
+from .message.form_body import FormBody
+from .message.json_body import JsonBody
+from .message.multipart_body import MultipartBody
 
 
 class HttpRequest:
@@ -22,7 +21,6 @@ class HttpRequest:
     ):
         self.headers = headers if headers else Headers()
         self.body = body if body else BytesIO(b"")
-        self.route = None  # type: Route
         self.method = method
         self.path = path_info
         self.query_string = query_string

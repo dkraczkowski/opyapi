@@ -7,9 +7,6 @@ from .body import RequestBody
 
 
 class JsonBody(RequestBody):
-    def __init__(self, value: dict):
-        self._body = value
-
     @classmethod
     def from_wsgi(
         cls, wsgi_input: BytesIO, encoding: Optional[str] = None

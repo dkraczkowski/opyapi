@@ -33,3 +33,10 @@ def test_router():
 
     assert match[0]["pet_id"] == "12"
     assert router.match("get", "/pets")
+
+
+def test_route_match_multiple_parameters():
+    route = Route("/pets/{pet_id}/{category}")
+    route = route.match("/pets/11a22/test")
+    assert route["pet_id"] == "11a22"
+    assert route["category"] == "test"

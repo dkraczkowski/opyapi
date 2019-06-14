@@ -1,6 +1,7 @@
-from typing import Type, TypeVar
+from typing import Type, TypeVar, Optional
 
 from . import Annotation
+from ..application import Application
 from ..schema import Object
 from ..schema.types import Type as SchemaType
 
@@ -20,12 +21,14 @@ class Resource(Annotation):
         description: str = "",
         required: tuple = (),
         deprecated: bool = False,
+        mapping: Optional[dict] = None,
     ) -> None:
         self._attributes = {
             "title": title,
             "description": description,
             "required": required,
             "deprecated": deprecated,
+            "mapping": mapping,
         }
 
     def __call__(self, target: Type[T]) -> T:
@@ -61,7 +64,16 @@ class Resource(Annotation):
 
             instance._data[name] = value
 
-        return type(
+        def _to_dict(instance) -> dict:
+            result = {}
+            for key, value in instance._data.items():
+                if schema[key].write_only:
+                    continue
+                result[key] = value
+
+            return result
+
+        resource = type(
             target.__name__ + "Resource",
             (target, Resource, SchemaType),
             {
@@ -70,5 +82,9 @@ class Resource(Annotation):
                 "__init__": _init,
                 "__getattr__": _getattr,
                 "__setattr__": _setattr,
+                "to_dict": _to_dict,
             },
         )
+        Application.add_resource(resource)
+
+        return resource

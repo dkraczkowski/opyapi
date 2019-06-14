@@ -13,8 +13,8 @@ class Application:
 
 
 @Operation("/pets/{id}", method="get")
-def get_pet(request: HttpRequest):
-    return f"Get pet with id {request.route['id']}"
+def get_pet(id: str):
+    return f"Get pet with id {id}"
 
 
 Application.run("development")
