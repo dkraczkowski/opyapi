@@ -15,6 +15,14 @@ def test_can_write_and_read_body():
     assert instance.body.read() == b"Example text"
 
 
+def test_can_close_body():
+    instance = HttpResponse(200)
+    instance.write("Test")
+    assert instance.writable
+    instance.close()
+    assert not instance.writable
+
+
 def test_headers():
     instance = HttpResponse()
     with pytest.raises(AttributeError):

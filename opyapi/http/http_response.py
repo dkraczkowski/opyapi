@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from io import BytesIO
 
 from .headers import Headers
@@ -9,9 +9,9 @@ class HttpResponse:
         self,
         status_code: int = 200,
         encoding: str = "utf-8",
-        headers: Optional[dict] = None,
+        headers: Optional[Union[dict, Headers]] = None,
     ):
-        self._headers = Headers(headers)
+        self._headers = headers if isinstance(headers, Headers) else Headers(headers)
         self.status_code = status_code
         self.body = BytesIO()
         self.encoding = encoding
@@ -22,6 +22,13 @@ class HttpResponse:
 
     def write(self, body: str) -> None:
         self.body.write(body.encode(self.encoding))
+
+    @property
+    def writable(self):
+        return not self.body.closed
+
+    def close(self):
+        self.body.close()
 
     def __str__(self):
         self.body.seek(0)
