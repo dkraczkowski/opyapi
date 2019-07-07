@@ -32,3 +32,6 @@ class Schema:
             doc["write_only"] = self.write_only
 
         return doc
+
+
+__all__ = ["Schema"]

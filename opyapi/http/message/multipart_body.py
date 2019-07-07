@@ -168,4 +168,4 @@ class MultipartBody(FormBody):
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)
 
 
-__all__ = [MultipartBody]
+__all__ = ["MultipartBody", "UploadedFile"]

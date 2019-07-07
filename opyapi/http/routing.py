@@ -2,6 +2,8 @@ import re
 from copy import copy
 from typing import Callable, Tuple, Union, Any, Optional
 
+from ..exceptions import NotFoundError
+
 _ROUTE_REGEX = r"\{\s*(?P<var>[a-z_][a-z0-9_-]*)\s*\}"
 _VAR_REGEX = "[^/]+"
 _SUPPORTED_METHODS = ("get", "post", "put", "delete", "patch", "options", "head")
@@ -89,12 +91,12 @@ class Router:
         ), "Passed route must be either string or instance of Route"
         self._routes[str(method).lower()].append((route, handler))
 
-    def match(self, method: str, uri: str) -> Union[bool, Tuple[Route, Callable]]:
+    def match(self, method: str, uri: str) -> Tuple[Route, Callable]:
         for route in self._routes[method.lower()]:
             if route[0].match(uri):
                 return route
 
-        return False
+        raise NotFoundError(f"Could not match any resource matching {uri} uri")
 
 
-__all__ = [Route, Router]
+__all__ = ["Route", "Router"]

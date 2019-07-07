@@ -1,6 +1,6 @@
 import pytest
 from opyapi.schema.types import Integer
-from opyapi.schema.exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 def test_can_instantiate():

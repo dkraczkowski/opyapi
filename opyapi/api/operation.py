@@ -38,3 +38,6 @@ class Operation(Annotation):
         Application.add_operation(target)
 
         return target
+
+
+__all__ = ["Operation"]

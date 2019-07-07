@@ -1,7 +1,7 @@
 import re
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 # https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
 _EMAIL_REGEX = re.compile(
@@ -16,3 +16,6 @@ class Email(Validator):
         if not _EMAIL_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid email address.")
         return value
+
+
+__all__ = ["Email"]

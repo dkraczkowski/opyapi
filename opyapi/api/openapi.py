@@ -29,3 +29,6 @@ class OpenApi(Annotation):
     def __call__(self, target: Type[T]) -> T:
         super().__call__(target)
         return type("Api" + target.__name__, (target, Application), {})
+
+
+__all__ = ["OpenApi"]

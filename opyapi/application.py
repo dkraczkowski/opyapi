@@ -2,14 +2,9 @@ from typing import Callable
 
 import bjoern
 
+from .controller import create_response, resolve_arguments
+from .exceptions import HttpError
 from .http import HttpRequest, HttpResponse, Router
-from .controller import resolve_arguments
-
-
-def _handle_callback(callback: Callable, args: list) -> HttpResponse:
-    response = HttpResponse(200, {"Content-Type": "text/plain"})
-    response.write("OK")
-    return response
 
 
 class Application:
@@ -47,16 +42,26 @@ class Application:
             if annotation.id == server_id:
                 return server
 
+    def on_error(self, exception: Exception) -> HttpResponse:
+        if isinstance(exception, HttpError):
+            return exception
+
+        return HttpError()
+
     def __call__(self, env: dict, start: Callable):
         request = HttpRequest.from_wsgi(env)
-        result = self.router.match(request.method, request.path)
-        if not result:
-            start("404 Not Found", [("Content-Type", "text/plain")])
-            return b""
-        callback = result[1]
-        response = _handle_callback(
-            callback, resolve_arguments(callback, result[0], request)
-        )
+        try:
+            result = self.router.match(request.method, request.path)
+            route = result[0]
+            controller = result[1]
+            args = resolve_arguments(controller, route, request)
+            response = create_response(controller, args)
+        except Exception as e:
+            response = self.on_error(e)
+
+        if not isinstance(response, HttpResponse):
+            response = HttpResponse(502)
+            response.write("Failed to serve response.")
 
         start(
             str(response.status_code),
@@ -77,3 +82,6 @@ class Application:
         app = cls()
         app._boot()
         runner(app, server_details.host, server_details.port)
+
+
+__all__ = ["Application"]

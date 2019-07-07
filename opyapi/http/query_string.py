@@ -102,4 +102,4 @@ class QueryString:
         return self._params.keys()
 
 
-__all__ = [QueryString, parse_qs]
+__all__ = ["QueryString", "parse_qs"]

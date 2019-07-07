@@ -1,7 +1,7 @@
 from typing import Optional, Sized
 
 from .validator import Validator
-from ..exceptions import InvalidLengthError
+from opyapi.exceptions import InvalidLengthError
 
 
 class Length(Validator):
@@ -21,3 +21,6 @@ class Length(Validator):
             )
 
         return value
+
+
+__all__ = ["Length"]

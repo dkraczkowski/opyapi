@@ -24,4 +24,4 @@ class JsonBody(RequestBody):
         return instance
 
 
-__all__ = [JsonBody]
+__all__ = ["JsonBody"]

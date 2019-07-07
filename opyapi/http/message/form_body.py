@@ -21,4 +21,4 @@ class FormBody(RequestBody):
         return instance
 
 
-__all__ = [FormBody]
+__all__ = ["FormBody"]

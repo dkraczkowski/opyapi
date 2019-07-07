@@ -1,7 +1,7 @@
 import pytest
 from opyapi.schema.types import *
 from opyapi.api import Resource
-from opyapi.schema.exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 @Resource(title="Test pet", required=["name"])

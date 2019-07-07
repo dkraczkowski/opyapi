@@ -8,3 +8,6 @@ class Number(Integer):
     accept_types = numbers.Number
     reject_types = bool
     type = "number"
+
+
+__all__ = ["Number"]

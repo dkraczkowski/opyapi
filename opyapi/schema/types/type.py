@@ -1,8 +1,8 @@
 from typing import Any
 
-from ..exceptions import ValidationError
 from ..schema import Schema
 from ..validators import Validator
+from ...exceptions import ValidationError
 
 
 class Type(Validator, Schema):
@@ -33,3 +33,6 @@ class Type(Validator, Schema):
             value = validator.validate(value)
 
         return value
+
+
+__all__ = ["Type"]

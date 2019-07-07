@@ -25,4 +25,4 @@ class Annotation:
         return target
 
 
-__all__ = [Annotation]
+__all__ = ["Annotation"]

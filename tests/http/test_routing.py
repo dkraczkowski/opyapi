@@ -1,5 +1,8 @@
+import pytest
+
 from opyapi.http.routing import Route
 from opyapi.http.routing import Router
+from opyapi.exceptions import NotFoundError
 
 
 def test_route_parsing():
@@ -33,6 +36,16 @@ def test_router():
 
     assert match[0]["pet_id"] == "12"
     assert router.match("get", "/pets")
+
+
+def test_router_fail_matching():
+    def test_controller():
+        pass
+
+    router = Router()
+    router.add_route("GET", Route("/pets/{pet_id}"), test_controller)
+    with pytest.raises(NotFoundError):
+        router.match("POST", "/pets/12")
 
 
 def test_route_match_multiple_parameters():

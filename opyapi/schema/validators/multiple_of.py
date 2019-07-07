@@ -1,5 +1,5 @@
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class MultipleOf(Validator):
@@ -13,3 +13,6 @@ class MultipleOf(Validator):
             )
 
         return value
+
+
+__all__ = ["MultipleOf"]

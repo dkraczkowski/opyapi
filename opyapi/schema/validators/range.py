@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .validator import Validator
-from ..exceptions import InvalidRangeError
+from opyapi.exceptions import InvalidRangeError
 
 
 class Range(Validator):
@@ -23,3 +23,6 @@ class Range(Validator):
             )
 
         return value
+
+
+__all__ = ["Range"]

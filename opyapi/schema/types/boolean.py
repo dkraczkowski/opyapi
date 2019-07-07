@@ -25,3 +25,6 @@ class Boolean(Type):
 
     def to_doc(self) -> dict:
         return self._get_base_doc()
+
+
+__all__ = ["Boolean"]

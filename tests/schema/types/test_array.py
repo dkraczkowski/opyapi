@@ -1,6 +1,6 @@
 import pytest
 from opyapi.schema.types import *
-from opyapi.schema.exceptions import InvalidLengthError
+from opyapi.exceptions import InvalidLengthError
 
 
 def test_can_instantiate():

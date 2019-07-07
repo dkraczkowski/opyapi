@@ -1,5 +1,5 @@
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class Truthy(Validator):
@@ -11,3 +11,6 @@ class Truthy(Validator):
                 f"Passed value {value} is not valid truthy expression."
             )
         return True
+
+
+__all__ = ["Truthy"]

@@ -1,6 +1,6 @@
 import pytest
 from opyapi.schema.validators import Length
-from opyapi.schema.exceptions import InvalidLengthError
+from opyapi.exceptions import InvalidLengthError
 
 
 def test_can_instantiate():

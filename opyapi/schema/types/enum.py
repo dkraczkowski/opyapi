@@ -1,6 +1,6 @@
 from typing import Optional, Union
 from .type import Type
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class Enum(Type):
@@ -42,3 +42,6 @@ class Enum(Type):
         doc["enum"] = self.allowed_values
 
         return doc
+
+
+__all__ = ["Enum"]

@@ -1,6 +1,6 @@
 import pytest
 from opyapi.schema.validators import Range
-from opyapi.schema.exceptions import InvalidRangeError
+from opyapi.exceptions import InvalidRangeError
 
 
 def test_can_instantiate():

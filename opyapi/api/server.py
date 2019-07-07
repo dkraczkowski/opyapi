@@ -32,3 +32,6 @@ class Server(Annotation):
         Application.add_server(target)
 
         return target
+
+
+__all__ = ["Server"]

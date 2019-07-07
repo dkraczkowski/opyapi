@@ -68,4 +68,4 @@ class HttpRequest:
         )
 
 
-__all__ = [HttpRequest]
+__all__ = ["HttpRequest"]

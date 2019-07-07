@@ -2,7 +2,7 @@ import re
 from datetime import time
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 _ISO_8601_TIME_REGEX = re.compile(
     r"^(?P<time>[0-2]\d:?[0-5]\d:?[0-5]\d|23:59:60|235960)(?P<microseconds>\.\d+)?(?P<tzpart>z|[+-]\d{2}:\d{2})?$",
@@ -37,3 +37,6 @@ class Time(Validator):
             second=int(time_parts[2]),
             microsecond=microseconds,
         )
+
+
+__all__ = ["Time"]

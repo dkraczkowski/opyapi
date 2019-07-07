@@ -35,4 +35,4 @@ class HttpResponse:
         return self.body.read().decode(self.encoding)
 
 
-__all__ = [HttpResponse]
+__all__ = ["HttpResponse"]

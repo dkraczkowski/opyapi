@@ -1,7 +1,7 @@
 import re
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 _URI_REGEX = re.compile(r"^(?:[a-z][a-z0-9+-.]*:)(?:\\/?\\/)?[^\s]*$", re.I)
 
@@ -12,3 +12,6 @@ class Uri(Validator):
         if not _URI_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid uri.")
         return value
+
+
+__all__ = ["Uri"]

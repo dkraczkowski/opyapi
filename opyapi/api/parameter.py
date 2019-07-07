@@ -26,3 +26,6 @@ class Parameter:
         self.schema = schema
         self.example = example
         self.pattern = pattern
+
+
+__all__ = ["Parameter"]

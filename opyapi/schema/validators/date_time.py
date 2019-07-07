@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 _ISO_8601_DATETIME_REGEX = re.compile(
     r"^(\d{4})-?([0-1]\d)-?([0-3]\d)[t\s]?([0-2]\d:?[0-5]\d:?[0-5]\d|23:59:60|235960)(\.\d+)?(z|[+-]\d{2}:\d{2})$",
@@ -34,3 +34,6 @@ class DateTime(Validator):
             minute=int(time[1]),
             second=int(time[2]),
         )
+
+
+__all__ = ["DateTime"]

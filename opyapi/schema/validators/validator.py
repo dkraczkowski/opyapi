@@ -1,4 +1,4 @@
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class Validator:
@@ -11,3 +11,6 @@ class Validator:
             return True
         except ValidationError:
             return False
+
+
+__all__ = ["Validator"]

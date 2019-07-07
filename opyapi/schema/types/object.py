@@ -1,7 +1,7 @@
 from typing import Union
 
 from .type import Type
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class Object(Type):
@@ -62,3 +62,6 @@ class Object(Type):
             doc["properties"][key] = prop.to_doc()
 
         return doc
+
+
+__all__ = ["Object"]

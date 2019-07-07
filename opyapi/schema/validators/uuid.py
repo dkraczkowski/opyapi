@@ -1,7 +1,7 @@
 import re
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 _UUID_REGEX = re.compile(
     r"^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$", re.I
@@ -14,3 +14,6 @@ class Uuid(Validator):
         if not _UUID_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid uuid.")
         return value
+
+
+__all__ = ["Uuid"]

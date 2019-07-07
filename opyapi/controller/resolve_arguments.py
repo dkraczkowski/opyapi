@@ -51,15 +51,15 @@ def _resolve_argument(
         return _resolve_to_resource(argument_type, argument_key, callback, request)
 
 
-def resolve_arguments(callback: Callable, route: Route, request: HttpRequest) -> list:
-    signature = inspect.signature(callback)
+def resolve_arguments(controller: Callable, route: Route, request: HttpRequest) -> list:
+    signature = inspect.signature(controller)
     args = []
     for argument_key, argument_type in signature.parameters.items():
         args.append(
-            _resolve_argument(argument_key, argument_type, callback, route, request)
+            _resolve_argument(argument_key, argument_type, controller, route, request)
         )
 
     return args
 
 
-__all__ = [resolve_arguments]
+__all__ = ["resolve_arguments"]

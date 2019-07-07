@@ -1,7 +1,7 @@
 from typing import Union
 
 from .validator import Validator
-from ..exceptions import ValidationError
+from opyapi.exceptions import ValidationError
 
 
 class Falsy(Validator):
@@ -13,3 +13,6 @@ class Falsy(Validator):
                 f"Passed value {value} is not valid falsy expression."
             )
         return False
+
+
+__all__ = ["Falsy"]

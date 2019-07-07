@@ -1,6 +1,6 @@
 from opyapi.api import *
 from opyapi import schema
-import json
+from opyapi.http import HttpResponse
 
 
 @Server(id="development", host="localhost", port=8080)
@@ -22,11 +22,12 @@ class Pet:
     status: schema.Enum("available", "pending", "sold")
 
 
-@Operation(
-    "/pets", method="post", request=Request(schema=Pet), responses=[Response(Pet)]
-)
-def create_pet(pet: Pet):
-    return 200, pet
+@Operation("/pets", method="post", request=Request(schema=Pet))
+def create_pet(pet: Pet) -> HttpResponse:
+    response = HttpResponse(headers={"Content-Type": "text/plain"})
+    response.write(f"New pet name is: {pet.name}")
+
+    return response
 
 
 Application.run("development")

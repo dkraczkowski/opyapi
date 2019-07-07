@@ -19,3 +19,6 @@ class Reference(Type):
         doc = self._get_base_doc()
         # todo: add reference mapping here
         return doc
+
+
+__all__ = ["Reference"]

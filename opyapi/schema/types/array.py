@@ -1,8 +1,8 @@
-from typing import Union, Optional
+from typing import Optional, Union
 
 from .type import Type
-from ..exceptions import ValidationError
 from ..validators import Capacity
+from ...exceptions import ValidationError
 
 
 class Array(Type):
@@ -65,3 +65,6 @@ class Array(Type):
             doc["uniqueItems"] = self.unique_items
 
         return doc
+
+
+__all__ = ["Array"]

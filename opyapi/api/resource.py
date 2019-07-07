@@ -1,6 +1,7 @@
 from typing import Type, TypeVar, Optional
 
 from . import Annotation
+from ..exceptions import ValidationError
 from ..application import Application
 from ..schema import Object
 from ..schema.types import Type as SchemaType
@@ -41,7 +42,7 @@ class Resource(Annotation):
         )
         target._data = {}
 
-        def _init(instance, **kwargs):
+        def _init(instance, **kwargs) -> None:
             kwargs = schema.validate(kwargs)
             super(target, instance).__setattr__("_data", {})
             for key, value in kwargs.items():
@@ -49,16 +50,16 @@ class Resource(Annotation):
 
         def _getattr(instance, name):
             if name not in instance.schema.properties:
-                raise AttributeError(
+                raise ValidationError(
                     f"Attribute `{name}` is not specified for resource {target}."
                 )
 
             return instance._data[name] if name in instance._data else None
 
-        def _setattr(instance, name, value):
+        def _setattr(instance, name, value) -> None:
 
             if name not in instance.schema.properties:
-                raise AttributeError(
+                raise ValidationError(
                     f"Attribute `{name}` is not specified for resource {target}."
                 )
 
@@ -82,9 +83,13 @@ class Resource(Annotation):
                 "__init__": _init,
                 "__getattr__": _getattr,
                 "__setattr__": _setattr,
+                "mapping": self._attributes["mapping"],
                 "to_dict": _to_dict,
             },
         )
         Application.add_resource(resource)
 
         return resource
+
+
+__all__ = ["Resource"]

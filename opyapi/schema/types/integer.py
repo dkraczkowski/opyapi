@@ -54,3 +54,6 @@ class Integer(Type):
             doc["multipleOf"] = self.multiple_of
 
         return doc
+
+
+__all__ = ["Integer"]
