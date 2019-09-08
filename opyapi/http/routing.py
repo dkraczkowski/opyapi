@@ -1,6 +1,13 @@
 import re
 from copy import copy
-from typing import Callable, Tuple, Union, Any, Optional
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Pattern
+from typing import Tuple
+from typing import Union
 
 from ..exceptions import NotFoundError
 
@@ -10,18 +17,18 @@ _SUPPORTED_METHODS = ("get", "post", "put", "delete", "patch", "options", "head"
 
 
 class Route:
-    def __init__(self, route: str, **kwargs) -> None:
+    def __init__(self, route: str, **kwargs):
         self.route = route
         self._part_patterns = kwargs
-        self._attribute_names = []
-        self._pattern = None
-        self._attributes = {}
+        self._attribute_names: List[str] = []
+        self._pattern: Pattern[str] = None
+        self._attributes: Dict[str, str] = {}
 
     @property
-    def pattern(self) -> str:
+    def pattern(self) -> Pattern[str]:
         if not self._pattern:
             self._parse()
-        return self._pattern
+        return self._pattern  # type: ignore
 
     def _parse(self) -> None:
         def _parse_var(match):
@@ -75,8 +82,8 @@ class Route:
 
 
 class Router:
-    def __init__(self) -> None:
-        self._routes = {}
+    def __init__(self):
+        self._routes: Dict[str, List] = {}
         for method in _SUPPORTED_METHODS:
             self._routes[method] = []
 

@@ -1,8 +1,10 @@
 from typing import Any
+from typing import Type as BaseType
+from typing import Union
 
+from ...exceptions import ValidationError
 from ..schema import Schema
 from ..validators import Validator
-from ...exceptions import ValidationError
 
 
 class Type(Validator, Schema):
@@ -12,9 +14,9 @@ class Type(Validator, Schema):
     :: _Open Api types: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types
     """
 
-    accept_types = ()
-    reject_types = ()
-    type: str = None
+    accept_types: Union[tuple, BaseType] = ()
+    reject_types: Union[tuple, BaseType] = ()
+    type: str = ""
 
     def __init__(self):
         self.extra_validators = []

@@ -1,4 +1,5 @@
 from io import BytesIO
+
 from opyapi.http import HttpRequest
 from opyapi.http.message import MultipartBody
 from opyapi.http.message.multipart_body import UploadedFile
@@ -43,3 +44,4 @@ def test_multipart_body():
     assert body["file_a"].filename == "orange.gif"
     assert body["file_b"].filename == "yellow.gif"
     assert body.get("test2", "default") == "default"
+    assert len(body["file_a"]) == 49

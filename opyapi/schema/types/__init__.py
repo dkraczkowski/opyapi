@@ -5,6 +5,6 @@ from .integer import Integer
 from .number import Number
 from .object import Object
 from .reference import Reference
-from .string import String
 from .string import Format as StringFormat
+from .string import String
 from .type import Type

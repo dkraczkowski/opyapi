@@ -1,10 +1,11 @@
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
+
 from .type import Type
 from opyapi.exceptions import ValidationError
 
 
 class Enum(Type):
-
     accept_types = (str, int, float)
     type = "string"
 
@@ -38,7 +39,7 @@ class Enum(Type):
         return value
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
         doc["enum"] = self.allowed_values
 
         return doc

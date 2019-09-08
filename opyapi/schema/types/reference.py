@@ -16,7 +16,7 @@ class Reference(Type):
             raise ValueError("Passed reference is not valid reference object")
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
         # todo: add reference mapping here
         return doc
 

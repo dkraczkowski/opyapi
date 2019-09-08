@@ -1,8 +1,8 @@
 import pytest
 
+from opyapi.exceptions import NotFoundError
 from opyapi.http.routing import Route
 from opyapi.http.routing import Router
-from opyapi.exceptions import NotFoundError
 
 
 def test_route_parsing():

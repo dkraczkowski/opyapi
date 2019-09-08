@@ -1,14 +1,18 @@
 from opyapi.api import Operation
-from opyapi.http import Route, HttpRequest
+from opyapi.api import Response
+from opyapi.api import TextContent
 from opyapi.controller import resolve_arguments
-
+from opyapi.http import HttpRequest
+from opyapi.http import Route
 
 fixture_route = Route("/resource/{id}/{sub_resource}").match("/resource/12/test")
 fixture_request = HttpRequest("get")
 
 
 def test_resolve_route_parameters():
-    @Operation(route="/resource/{id}/{sub_resource}")
+    @Operation(
+        path="/resource/{id}/{sub_resource}", responses=[Response(TextContent())]
+    )
     def test_controller(id: int, sub_resource):
         return id, sub_resource
 
@@ -18,7 +22,9 @@ def test_resolve_route_parameters():
 
 
 def test_resolve_request_parameter():
-    @Operation(route="/resource/{id}/{sub_resource}")
+    @Operation(
+        path="/resource/{id}/{sub_resource}", responses=[Response(TextContent())]
+    )
     def test_controller(request: HttpRequest):
         return request
 

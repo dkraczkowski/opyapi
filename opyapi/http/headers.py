@@ -1,5 +1,7 @@
-from typing import ItemsView, KeysView, ValuesView, Optional
-from copy import copy
+from typing import ItemsView
+from typing import KeysView
+from typing import Optional
+from typing import ValuesView
 
 
 def _normalize_header_name(name: str) -> str:
@@ -35,7 +37,7 @@ class Headers:
     def add_header(self, name: str, value: str) -> None:
         self._headers[_normalize_header_name(name)] = value
 
-    def get(self, name: str, default: Optional[str] = None) -> str:
+    def get(self, name: str, default: str = "") -> str:
         if name in self:
             return self.__getitem__(name)
         return default

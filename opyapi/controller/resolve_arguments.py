@@ -1,7 +1,11 @@
 import inspect
 from typing import Callable
-from ..http import Route, HttpRequest
-from ..http.message import FormBody, JsonBody, MultipartBody
+
+from ..http import HttpRequest
+from ..http import Route
+from ..http.message import FormBody
+from ..http.message import JsonBody
+from ..http.message import MultipartBody
 
 
 def _resolve_to_resource(argument_type, argument_key, callback, request):

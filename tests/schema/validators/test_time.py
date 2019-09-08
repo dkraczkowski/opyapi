@@ -1,6 +1,8 @@
-import pytest
-from opyapi.schema.validators import Time
 from datetime import time
+
+import pytest
+
+from opyapi.schema.validators import Time
 
 
 def test_can_instantiate():

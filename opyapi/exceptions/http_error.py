@@ -1,7 +1,7 @@
 from typing import Optional
 
-from .base_error import OpyapiError
 from ..http import HttpResponse
+from .base_error import OpyapiError
 
 
 class HttpError(OpyapiError, HttpResponse):

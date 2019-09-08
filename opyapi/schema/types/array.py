@@ -1,12 +1,12 @@
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 
-from .type import Type
-from ..validators import Capacity
 from ...exceptions import ValidationError
+from ..validators import Capacity
+from .type import Type
 
 
 class Array(Type):
-
     accept_types = (tuple, list)
     type = "array"
 
@@ -54,7 +54,7 @@ class Array(Type):
         return value
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
         if self.items_type:
             doc["items"] = self.items_type.to_doc()
         if self.min_length:

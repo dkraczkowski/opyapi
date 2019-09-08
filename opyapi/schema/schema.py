@@ -1,37 +1,38 @@
+from typing import Any
+from typing import Dict
+
+
 class Schema:
-    type: str = None
+    type: str
     default = None
     read_only: bool = False
     write_only: bool = False
-    nullable: bool = None
+    nullable: bool
     deprecated: bool = False
     description: str = ""
 
-    def to_doc(self) -> dict:
-        raise NotImplemented()
-
-    def _get_base_doc(self) -> dict:
-        doc = {"type": self.type}
+    def to_doc(self) -> Dict[str, Any]:
+        result: Dict[str, Any] = {"type": self.type}
 
         if self.nullable:
-            doc["nullable"] = self.nullable
+            result["nullable"] = self.nullable
 
         if self.default is not None:
-            doc["default"] = self.default
+            result["default"] = self.default
 
         if self.deprecated:
-            doc["deprecated"] = self.deprecated
+            result["deprecated"] = self.deprecated
 
         if self.description:
-            doc["description"] = self.description
+            result["description"] = self.description
 
         if self.read_only:
-            doc["read_only"] = self.read_only
+            result["readOnly"] = self.read_only
 
         if self.write_only:
-            doc["write_only"] = self.write_only
+            result["writeOnly"] = self.write_only
 
-        return doc
+        return result
 
 
 __all__ = ["Schema"]

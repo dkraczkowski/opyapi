@@ -1,6 +1,7 @@
 import pytest
-from opyapi.schema.validators import Url
+
 from opyapi.exceptions import ValidationError
+from opyapi.schema.validators import Url
 
 
 def test_can_instantiate():

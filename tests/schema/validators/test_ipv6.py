@@ -1,6 +1,7 @@
 import pytest
-from opyapi.schema.validators import Ipv6
+
 from opyapi.exceptions import ValidationError
+from opyapi.schema.validators import Ipv6
 
 
 def test_can_instantiate():

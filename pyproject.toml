@@ -30,9 +30,10 @@ bjoern = "^3.0"
 pytest = "^4.1.0"
 pytest-cov = "^2.5"
 pytest-mock = "^1.9"
-pre-commit = "^1.10"
+mypy = "^0.720.0"
+pre-commit = "^1.18"
 black = { version = "^19.3b0", python = "^3.6" }
 
 
 [tool.poetry.scripts]
-opyapi = "opyapi.console:main"
+opyapi = "opyapi:main"

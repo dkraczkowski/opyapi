@@ -1,5 +1,7 @@
 import pytest
-from opyapi.http import HttpResponse, Headers
+
+from opyapi.http import Headers
+from opyapi.http import HttpResponse
 
 
 def test_can_instantiate():

@@ -1,16 +1,13 @@
 import json
 from io import BytesIO
 from json.decoder import JSONDecodeError
-from typing import Optional
 
 from .body import RequestBody
 
 
 class JsonBody(RequestBody):
     @classmethod
-    def from_wsgi(
-        cls, wsgi_input: BytesIO, encoding: Optional[str] = None
-    ) -> "JsonBody":
+    def from_wsgi(cls, wsgi_input: BytesIO, encoding: str = "utf8") -> "JsonBody":
         wsgi_input.seek(0)
         decoded_input = wsgi_input.read().decode(encoding)
 

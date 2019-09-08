@@ -1,7 +1,10 @@
-from typing import Callable
+from typing import Callable, Optional
 
 import bjoern
 
+from .api import OpenApi
+from .api.annotation import read_annotation
+from .api.server import Server
 from .controller import create_response, resolve_arguments
 from .exceptions import HttpError
 from .http import HttpRequest, HttpResponse, Router
@@ -16,31 +19,17 @@ class Application:
     operations: list = []
     resources: list = []
     router: Router
+    suspended: bool = False
 
     def _boot(self):
         self.router = Router()
-        for handler in self.operations:
-            operation = handler.get_opyapi_annotation()
-            self.router.add_route(operation.method, operation.route, handler)
+        for handler in OpenApi.operations:
+            operation = getattr(handler, "__opyapi__")
+            self.router.add_route(operation.method, operation.path, handler)
 
     @classmethod
-    def add_server(cls, server) -> None:
-        cls.servers.append(server)
-
-    @classmethod
-    def add_operation(cls, operation) -> None:
-        cls.operations.append(operation)
-
-    @classmethod
-    def add_resource(cls, resource) -> None:
-        cls.resources.append(resource)
-
-    @classmethod
-    def get_server(cls, server_id: str):
-        for server in cls.servers:
-            annotation = server.get_opyapi_annotation()
-            if annotation.id == server_id:
-                return server
+    def suspend(cls):
+        cls.suspended = True
 
     def on_error(self, exception: Exception) -> HttpResponse:
         if isinstance(exception, HttpError):
@@ -71,17 +60,28 @@ class Application:
         return response.body
 
     @classmethod
-    def run(cls, server_id: str, runner: Callable = bjoern.run):
-        server = cls.get_server(server_id)
+    def run(cls, server_id: str, runner: Callable = bjoern.run) -> None:
+        if (
+            cls.suspended
+        ):  # Application can be suspended from running if generation documentation happens
+            return
+        opyapi: OpenApi = read_annotation(cls)
+        server: Optional[Callable] = None
+
+        # Find server by id
+        for server_handler in opyapi.servers:
+            if read_annotation(server_handler).id == server_id:
+                server = server_handler
+
         if server is None:
             raise ValueError(
                 f"Server `{server_id}` was not recognized. "
                 f"Are you sure you have decorated class with @Server(id='{server_id}' ...) decorator"
             )
-        server_details = server.get_opyapi_annotation()
+        server_annotation: Server = read_annotation(server)
         app = cls()
         app._boot()
-        runner(app, server_details.host, server_details.port)
+        runner(app, server_annotation.host, server_annotation.port)
 
 
 __all__ = ["Application"]

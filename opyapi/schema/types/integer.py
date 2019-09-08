@@ -1,7 +1,8 @@
 from typing import Optional
 
+from ..validators import MultipleOf
+from ..validators import Range
 from .type import Type
-from ..validators import MultipleOf, Range
 
 
 class Integer(Type):
@@ -42,7 +43,7 @@ class Integer(Type):
             self.extra_validators.append(MultipleOf(self.multiple_of))
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
 
         if self.minimum is not None:
             doc["minimum"] = self.minimum

@@ -11,7 +11,7 @@ class Object(Type):
 
     def __init__(
         self,
-        properties: dict,
+        properties: dict = {},
         title: str = "",
         description: str = "",
         required: Union[list, tuple] = (),
@@ -52,9 +52,9 @@ class Object(Type):
         return value
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
 
-        if self.required is not None:
+        if self.required:
             doc["required"] = self.required
 
         doc["properties"] = {}

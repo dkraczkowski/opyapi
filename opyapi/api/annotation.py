@@ -1,28 +1,31 @@
-from typing import Type, TypeVar
+from typing import Type
+from typing import TypeVar
+
+from .doc_object import DocObject
 
 T = TypeVar("T")
-_ANNOTATION_PROPERTY = "__opyapi_annotation__"
+ANNOTATION_PROPERTY = "__opyapi__"
 
 
-class Annotation:
+class Annotation(DocObject):
     """
     Base class for all other classes that are used as decorators,
     responsible for binding open api api into user-land classes.
     """
 
     def __call__(self, target: Type[T]) -> T:
-        """
-        :param target: annotated class or method
-        :return: returns the target instance with applied api api
-        """
-        setattr(target, _ANNOTATION_PROPERTY, self)
-
-        def get_annotation():
-            return getattr(target, _ANNOTATION_PROPERTY)
-
-        target.get_opyapi_annotation = get_annotation
-
-        return target
+        raise NotImplemented()
 
 
-__all__ = ["Annotation"]
+def bind_annotation(obj: object, annotation: Annotation) -> None:
+    setattr(obj, ANNOTATION_PROPERTY, annotation)
+
+
+def read_annotation(obj: object) -> Annotation:
+    annotation = getattr(obj, ANNOTATION_PROPERTY, None)
+    if annotation is None:
+        raise ValueError(f"Could not read annotation data from object {obj}")
+    return annotation
+
+
+__all__ = ["Annotation", "bind_annotation", "read_annotation"]

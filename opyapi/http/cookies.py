@@ -1,6 +1,6 @@
-from typing import Optional
 from datetime import datetime
 from http.cookies import SimpleCookie
+from typing import Optional
 
 
 class Cookie:

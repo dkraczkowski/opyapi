@@ -1,37 +1,25 @@
 from enum import Enum
 from typing import Optional
 
+from ..validators import Length
+from ..validators import validators
 from .type import Type
-from ..validators import (
-    Date,
-    DateTime,
-    Email,
-    Falsy,
-    Hostname,
-    Ipv4,
-    Ipv6,
-    Length,
-    Time,
-    Truthy,
-    Uri,
-    Url,
-    Uuid,
-)
 
 
 class Format(Enum):
-    DATETIME = DateTime()
-    DATE = Date()
-    TIME = Time()
-    URI = Uri()
-    URL = Url()
-    EMAIL = Email()
-    UUID = Uuid()
-    HOSTNAME = Hostname()
-    IPV4 = Ipv4()
-    IPV6 = Ipv6()
-    TRUTHY = Truthy()
-    FALSY = Falsy()
+    DATETIME = validators.date_time
+    DATE = validators.date
+    TIME = validators.time
+    URI = validators.uri
+    URL = validators.url
+    EMAIL = validators.email
+    UUID = validators.uuid
+    HOSTNAME = validators.hostname
+    IPV4 = validators.ipv4
+    IPV6 = validators.ipv6
+    TRUTHY = validators.truthy
+    FALSY = validators.falsy
+    SEM_VER = validators.sem_ver
 
 
 class String(Type):
@@ -72,7 +60,7 @@ class String(Type):
             self.extra_validators.append(string_format.value)
 
     def to_doc(self) -> dict:
-        doc = self._get_base_doc()
+        doc = super().to_doc()
 
         if self.min_length is not None:
             doc["minLength"] = self.min_length

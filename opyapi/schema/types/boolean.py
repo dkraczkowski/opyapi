@@ -2,7 +2,6 @@ from .type import Type
 
 
 class Boolean(Type):
-
     accept_types = bool
     type = "boolean"
 
@@ -12,8 +11,8 @@ class Boolean(Type):
         nullable: bool = False,
         default=None,
         deprecated: bool = False,
-        read_only: bool = None,
-        write_only: bool = None,
+        read_only: bool = False,
+        write_only: bool = False,
     ):
         super().__init__()
         self.write_only = write_only
@@ -22,9 +21,6 @@ class Boolean(Type):
         self.default = default
         self.nullable = nullable
         self.description = description
-
-    def to_doc(self) -> dict:
-        return self._get_base_doc()
 
 
 __all__ = ["Boolean"]

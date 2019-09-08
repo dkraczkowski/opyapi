@@ -1,13 +1,16 @@
 import json
-from typing import Any, Callable
+from typing import Any
+from typing import Callable
+from typing import Dict
 
+from ..api.annotation import read_annotation
 from ..exceptions import HttpError
 from ..http import HttpResponse
 from ..schema import Object
 
 
 def transform_object(obj: Any, mapping: dict, schema: Object) -> dict:
-    result = {}
+    result: Dict[str, Any] = {}
     for key, property in schema.properties.items():
         if key not in mapping:
             if property.nullable:
@@ -37,7 +40,7 @@ def create_response(controller: Callable, args: list) -> HttpResponse:
     result = controller(*args)
     response_code = result[0]
     response_data = result[1]
-    response_headers = {}
+    response_headers: Dict[str, str] = {}
     if len(result) == 3:
         response_headers = result[2]
 
@@ -47,7 +50,7 @@ def create_response(controller: Callable, args: list) -> HttpResponse:
     if not isinstance(result, (list, tuple)):
         raise HttpError("Uri handler didnt return expected value", 406)
 
-    annotation = controller.get_opyapi_annotation()
+    annotation = read_annotation(controller)
     resource = None
     for response_annotation in annotation.responses:
         if response_annotation.status_code == result[0]:

@@ -1,4 +1,5 @@
-from typing import Optional, Sized
+from typing import Optional
+from typing import Sized
 
 from .validator import Validator
 from opyapi.exceptions import InvalidLengthError

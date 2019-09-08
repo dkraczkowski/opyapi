@@ -1,8 +1,11 @@
 from cgi import parse_header
 from enum import Enum
-from io import BytesIO, TextIOWrapper
+from io import BytesIO
 from tempfile import TemporaryFile
-from typing import Optional
+from typing import Any
+from typing import Dict
+from typing import IO
+from typing import Tuple
 
 from .form_body import FormBody
 
@@ -16,7 +19,7 @@ class ParserState(Enum):
     END = 5
 
 
-def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
+def _parse_multipart_data(data, boundary: str, encoding: str = "utf8"):
     state = ParserState.PART_BOUNDARY
     prev_byte = None
     cursor = 0
@@ -25,23 +28,25 @@ def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
     body = MultipartBody()
 
     def _append_content_to_body(
-        _content_disposition: str, _content_type: str, _content_data
-    ):
-        _content_disposition = parse_header(_content_disposition[20:])
-        if "filename" in _content_disposition[1]:
+        raw_content_disposition: str, _content_type: str, _content_data
+    ) -> None:
+        parsed_content_disposition: Tuple[str, Dict[str, str]] = parse_header(
+            raw_content_disposition[20:]
+        )
+        if "filename" in parsed_content_disposition[1]:
             tmp_file = TemporaryFile()
             tmp_file.write(_content_data)
             tmp_file.seek(0)
-            body[_content_disposition[1]["name"]] = UploadedFile(
+            body[parsed_content_disposition[1]["name"]] = UploadedFile(
                 tmp_file,
                 _content_type[14:].lower(),
-                _content_disposition[1]["filename"],
+                parsed_content_disposition[1]["filename"],
             )
         else:
-            body[_content_disposition[1]["name"]] = _content_data.decode(encoding)
+            body[parsed_content_disposition[1]["name"]] = _content_data.decode(encoding)
 
     content_disposition = ""
-    content_type = None
+    content_type = ""
     content_cursor = 0
 
     for code in data:
@@ -81,13 +86,13 @@ def _parse_multipart_data(data, boundary: str, encoding: Optional[str] = None):
             if line_break and string_buffer == "--" + boundary:
                 content_data = data[content_cursor + 1 : cursor - (boundary_length + 5)]
                 _append_content_to_body(content_disposition, content_type, content_data)
-                content_type = None
+                content_type = ""
                 state = ParserState.CONTENT_DISPOSITION
 
             if line_break and string_buffer == "--" + boundary + "--":
                 content_data = data[content_cursor + 1 : cursor - (boundary_length + 7)]
                 _append_content_to_body(content_disposition, content_type, content_data)
-                content_type = None
+                content_type = ""
                 state = ParserState.END
 
             if line_break:
@@ -104,14 +109,15 @@ class UploadedFile:
     Proxy class for uploaded file
     """
 
-    def __init__(self, file: TemporaryFile, mimetype: str, filename: str) -> None:
+    def __init__(self, file: IO[Any], mimetype: str, filename: str):
         self.file = file
         self.mimetype = mimetype
         self.filename = filename
-        self._str = None
+        self.length = 0
+        self._str = ""
 
     def read(self) -> bytes:
-        return self.value.read()
+        return self.file.read()
 
     def seek(self, offset: int) -> int:
         return self.file.seek(offset)
@@ -119,7 +125,7 @@ class UploadedFile:
     def close(self) -> None:
         self.file.close()
 
-    def save(self, path: str) -> TextIOWrapper:
+    def save(self, path: str) -> IO[Any]:
         if self.file.closed:
             raise ValueError(f"Cannot save to file {path} of closed stream.")
         with open(path, "wb") as file:
@@ -137,7 +143,11 @@ class UploadedFile:
         raise ValueError(f"Cannot convert instance of {TemporaryFile.__name__} to int")
 
     def __len__(self) -> int:
-        return len(self.file)
+        if not self.length:
+            bytes = self.read()
+            self.seek(0)
+            self.length = len(bytes)
+        return self.length
 
     def __bool__(self) -> bool:
         return len(self) > 0
@@ -159,7 +169,7 @@ class UploadedFile:
 class MultipartBody(FormBody):
     @staticmethod
     def from_wsgi(
-        wsgi_input: BytesIO, encoding: str = None, boundary: str = None
+        wsgi_input: BytesIO, encoding: str = "utf8", boundary: str = ""
     ) -> "MultipartBody":
         assert boundary, (
             "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__

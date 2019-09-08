@@ -1,6 +1,7 @@
+import pytest
+
 from opyapi.controller import transform_object
 from opyapi.schema import *
-import pytest
 
 
 user_schema = Object(

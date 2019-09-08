@@ -1,10 +1,9 @@
-from typing import Type, TypeVar, Optional
+from typing import Any, Dict, Optional, Type, TypeVar, Union
 
 from . import Annotation
+from .openapi import OpenApi
 from ..exceptions import ValidationError
-from ..application import Application
-from ..schema import Object
-from ..schema.types import Type as SchemaType
+from ..schema.types import Object, Type as SchemaType
 
 T = TypeVar("T")
 
@@ -20,50 +19,54 @@ class Resource(Annotation):
         self,
         title: str,
         description: str = "",
-        required: tuple = (),
+        id: str = "",
+        required: Union[tuple, list] = (),
         deprecated: bool = False,
-        mapping: Optional[dict] = None,
-    ) -> None:
-        self._attributes = {
-            "title": title,
-            "description": description,
-            "required": required,
-            "deprecated": deprecated,
-            "mapping": mapping,
-        }
+        mapping: Optional[Dict[str, Any]] = None,
+    ):
+        self.id = id
+        self.mapping = mapping
+        self.title = title
+        self.description = description
+        self.required = required
+        self.deprecated = deprecated
 
     def __call__(self, target: Type[T]) -> T:
         schema = Object(
+            title=self.title,
+            description=self.description,
+            required=self.required,
+            deprecated=self.deprecated,
             properties=target.__dict__["__annotations__"],
-            title=self._attributes["title"],
-            description=self._attributes["description"],
-            required=self._attributes["required"],
-            deprecated=self._attributes["deprecated"],
         )
-        target._data = {}
 
         def _init(instance, **kwargs) -> None:
-            kwargs = schema.validate(kwargs)
-            super(target, instance).__setattr__("_data", {})
+            super(target, instance).__setattr__("_data", {})  # skip _setattr
             for key, value in kwargs.items():
                 instance.__setattr__(key, value)
 
-        def _getattr(instance, name):
-            if name not in instance.schema.properties:
+        def _getattr(instance, attribute_name):
+            if attribute_name not in schema.properties:
                 raise ValidationError(
-                    f"Attribute `{name}` is not specified for resource {target}."
+                    f"Attribute `{attribute_name}` is not specified for resource {target}."
                 )
 
-            return instance._data[name] if name in instance._data else None
+            return (
+                instance._data[attribute_name]
+                if attribute_name in instance._data
+                else None
+            )
 
-        def _setattr(instance, name, value) -> None:
-
-            if name not in instance.schema.properties:
+        def _setattr(instance, attribute_name, value) -> None:
+            if attribute_name not in schema.properties:
                 raise ValidationError(
-                    f"Attribute `{name}` is not specified for resource {target}."
+                    f"Attribute `{attribute_name}` is not specified for resource {target}."
                 )
+            schema.properties[attribute_name].validate(value)
+            instance._data[attribute_name] = value
 
-            instance._data[name] = value
+        def _to_doc() -> dict:
+            return schema.to_doc()
 
         def _to_dict(instance) -> dict:
             result = {}
@@ -76,18 +79,16 @@ class Resource(Annotation):
 
         resource = type(
             target.__name__ + "Resource",
-            (target, Resource, SchemaType),
+            (target, SchemaType),
             {
-                "schema": schema,
-                "_data": {},
                 "__init__": _init,
                 "__getattr__": _getattr,
                 "__setattr__": _setattr,
-                "mapping": self._attributes["mapping"],
                 "to_dict": _to_dict,
+                "to_doc": _to_doc,
             },
         )
-        Application.add_resource(resource)
+        OpenApi.add_resource(resource, self)
 
         return resource
 

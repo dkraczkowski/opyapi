@@ -1,5 +1,6 @@
-from typing import Optional, Union
 from io import BytesIO
+from typing import Optional
+from typing import Union
 
 from .headers import Headers
 

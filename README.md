@@ -1,9 +1,9 @@
 # opyapi [![Build Status](https://travis-ci.org/dkraczkowski/opyapi.svg?branch=master)](https://travis-ci.org/dkraczkowski/opyapi)
-Opyapi is a python framework build around [Open API](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#dataTypes) 
+Opyapi is a python framework build around [Open API](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#dataTypes)
 specification to provide toolset for rapid REST api development.
 
 ## Beauty of opyapi
-No bloat. Just code. 
+No bloat. Just code.
 
 ### Features
   - Automated documentation generation
@@ -58,7 +58,7 @@ is_hungry = Boolean()
  - `deprecated` deprecates field in the schema
  - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
  - `write_only` sets property to write only mode (property is hidden from all GET requests)
- 
+
 ### Integer `opyapi.schema.types.Integer`
 Represent integer numbers.
 
@@ -66,12 +66,12 @@ Represent integer numbers.
 from opyapi.schema.types import Integer
 
 age = Integer()
-``` 
+```
 
 **Arguments:**
- - `minimum` sets minimum accepted value 
+ - `minimum` sets minimum accepted value
  - `maximum` sets maximum accepted value
- - `multiple_of` accepts value if it is multiplication of a given number 
+ - `multiple_of` accepts value if it is multiplication of a given number
  - `default` assigns default value if none is passed in the request
  - `nullable` accepts nulls, nones as value
  - `description` sets open api description for the field
@@ -80,29 +80,29 @@ age = Integer()
  - `write_only` sets property to write only mode (property is hidden from all GET requests)
 
 ### Number `opyapi.schema.types.Number`
-Represents any valid number, like: 
+Represents any valid number, like:
  - integer
  - rational number
  - float
  - double
- 
+
 ```python
 from opyapi.schema.types import Number
 
 money = Number()
-``` 
+```
 
 **Arguments:**
- - `minimum` sets minimum accepted value 
+ - `minimum` sets minimum accepted value
  - `maximum` sets maximum accepted value
- - `multiple_of` accepts value if it is multiplication of a given number 
+ - `multiple_of` accepts value if it is multiplication of a given number
  - `default` assigns default value if none is passed in the request
  - `nullable` accepts nulls, nones as value
  - `description` sets open api description for the field
  - `deprecated` deprecates field in the schema
  - `read_only` sets property to read only mode (POST, PUT, PATCH methods cannot mutate property)
  - `write_only` sets property to write only mode (property is hidden from all GET requests)
- 
+
 ### String `opyapi.schema.types.String`
 Represent string values.
 
@@ -137,7 +137,7 @@ Makes string type to accept only ISO8601 valid time format.
 
 ##### `email`
 Makes string type to accept only valid email address.
- 
+
  | Please note: that this format can be mean to some special cases of email addresses.
 
 ##### `hostname`
@@ -171,12 +171,12 @@ colors = Enum("red", "green", "blue", "yellow")
 
 ### Array
 Defines iterable/collection item in the schema.
- 
+
 ```python
 from opyapi.schema.types import Array, Enum
 
 colors = Array(items=Enum("red", "green", "blue", "yellow"))
-``` 
+```
 
 **Arguments:**
  - `items` sets valid schema for each item contained in the array

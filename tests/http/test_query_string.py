@@ -1,4 +1,23 @@
-from opyapi.http.query_string import parse_qs, QueryString
+from pytest import mark
+from pytest import raises
+
+from opyapi.http.query_string import build_dict_from_path
+from opyapi.http.query_string import parse_qs
+from opyapi.http.query_string import QueryString
+
+
+@mark.parametrize(
+    "query_string,expected",
+    [["a", {"a": 1}], ["a[]", {"a": [1]}], ["a[a]", {"a": {"a": 1}}]],
+)
+def test_build_dict_from_path(query_string: str, expected: dict) -> None:
+    assert build_dict_from_path(query_string, 1) == expected
+
+
+@mark.parametrize("query_string", ["[a]", "[a[]]", "[a][a]", "[]"])
+def test_if_fail_build_dict_from_path(query_string: str):
+    with raises(ValueError):
+        build_dict_from_path(query_string, 1)
 
 
 def test_parse_qs_with_no_value():

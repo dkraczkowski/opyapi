@@ -1,9 +1,22 @@
-from typing import ItemsView, KeysView, ValuesView, Optional
+from typing import Any
+from typing import Dict
+from typing import ItemsView
+from typing import KeysView
+from typing import ValuesView
 from urllib.parse import unquote_plus
 
 
-def create_dict_for_key(path: str, value) -> dict:
+def build_dict_from_path(path: str, value) -> Dict[str, Any]:
+    """
+    Creates dictionary representing passed path with given value.
+    For example: [some][path] will be turned to {"some":{"path": value}} dict.
+    :param path:
+    :param value:
+    :return:
+    """
     starting_bracket = path.find("[")
+    if starting_bracket == 0:
+        raise ValueError("Path cannot start with [")
     if path[-1:] != "]":
         return {path: value}
     parsed_path = [path[:starting_bracket]]
@@ -27,7 +40,7 @@ def create_dict_for_key(path: str, value) -> dict:
     return _create_leaf(parsed_path)
 
 
-def deep_merge(a: dict, b: dict) -> dict:
+def deep_merge(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
     for key in b:
         if key in a:
             if isinstance(a[key], dict) and isinstance(b[key], dict):
@@ -45,28 +58,23 @@ def deep_merge(a: dict, b: dict) -> dict:
     return a
 
 
-def parse_qs(query: str, encoding: Optional[str] = None) -> dict:
+def parse_qs(query: str) -> Dict[str, Any]:
     """
     Parse query string with json forms support, more available in the following link
     https://www.w3.org/TR/html-json-forms/
     :param query:
-    :param encoding:
     :return:
     """
-    result = {}
+    result: Dict[str, Any] = {}
     if query == "":
         return result
 
     for item in query.split("&"):
         (name, value) = item.split("=")
         value = unquote_plus(value)
-        if encoding:
-            name = name.decode(encoding)
-            value = value.decode(encoding)
 
         if "[" in name:
-            value = create_dict_for_key(name, value)
-            result = deep_merge(result, value)
+            result = deep_merge(result, build_dict_from_path(name, value))
         elif name in result:
             if isinstance(result[name], list):
                 result[name].append(value)
@@ -79,9 +87,9 @@ def parse_qs(query: str, encoding: Optional[str] = None) -> dict:
 
 
 class QueryString:
-    def __init__(self, string: str, encoding: Optional[str] = None):
+    def __init__(self, string: str):
         self._str = string
-        self._params = parse_qs(string, encoding)
+        self._params = parse_qs(string)
 
     def __getitem__(self, key) -> str:
         return self._params[key]
