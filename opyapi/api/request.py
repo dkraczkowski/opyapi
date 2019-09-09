@@ -1,5 +1,5 @@
-from .media_type import MediaType
 from .doc_object import DocObject
+from .media_type import MediaType
 
 
 class Request(DocObject):

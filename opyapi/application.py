@@ -1,13 +1,17 @@
-from typing import Callable, Optional
+from typing import Callable
+from typing import Optional
 
 import bjoern
 
 from .api import OpenApi
 from .api.annotation import read_annotation
 from .api.server import Server
-from .controller import create_response, resolve_arguments
+from .controller import create_response
+from .controller import resolve_arguments
 from .exceptions import HttpError
-from .http import HttpRequest, HttpResponse, Router
+from .http import HttpRequest
+from .http import HttpResponse
+from .http import Router
 
 
 class Application:

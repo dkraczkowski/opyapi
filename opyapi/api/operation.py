@@ -1,11 +1,17 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, Optional
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Type
+from typing import TypeVar
+from typing import Union
 
+from ..schema import Schema
 from .annotation import Annotation
 from .openapi import OpenApi
 from .parameter import Parameter
 from .request import Request
 from .response import Response
-from ..schema import Schema
 
 T = TypeVar("T")
 

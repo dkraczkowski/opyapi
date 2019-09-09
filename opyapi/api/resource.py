@@ -1,9 +1,15 @@
-from typing import Any, Dict, Optional, Type, TypeVar, Union
+from typing import Any
+from typing import Dict
+from typing import Optional
+from typing import Type
+from typing import TypeVar
+from typing import Union
 
 from . import Annotation
-from .openapi import OpenApi
 from ..exceptions import ValidationError
-from ..schema.types import Object, Type as SchemaType
+from ..schema.types import Object
+from ..schema.types import Type as SchemaType
+from .openapi import OpenApi
 
 T = TypeVar("T")
 

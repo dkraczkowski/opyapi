@@ -1,8 +1,13 @@
-from typing import Optional, Type, TypeVar
+from typing import Optional
+from typing import Type
+from typing import TypeVar
 
-from .annotation import Annotation, bind_annotation, read_annotation
-from .info import Contact, License
 from ..schema import validators
+from .annotation import Annotation
+from .annotation import bind_annotation
+from .annotation import read_annotation
+from .info import Contact
+from .info import License
 
 T = TypeVar("T")
 

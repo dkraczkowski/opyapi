@@ -46,15 +46,8 @@ def get_pet(id: int):
 
 @PostOperation(
     "/pets/",
-    request=Request(
-        content=JsonContent(Pet)
-    ),
-    responses=[
-        Response(
-            content=JsonContent(Pet),
-            status_code=200
-        )
-    ]
+    request=Request(content=JsonContent(Pet)),
+    responses=[Response(content=JsonContent(Pet), status_code=200)],
 )
 def create_pet(pet: Pet):
     return pet

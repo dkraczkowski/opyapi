@@ -1,4 +1,8 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Type
+from typing import TypeVar
 
 from . import Annotation
 from .doc_object import DocObject

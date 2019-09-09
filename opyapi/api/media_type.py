@@ -4,8 +4,8 @@ from typing import Dict
 from ..schema import Schema
 from ..schema import String
 from .annotation import read_annotation
-from .resource import Resource
 from .doc_object import DocObject
+from .resource import Resource
 
 
 class MediaType(DocObject):
