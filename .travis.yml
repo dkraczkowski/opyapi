@@ -3,6 +3,7 @@ language: python
 stages:
   - linting
   - test
+  - codecov
 
 cache:
   pip: true
@@ -33,6 +34,8 @@ jobs:
         - pre-commit install-hooks
       script:
         - pre-commit run --all-files
-      after-script:
+    - stage: codecov
+      python: "3.6"
+      script:
         - pip install codecov
         - codecov
