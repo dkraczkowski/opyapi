@@ -19,13 +19,13 @@ class Time(Validator):
         if not _ISO_8601_TIME_REGEX.match(value):
             raise ValidationError(f"Passed value {value} is not valid ISO 8601 time.")
         parts = _ISO_8601_TIME_REGEX.fullmatch(value)
-        time_parts = parts.group("time")
+        time_parts = parts.group("time")  # type: ignore
         if ":" in time_parts:
             time_parts = time_parts.split(":")
         else:
             time_parts = list(map("".join, zip(*[iter(time_parts)] * 2)))
 
-        microseconds = parts.group("microseconds")
+        microseconds = parts.group("microseconds")  # type: ignore
         if microseconds is not None:
             microseconds = int(microseconds[1:])
         else:

@@ -18,8 +18,8 @@ class OpenApi(Annotation):
     title: str
     description: str
     terms_of_service: str
-    license: License
-    contact: Contact
+    license: Optional[License]
+    contact: Optional[Contact]
     operations: list = []
     resources: list = []
 

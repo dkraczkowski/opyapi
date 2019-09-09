@@ -1,10 +1,11 @@
 from typing import Any
 from typing import Dict
+from typing import Optional
 
 
 class Schema:
     type: str
-    default = None
+    default: Optional[Any] = None
     read_only: bool = False
     write_only: bool = False
     nullable: bool

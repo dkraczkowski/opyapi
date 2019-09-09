@@ -21,7 +21,7 @@ class Route:
         self.route = route
         self._part_patterns = kwargs
         self._attribute_names: List[str] = []
-        self._pattern: Pattern[str] = None
+        self._pattern: Optional[Pattern[str]] = None
         self._attributes: Dict[str, str] = {}
 
     @property
@@ -52,7 +52,7 @@ class Route:
             return copy(self)
 
         if isinstance(matches[0], tuple):
-            matches = matches[0]
+            matches = list(matches[0])
 
         route = copy(self)
         match_index = 0

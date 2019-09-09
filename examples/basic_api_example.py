@@ -7,11 +7,6 @@ class Application:
     pass
 
 
-@Server(id="development", host="localhost", port=8080, variables={})
-class DevelopmentServer:
-    pass
-
-
 @Resource(title="Pet resource")
 class Pet:
     id: schema.Integer(read_only=True)
@@ -51,6 +46,3 @@ def get_pet(id: int):
 )
 def create_pet(pet: Pet):
     return pet
-
-
-Application.run("development")

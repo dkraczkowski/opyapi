@@ -4,8 +4,7 @@ from .integer import Integer
 
 
 class Number(Integer):
-
-    accept_types = numbers.Number
+    accept_types = numbers.Number  # type: ignore
     reject_types = bool
     type = "number"
 

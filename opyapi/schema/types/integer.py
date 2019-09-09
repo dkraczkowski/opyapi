@@ -6,22 +6,21 @@ from .type import Type
 
 
 class Integer(Type):
-
     type = "integer"
     accept_types = int
     reject_types = bool
 
     def __init__(
-        self,
-        minimum: Optional[int] = None,
-        maximum: Optional[int] = None,
-        multiple_of: Optional[int] = None,
-        description: str = "",
-        nullable: bool = False,
-        default: Optional[int] = None,
-        deprecated: bool = False,
-        read_only: bool = False,
-        write_only: bool = False,
+            self,
+            minimum: Optional[int] = None,
+            maximum: Optional[int] = None,
+            multiple_of: Optional[int] = None,
+            description: str = "",
+            nullable: bool = False,
+            default: Optional[int] = None,
+            deprecated: bool = False,
+            read_only: bool = False,
+            write_only: bool = False,
     ):
         super().__init__()
         self.minimum = minimum
