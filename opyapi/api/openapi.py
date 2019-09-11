@@ -30,13 +30,13 @@ class OpenApi(Annotation):
     """
 
     def __init__(
-        self,
-        title: str,
-        version: str = "1.0.0",
-        description: str = "",
-        terms_of_service: str = "",
-        license: Optional[License] = None,
-        contact: Optional[Contact] = None,
+            self,
+            title: str,
+            version: str = "1.0.0",
+            description: str = "",
+            terms_of_service: str = "",
+            license: Optional[License] = None,
+            contact: Optional[Contact] = None,
     ):
         """
         :param title: Your api title
@@ -46,6 +46,10 @@ class OpenApi(Annotation):
         :param: license: The license information for the exposed API
         :param: contact: The contact information for exposed API
         """
+        
+        OpenApi.servers = []
+        OpenApi.operations = []
+        OpenApi.resources = []
         validators.sem_ver.validate(version)
         if terms_of_service:
             validators.url.validate(terms_of_service)
@@ -56,7 +60,7 @@ class OpenApi(Annotation):
         OpenApi.contact = contact
         OpenApi.license = license
 
-    def __call__(self, target: Type[T]) -> T:
+    def __call__(self, target: T) -> T:
         from ..application import Application
 
         new_type = type("Api" + target.__name__, (target, Application), {})

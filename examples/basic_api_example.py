@@ -1,9 +1,15 @@
 from opyapi import schema
 from opyapi.api import *
+from typing import Union
 
 
 @OpenApi(version="1.0.0", title="Pet shop API")
 class Application:
+    pass
+
+
+@Server(id="development", host="localhost", port=8080, variables={})
+class DevelopmentServer:
     pass
 
 
@@ -46,3 +52,6 @@ def get_pet(id: int):
 )
 def create_pet(pet: Pet):
     return pet
+
+
+Application.run("development")

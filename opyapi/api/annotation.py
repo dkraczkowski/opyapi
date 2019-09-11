@@ -1,4 +1,3 @@
-from typing import Type
 from typing import TypeVar
 
 from .doc_object import DocObject
@@ -13,7 +12,7 @@ class Annotation(DocObject):
     responsible for binding open api api into user-land classes.
     """
 
-    def __call__(self, target: Type[T]) -> T:
+    def __call__(self, target: T) -> T:
         raise NotImplemented()
 
 

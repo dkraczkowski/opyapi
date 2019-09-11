@@ -18,15 +18,15 @@ T = TypeVar("T")
 
 class Operation(Annotation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response],
-        method: str = "get",
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request: Optional[Request] = None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response],
+            method: str = "get",
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request: Optional[Request] = None,
+            tags: List[str] = [],
     ):
         self.path = path
         self.method = method
@@ -49,7 +49,7 @@ class Operation(Annotation):
     .. _Open Api Operation: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operationObject
     """
 
-    def __call__(self, target: Type[T]) -> T:
+    def __call__(self, target: T) -> T:
         OpenApi.add_operation(target, self)
         return target
 
@@ -81,14 +81,14 @@ class Operation(Annotation):
 
 class GetOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(GetOperation, self).__init__(
             path, responses, "get", summary, description, parameters, request, tags
@@ -97,14 +97,14 @@ class GetOperation(Operation):
 
 class PostOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(PostOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags
@@ -113,14 +113,14 @@ class PostOperation(Operation):
 
 class PutOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(PutOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags
@@ -129,14 +129,14 @@ class PutOperation(Operation):
 
 class PatchOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(PatchOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags
@@ -145,14 +145,14 @@ class PatchOperation(Operation):
 
 class DeleteOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(DeleteOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags
@@ -161,14 +161,14 @@ class DeleteOperation(Operation):
 
 class HeadOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(HeadOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags
@@ -177,14 +177,14 @@ class HeadOperation(Operation):
 
 class OptionsOperation(Operation):
     def __init__(
-        self,
-        path: str,
-        responses: List[Response] = [],
-        summary: str = "",
-        description: str = "",
-        parameters: Dict[str, Union[Parameter, Schema]] = {},
-        request=None,
-        tags: List[str] = [],
+            self,
+            path: str,
+            responses: List[Response] = [],
+            summary: str = "",
+            description: str = "",
+            parameters: Dict[str, Union[Parameter, Schema]] = {},
+            request=None,
+            tags: List[str] = [],
     ):
         super(OptionsOperation, self).__init__(
             path, responses, "post", summary, description, parameters, request, tags

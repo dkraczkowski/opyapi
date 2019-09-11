@@ -40,12 +40,12 @@ class Server(Annotation):
     """
 
     def __init__(
-        self,
-        id: str,
-        host: str,
-        port: int = 80,
-        description: str = "",
-        variables: Dict[str, ServerVariable] = {},
+            self,
+            id: str,
+            host: str,
+            port: int = 80,
+            description: str = "",
+            variables: Dict[str, ServerVariable] = {},
     ):
         self.id = id
         self.variables = variables
@@ -54,7 +54,7 @@ class Server(Annotation):
         self.port = port
         self.url = host + ":" + str(port)
 
-    def __call__(self, target: Type[T]) -> T:
+    def __call__(self, target: T) -> T:
         OpenApi.add_server(target, self)
         return target
 
