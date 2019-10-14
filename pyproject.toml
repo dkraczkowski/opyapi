@@ -23,7 +23,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 cleo = "^0.7"
-requests = "^2.2"
 bjoern = "^3.0"
 
 [tool.poetry.dev-dependencies]

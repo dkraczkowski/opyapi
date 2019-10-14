@@ -1,25 +1,54 @@
 from enum import Enum
+from typing import Any
 from typing import Optional
 
-from ..validators import Length
-from ..validators import validators
+from opyapi.schema import formatters
+from opyapi.schema import validators
 from .type import Type
 
 
 class Format(Enum):
-    DATETIME = validators.date_time
-    DATE = validators.date
-    TIME = validators.time
-    URI = validators.uri
-    URL = validators.url
-    EMAIL = validators.email
-    UUID = validators.uuid
-    HOSTNAME = validators.hostname
-    IPV4 = validators.ipv4
-    IPV6 = validators.ipv6
-    TRUTHY = validators.truthy
-    FALSY = validators.falsy
-    SEM_VER = validators.sem_ver
+    DATETIME = "datetime"
+    DATE = "date"
+    TIME = "time"
+    URI = "uri"
+    URL = "url"
+    EMAIL = "email"
+    UUID = "uuid"
+    HOSTNAME = "hostname"
+    IPV4 = "ipv4"
+    IPV6 = "ipv6"
+    TRUTHY = "truthy"
+    FALSY = "falsy"
+    SEMVER = "semver"
+    BYTE = "byte"
+
+
+FORMAT_TO_VALIDATOR_MAP = {
+    Format.DATETIME: validators.validate_datetime,
+    Format.DATE: validators.validate_date,
+    Format.TIME: validators.validate_time,
+    Format.URI: validators.validate_uri,
+    Format.URL: validators.validate_url,
+    Format.EMAIL: validators.validate_email,
+    Format.UUID: validators.validate_uuid,
+    Format.HOSTNAME: validators.validate_hostname,
+    Format.IPV4: validators.validate_ipv4,
+    Format.IPV6: validators.validate_ipv6,
+    Format.TRUTHY: validators.validate_truthy,
+    Format.FALSY: validators.validate_falsy,
+    Format.SEMVER: validators.validate_semver,
+    Format.BYTE: validators.validate_base64,
+}
+
+FORMAT_TO_FORMATTER_MAP = {
+    Format.DATETIME: formatters.format_datetime,
+    Format.DATE: formatters.format_date,
+    Format.TIME: formatters.format_time,
+    Format.TRUTHY: formatters.format_boolean,
+    Format.FALSY: formatters.format_boolean,
+    Format.BYTE: formatters.format_base64,
+}
 
 
 class String(Type):
@@ -34,15 +63,12 @@ class String(Type):
         min_length: Optional[int] = None,
         max_length: Optional[int] = None,
         pattern: Optional[str] = None,
-        description: str = "",
         nullable: bool = False,
         default: Optional[str] = None,
         deprecated: bool = False,
         read_only: bool = False,
         write_only: bool = False,
     ):
-        super().__init__()
-        self.description = description
         self.nullable = nullable
         self.default = default
         self.deprecated = deprecated
@@ -53,28 +79,21 @@ class String(Type):
         self.pattern = pattern
         self.format = string_format
 
-        if min_length is not None or max_length is not None:
-            self.extra_validators.append(Length(minimum=min_length, maximum=max_length))
+    def validate(self, value: Any) -> None:
+        super().validate(value)
 
-        if string_format is not None and string_format in Format:
-            self.extra_validators.append(string_format.value)
+        if self.min_length is not None or self.max_length is not None:
+            validators.validate_length(value, self.min_length, maximum=self.max_length)
 
-    def to_doc(self) -> dict:
-        doc = super().to_doc()
+        if self.format in FORMAT_TO_VALIDATOR_MAP:
+            validate_value = FORMAT_TO_VALIDATOR_MAP[self.format]
+            validate_value(value)
 
-        if self.min_length is not None:
-            doc["minLength"] = self.min_length
+    def format_value(self, value: Any) -> Any:
+        if self.format in FORMAT_TO_FORMATTER_MAP:
+            return FORMAT_TO_FORMATTER_MAP[self.format](value)
 
-        if self.max_length is not None:
-            doc["maxLength"] = self.max_length
-
-        if self.pattern is not None:
-            doc["pattern"] = self.pattern
-
-        if self.format is not None:
-            doc["format"] = self.format
-
-        return doc
+        return value
 
 
 __all__ = ["String", "Format"]

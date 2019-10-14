@@ -1,6 +1,6 @@
 import pytest
 
-from opyapi.exceptions import ValidationError
+from opyapi.schema.errors import ValidationError
 from opyapi.schema.types import Enum
 
 
@@ -12,7 +12,7 @@ def test_can_instantiate():
 @pytest.mark.parametrize("value", ("some", "accepted", "values"))
 def test_validate_pass(value):
     validator = Enum("some", "accepted", "values")
-    assert validator.validate(value) == value
+    assert validator.validate(value) is None
 
 
 @pytest.mark.parametrize("value", ("invalid", "not", "blah"))

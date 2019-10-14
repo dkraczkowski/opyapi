@@ -1,20 +1,17 @@
-from typing import Type
-from typing import TypeVar
+from abc import abstractmethod
 
-from .doc_object import DocObject
-
-T = TypeVar("T")
 ANNOTATION_PROPERTY = "__opyapi__"
 
 
-class Annotation(DocObject):
+class Annotation:
     """
     Base class for all other classes that are used as decorators,
     responsible for binding open api api into user-land classes.
     """
 
-    def __call__(self, target: Type[T]) -> T:
-        raise NotImplemented()
+    @abstractmethod
+    def __call__(self, target):
+        pass
 
 
 def bind_annotation(obj: object, annotation: Annotation) -> None:

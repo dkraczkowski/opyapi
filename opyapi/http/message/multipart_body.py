@@ -172,7 +172,7 @@ class MultipartBody(FormBody):
         wsgi_input: BytesIO, encoding: str = "utf8", boundary: str = ""
     ) -> "MultipartBody":
         assert boundary, (
-            "%s.from_wsgi requires boundary parameter." % MultipartBody.__name__
+            "%s.from_wsgi requires boundary parameters." % MultipartBody.__name__
         )
         wsgi_input.seek(0)
         return _parse_multipart_data(wsgi_input.read(), boundary, encoding)

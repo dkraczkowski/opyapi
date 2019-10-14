@@ -1,17 +1,21 @@
-from ..schema import Schema
-from .doc_object import DocObject
+from typing import Type as BaseType
+from typing import Union
+
+from .api_doc import ApiDoc
+from .schema import Schema, generate_doc_from_schema
+from ..schema import Type
 
 
-class Parameter(DocObject):
+class Parameter(ApiDoc):
     """
     Implementation of Parameter Object
 
-    .. _Parameter Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#parameter-object
+    .. _Parameter Object: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#parameters-object
     """
 
     def __init__(
         self,
-        schema: Schema,
+        schema: Union[BaseType, Schema],
         description: str = "",
         required: bool = True,
         example: str = "",
@@ -21,26 +25,29 @@ class Parameter(DocObject):
         self.name = ""
         self.description = description
         self.required = required
+        if not isinstance(schema, Type):
+            schema = Type.from_basic_type(schema)  # type: ignore
         self.schema = schema
         self.example = example
         self.deprecated = deprecated
         self.location = location
+        self._location: str = "path"
 
     @property
-    def location(self):
+    def location(self) -> str:
         return self._location
 
     @location.setter
-    def location(self, location: str):
+    def location(self, location: str) -> None:
         assert location in (
             "query",
             "header",
             "path",
             "cookie",
-        ), f"Invalid location `{location}` passed for parameter"
+        ), f"Invalid location `{location}` passed for parameters"
         self._location = location
 
-    def to_doc(self):
+    def to_doc(self) -> dict:
         doc = {
             "name": self.name,
             "in": self.location,
@@ -52,14 +59,9 @@ class Parameter(DocObject):
             doc["deprecated"] = self.deprecated
 
         if self.schema:
-            doc["schema"] = self.schema.to_doc()
+            doc["schema"] = generate_doc_from_schema(self.schema)
 
         return doc
 
 
-class Header(Parameter):
-    def __init__(self, schema: Schema, description: str = ""):
-        super().__init__(schema=schema, description=description, location="header")
-
-
-__all__ = ["Parameter", "Header"]
+__all__ = ["Parameter"]

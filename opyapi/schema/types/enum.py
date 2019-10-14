@@ -1,8 +1,10 @@
+from typing import Any
+from typing import List
 from typing import Optional
 from typing import Union
 
+from opyapi.schema.errors import ValidationError
 from .type import Type
-from opyapi.exceptions import ValidationError
 
 
 class Enum(Type):
@@ -11,8 +13,7 @@ class Enum(Type):
 
     def __init__(
         self,
-        *args,
-        description: str = "",
+        *args: List[str],
         nullable: bool = False,
         default: Optional[Union[str, int, float]] = None,
         deprecated: bool = False,
@@ -26,9 +27,8 @@ class Enum(Type):
         self.deprecated = deprecated
         self.default = default
         self.nullable = nullable
-        self.description = description
 
-    def validate(self, value):
+    def validate(self, value: Any) -> None:
         super().validate(value)
 
         if value not in self.allowed_values:
@@ -37,12 +37,6 @@ class Enum(Type):
             )
 
         return value
-
-    def to_doc(self) -> dict:
-        doc = super().to_doc()
-        doc["enum"] = self.allowed_values
-
-        return doc
 
 
 __all__ = ["Enum"]
