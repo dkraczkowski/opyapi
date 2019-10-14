@@ -1,6 +1,8 @@
-from opyapi.schema.formatters import format_date
-import pytest
 from datetime import date
+
+import pytest
+
+from opyapi.schema.formatters import format_date
 
 
 @pytest.mark.parametrize(

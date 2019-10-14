@@ -2,11 +2,11 @@ from typing import List
 from typing import Optional
 from typing import TypeVar
 
+from ..schema import validators
 from .annotation import Annotation
 from .annotation import bind_annotation
 from .info import Contact
 from .info import License
-from ..schema import validators
 
 T = TypeVar("T")
 

@@ -1,9 +1,10 @@
+import pytest
+
 from opyapi.http import HttpRequest
 from opyapi.http import HttpResponse
 from opyapi.http import Middleware
 from opyapi.http import MiddlewareHandler
 from opyapi.http import MiddlewarePipeline
-import pytest
 
 
 class ErrorCatchingMiddleware(Middleware):

@@ -2,9 +2,9 @@ import numbers
 from typing import Any
 from typing import Optional
 
+from .type import Type
 from opyapi.schema.validators import validate_multiple_of
 from opyapi.schema.validators import validate_range
-from .type import Type
 
 
 class Number(Type):

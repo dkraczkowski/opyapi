@@ -1,7 +1,7 @@
 from io import BytesIO
 
-from opyapi.http.query_string import parse_qs
 from .body import RequestBody
+from opyapi.http.query_string import parse_qs
 
 
 class FormBody(RequestBody):

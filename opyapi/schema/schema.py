@@ -1,12 +1,13 @@
 from abc import ABCMeta
 from typing import Any
 from typing import Dict
-from typing import Type
 from typing import List
-from .validators.validate import validate
+from typing import Type
+
 from .errors import ValidationError
 from .types import Object
 from .types import String
+from .validators.validate import validate
 
 
 class SchemaMeta(ABCMeta):
@@ -33,7 +34,7 @@ class Schema(metaclass=SchemaMeta):
     __mappings__: Dict[Type, Dict]
 
     def __init__(self, **kwargs) -> None:
-        super().__setattr__('__data__', {})
+        super().__setattr__("__data__", {})
         for key, value in kwargs.items():
             self.__setattr__(key, value)
 

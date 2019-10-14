@@ -1,11 +1,12 @@
+from io import BytesIO
+from typing import Callable
+
 from opyapi.http import Application
-from opyapi.http import MiddlewareHandler
-from opyapi.http import MiddlewarePipeline
 from opyapi.http import HttpRequest
 from opyapi.http import HttpResponse
 from opyapi.http import Middleware
-from io import BytesIO
-from typing import Callable
+from opyapi.http import MiddlewareHandler
+from opyapi.http import MiddlewarePipeline
 
 
 class RespondingMiddleware(Middleware):

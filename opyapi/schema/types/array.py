@@ -1,9 +1,9 @@
 from typing import Optional
 from typing import Union
 
-from opyapi.schema.errors import ValidationError
-from opyapi.schema import validators
 from .type import Type
+from opyapi.schema import validators
+from opyapi.schema.errors import ValidationError
 
 
 class Array(Type):

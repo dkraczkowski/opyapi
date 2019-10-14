@@ -8,7 +8,11 @@ from opyapi.schema.errors import ValidationError
 from opyapi.schema.formatters import format_date
 
 
-def validate_date(value: Union[str, date], minimum: Optional[date] = None, maximum: Optional[date] = None) -> None:
+def validate_date(
+    value: Union[str, date],
+    minimum: Optional[date] = None,
+    maximum: Optional[date] = None,
+) -> None:
     try:
         date_value = format_date(value)
     except ValueError:

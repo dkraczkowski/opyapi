@@ -1,9 +1,10 @@
 from typing import Type as BaseType
 from typing import Union
 
-from .api_doc import ApiDoc
-from .schema import Schema, generate_doc_from_schema
 from ..schema import Type
+from .api_doc import ApiDoc
+from .schema import generate_doc_from_schema
+from .schema import Schema
 
 
 class Parameter(ApiDoc):

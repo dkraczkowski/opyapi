@@ -4,8 +4,8 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from opyapi.http.errors import NotFoundError
 from .route import Route
+from opyapi.http.errors import NotFoundError
 
 _SUPPORTED_METHODS = ("get", "post", "put", "delete", "patch", "options", "head")
 

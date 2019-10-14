@@ -1,6 +1,6 @@
 from .api_doc import ApiDoc
-from .schema import Schema
 from .schema import generate_doc_from_schema
+from .schema import Schema
 
 
 class MediaType(ApiDoc):

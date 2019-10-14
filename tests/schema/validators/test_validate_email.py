@@ -1,4 +1,5 @@
 import pytest
+
 from opyapi.schema import validators
 from opyapi.schema.errors import ValidationError
 

@@ -1,19 +1,19 @@
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import TypeVar
 from typing import Union
-from typing import Optional
 
 from .annotation import Annotation
 from .annotation import bind_annotation
+from .api import Api
 from .media_type import MediaType
 from .parameter import Parameter
-from .response import Response
 from .request import Request
+from .response import Response
 from .schema import Schema
 from opyapi.utils import DocString
-from .api import Api
 
 T = TypeVar("T")
 

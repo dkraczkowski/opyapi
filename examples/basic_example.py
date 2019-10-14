@@ -22,6 +22,7 @@ class Pet(Schema):
     """
     Pet Schema.
     """
+
     id: int
     name: types.String(max_length=24, min_length=2)
     description: str

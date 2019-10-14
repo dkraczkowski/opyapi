@@ -9,8 +9,8 @@ from typing import Union
 
 import pytest
 
-from opyapi.schema.types import Integer
 from opyapi.schema.types import Array
+from opyapi.schema.types import Integer
 from opyapi.schema.validators import validate
 
 
@@ -136,9 +136,7 @@ def test_validate_tuple_type_definitions(value, type_definition):
 
 
 @pytest.mark.parametrize(
-    "value,type_definition", [
-        ([1, 2, 3], Array(Integer(minimum=0, maximum=5)))
-    ]
+    "value,type_definition", [([1, 2, 3], Array(Integer(minimum=0, maximum=5)))]
 )
 def test_validate_schema_types(value, type_definition):
     assert validate(value, type_definition) is None

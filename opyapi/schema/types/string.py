@@ -2,9 +2,9 @@ from enum import Enum
 from typing import Any
 from typing import Optional
 
+from .type import Type
 from opyapi.schema import formatters
 from opyapi.schema import validators
-from .type import Type
 
 
 class Format(Enum):
