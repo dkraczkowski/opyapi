@@ -1,8 +1,8 @@
 from typing import Union
 
+from .type import Type
 from opyapi.schema.errors import ValidationError
 from opyapi.schema.validators import validate
-from .type import Type
 
 
 class Object(Type):

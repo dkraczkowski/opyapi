@@ -3,8 +3,8 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-from opyapi.schema.errors import ValidationError
 from .type import Type
+from opyapi.schema.errors import ValidationError
 
 
 class Enum(Type):

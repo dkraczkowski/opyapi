@@ -5,6 +5,9 @@ from typing import Type as BaseType
 from typing import TypeVar
 from typing import Union
 
+from .annotation import Annotation
+from .annotation import bind_annotation
+from .api import Api
 from opyapi.schema import Schema as BaseSchema
 from opyapi.schema.types import Array
 from opyapi.schema.types import Enum
@@ -13,9 +16,6 @@ from opyapi.schema.types import Number
 from opyapi.schema.types import Object
 from opyapi.schema.types import String
 from opyapi.schema.types import Type
-from .annotation import Annotation
-from .annotation import bind_annotation
-from .api import Api
 
 T = TypeVar("T")
 

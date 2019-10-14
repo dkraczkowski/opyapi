@@ -1,7 +1,7 @@
+import re
 from datetime import time
 from datetime import timedelta
 from datetime import timezone
-import re
 
 _ISO_8601_TIME_REGEX = re.compile(
     r"^(?P<time>[0-2]\d:?[0-5]\d:?[0-5]\d|23:59:60|235960)(?P<microseconds>\.\d+)?(?P<tzpart>z|[+-]\d{2}:\d{2})?$",

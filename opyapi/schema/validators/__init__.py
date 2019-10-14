@@ -1,3 +1,4 @@
+from .validate import validate
 from .validate_base64 import validate_base64
 from .validate_date import validate_date
 from .validate_datetime import validate_datetime
@@ -15,7 +16,6 @@ from .validate_truthy import validate_truthy
 from .validate_uri import validate_uri
 from .validate_url import validate_url
 from .validate_uuid import validate_uuid
-from .validate import validate
 
 __all__ = [
     "validate_base64",

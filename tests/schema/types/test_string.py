@@ -12,4 +12,3 @@ def test_can_instantiate():
 def test_validate_normal_string():
     test_instance = String()
     assert test_instance.validate("test") is None
-

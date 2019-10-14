@@ -1,6 +1,8 @@
-from opyapi.schema.formatters import format_base64
 import base64
+
 import pytest
+
+from opyapi.schema.formatters import format_base64
 
 
 def test_format_base64():

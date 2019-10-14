@@ -5,5 +5,5 @@ from .http_response import HttpResponse
 from .middleware import Middleware
 from .middleware_handler import MiddlewareHandler
 from .middleware_pipeline import MiddlewarePipeline
-from .query_string import QueryString
 from .query_string import parse_qs
+from .query_string import QueryString
