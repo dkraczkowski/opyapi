@@ -1,57 +1,94 @@
 from typing import Any
 from typing import Dict
 from typing import List
-from typing import Optional
-from typing import Type
 from typing import TypeVar
 from typing import Union
+from typing import Optional
 
-from ..schema import Schema
 from .annotation import Annotation
-from .openapi import OpenApi
+from .annotation import bind_annotation
+from .media_type import MediaType
 from .parameter import Parameter
-from .request import Request
 from .response import Response
+from .request import Request
+from .schema import Schema
+from opyapi.utils import DocString
+from .api import Api
 
 T = TypeVar("T")
 
 
 class Operation(Annotation):
     def __init__(
-            self,
-            path: str,
-            responses: List[Response],
-            method: str = "get",
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request: Optional[Request] = None,
-            tags: List[str] = [],
+        self,
+        path: str,
+        method: str = "get",
+        tags: List[str] = [],
+        responses: Dict[int, MediaType] = {},
     ):
         self.path = path
         self.method = method
-        self.summary = summary
-        self.description = description
-        self.responses = responses
-        self.request = request
+        self.summary = ""
+        self.description = ""
+        self.request: Optional[Request] = None
         self.tags = tags
         self.parameters: List[Parameter] = []
+        self.responses: List[Response] = []
 
-        if parameters:
-            for key, parameter in parameters.items():
-                if isinstance(parameter, Schema):
-                    parameter = Parameter(parameter)
-                parameter.location = "path"
-                parameter.name = key
-                self.parameters.append(parameter)
-
-    """
-    .. _Open Api Operation: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operationObject
-    """
+        for status_code, media_type in responses.items():
+            self.responses.append(Response(media_type, status_code))
 
     def __call__(self, target: T) -> T:
-        OpenApi.add_operation(target, self)
+
+        annotations = target.__annotations__
+        docstring = DocString(target)
+
+        self.summary = docstring.short_description
+        self.description = docstring.long_description
+
+        # Build params doc list
+        params_doc = {}
+        for param in docstring.find_component_by_type("param", "parameter"):
+            params_doc[param.attributes[-1]] = param
+
+        for name, value in annotations.items():
+            if name == "return":
+                self.responses.append(Response(value, 200))
+                continue
+            if isinstance(value, Parameter):
+                value.name = name
+                if name in params_doc:
+                    value.description = params_doc[name].description
+                self.parameters.append(value)
+            elif isinstance(value, Schema):
+                raise ValueError(
+                    "Schema object has to be packed in corresponding media type."
+                )
+            elif isinstance(value, MediaType):
+                self.request = Request(
+                    value,
+                    params_doc[name].description if name in params_doc else "",
+                    True,
+                )
+            else:
+                raise ValueError(
+                    f"Parameter {name} has unsupported type or unknown localisation."
+                )
+        self._parse_responses_description(docstring)
+        bind_annotation(target, self)
+        Api.register(self)
         return target
+
+    def _parse_responses_description(self, docstring: DocString) -> None:
+
+        for response_doc in docstring.find_component_by_type("return", "returns"):
+            response_code = 200
+            if response_doc.attributes:
+                response_code = int(response_doc.attributes[-1])
+
+            for response in self.responses:
+                if response.status_code == response_code:
+                    response.description = response_doc.description
 
     def to_doc(self) -> dict:
         doc: Dict[Union[str, int], Any] = {
@@ -59,19 +96,17 @@ class Operation(Annotation):
             "summary": self.summary,
         }
 
+        if self.parameters:
+            doc["parameters"] = []
+            for parameter in self.parameters:
+                doc["parameters"].append(parameter.to_doc())
+
         if self.tags:
             doc["tags"] = self.tags
 
-        if self.parameters:
-            doc["parameters"] = [parameter.to_doc() for parameter in self.parameters]
-
         doc["responses"] = {}
-
         for response in self.responses:
-            key: Union[str, int] = response.status_code
-            if response.is_default:
-                key = "default"
-            doc["responses"][key] = response.to_doc()
+            doc["responses"][str(response.status_code)] = response.to_doc()
 
         if self.request:
             doc["requestBody"] = self.request.to_doc()
@@ -79,125 +114,4 @@ class Operation(Annotation):
         return doc
 
 
-class GetOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(GetOperation, self).__init__(
-            path, responses, "get", summary, description, parameters, request, tags
-        )
-
-
-class PostOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(PostOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-class PutOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(PutOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-class PatchOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(PatchOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-class DeleteOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(DeleteOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-class HeadOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(HeadOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-class OptionsOperation(Operation):
-    def __init__(
-            self,
-            path: str,
-            responses: List[Response] = [],
-            summary: str = "",
-            description: str = "",
-            parameters: Dict[str, Union[Parameter, Schema]] = {},
-            request=None,
-            tags: List[str] = [],
-    ):
-        super(OptionsOperation, self).__init__(
-            path, responses, "post", summary, description, parameters, request, tags
-        )
-
-
-__all__ = [
-    "Operation",
-    "GetOperation",
-    "PostOperation",
-    "PutOperation",
-    "PatchOperation",
-    "DeleteOperation",
-    "HeadOperation",
-    "OptionsOperation",
-]
+__all__ = ["Operation"]

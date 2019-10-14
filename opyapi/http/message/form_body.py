@@ -1,6 +1,6 @@
 from io import BytesIO
 
-from ..query_string import parse_qs
+from opyapi.http.query_string import parse_qs
 from .body import RequestBody
 
 

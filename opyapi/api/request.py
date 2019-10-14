@@ -1,20 +1,19 @@
-from .doc_object import DocObject
+from .api_doc import ApiDoc
 from .media_type import MediaType
 
 
-class Request(DocObject):
+class Request(ApiDoc):
     def __init__(
-        self, content: MediaType, description: str = "", required: bool = True
+        self, content: MediaType, description: str = "", required: bool = False
     ):
         self.content = content
         self.description = description
         self.required = required
 
-    def to_doc(self):
-        doc = {"description": self.description, "content": self.content.to_doc()}
-
-        if self.required:
-            doc["required"] = self.required
+    def to_doc(self) -> dict:
+        doc = {"content": self.content.to_doc(), "required": self.required}
+        if self.description:
+            doc["description"] = self.description
 
         return doc
 

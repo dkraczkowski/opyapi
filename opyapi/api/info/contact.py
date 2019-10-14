@@ -1,8 +1,8 @@
-from ...schema.validators import validators
-from ..doc_object import DocObject
+from opyapi.schema.validators import validate_email
+from opyapi.schema.validators import validate_url
 
 
-class Contact(DocObject):
+class Contact:
     """
     Defines contact information for the exposed API.
 
@@ -10,15 +10,12 @@ class Contact(DocObject):
     """
 
     def __init__(self, name: str, url: str = "", email: str = ""):
-        validators.email.validate(email)
-        validators.url.validate(url)
+        validate_email(email)
+        validate_url(url)
 
         self.name = name
         self.url = url
         self.email = email
-
-    def to_doc(self):
-        return {"name": self.name, "url": self.url, "email": self.email}
 
 
 __all__ = ["Contact"]

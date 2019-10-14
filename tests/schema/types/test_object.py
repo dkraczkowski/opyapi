@@ -1,12 +1,12 @@
 import pytest
 
-from opyapi.exceptions import ValidationError
+from opyapi.schema.errors import ValidationError
 from opyapi.schema.types import *
 
 
 def test_can_instantiate():
     test_instance = Object({"test_property": String()})
-    assert test_instance.validate({}) == {}
+    assert test_instance.validate({}) is None
 
 
 def test_validate_required_properties():

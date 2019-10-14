@@ -1,6 +1,6 @@
 import pytest
 
-from opyapi.exceptions import NotFoundError
+from opyapi.http.errors import NotFoundError
 from opyapi.http.routing import Route
 from opyapi.http.routing import Router
 
