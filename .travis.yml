@@ -23,6 +23,6 @@ script: pytest -q tests/
 
 
 linting:
-	stage: linting
-	script:
-	  - echo "asd"
+  stage: linting
+  script:
+    - echo "asd"
